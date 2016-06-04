@@ -1,0 +1,7 @@
+{
+    "name": "dn2a",
+    "version": "0.0.1",
+    "dependencies": {
+        "lodash": "^4.9.0"
+    }
+}
