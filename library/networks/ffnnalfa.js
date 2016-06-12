@@ -11,32 +11,32 @@ import {Neuron} from "../neuron";
 import {Synapse} from "../synapse";
 
 var Network = function(configuration, data) {
-	this.configuration = configuration || {
-		layerDimensions: [2, 3, 3, 1],
-		learningMode: "stepbystep", // could be continuous
-		learningRate: 0.1,
-		maximumError: 0.001
-	};
+    this.configuration = configuration || {
+        layerDimensions: [2, 3, 3, 1],
+        learningMode: "stepbystep", // could be continuous
+        learningRate: 0.1,
+        maximumError: 0.001
+    };
 
-	if (!this.checkConfiguration(this.configuration)) {
-		throw "Invalid FFNNALFA Engine Configuration";
-	}
-	this.configuration = this.transformConfiguration(this.configuration);
+    if (!this.checkConfiguration(this.configuration)) {
+        throw "Invalid FFNNALFA Engine Configuration";
+    }
+    this.configuration = this.transformConfiguration(this.configuration);
 
-	this.data = data || {};
+    this.data = data || {};
 
-	this.data.neurons = this.generateNeurons(this.configuration.layerDimensions, this.generateNeuron);
-	this.generateSynapses(this.data.neurons, this.generateSynapse);
+    this.data.neurons = this.generateNeurons(this.configuration.layerDimensions, this.generateNeuron);
+    this.generateSynapses(this.data.neurons, this.generateSynapse);
 }
 
 Network.prototype = {
-	checkConfiguration: function(configuration) {
-		return true;
-	},
+    checkConfiguration: function(configuration) {
+        return true;
+    },
 
-	transformConfiguration: function(configuration) {
-		return configuration;
-	},
+    transformConfiguration: function(configuration) {
+        return configuration;
+    },
 
     set neurons(value) {
         this.data.neurons = value;
@@ -74,49 +74,49 @@ Network.prototype = {
 
     },
 
-	generateNeurons: function(layerDimensions, neuronGenerator) {
-		let neuronLayers = [];
-		_.forEach(layerDimensions, function(layerDimension) {
-			let layerNeurons = [];
-			let neuronScope = neuronLayers.length === 0 ? "input" : neuronLayers.length < (layerDimensions.length - 1) ? "hidden" : "output";
-			_.times(layerDimension, function() {
-				layerNeurons.push(neuronGenerator(neuronScope));
-			});
-			if (neuronScope === "input" || neuronScope === "hidden") {
-				layerNeurons.push(neuronGenerator("bias"));
-			}
-			neuronLayers.push(layerNeurons);
-		});
-		return neuronLayers;
-	},
+    generateNeurons: function(layerDimensions, neuronGenerator) {
+        let neuronLayers = [];
+        _.forEach(layerDimensions, function(layerDimension) {
+            let layerNeurons = [];
+            let neuronScope = neuronLayers.length === 0 ? "input" : neuronLayers.length < (layerDimensions.length - 1) ? "hidden" : "output";
+            _.times(layerDimension, function() {
+                layerNeurons.push(neuronGenerator(neuronScope));
+            });
+            if (neuronScope === "input" || neuronScope === "hidden") {
+                layerNeurons.push(neuronGenerator("bias"));
+            }
+            neuronLayers.push(layerNeurons);
+        });
+        return neuronLayers;
+    },
 
-	generateNeuron: function(scope) {
+    generateNeuron: function(scope) {
         let neuron = Neuron();
-		let proxy = scope === "input" ? true : false;
-		let fixed = scope === "bias" ? true : false;
+        let proxy = scope === "input" ? true : false;
+        let fixed = scope === "bias" ? true : false;
         let output = m.bignumber(fixed ? 1 : 0);
         neuron.proxy = proxy;
         neuron.fixed = fixed;
         neuron.output = output;
         return neuron;
-	},
+    },
 
-	generateSynapses: function(neuronLayers, synapseGenerator) {
-		let previousLayerNeurons = [];
-		_.forEach(neuronLayers, function(
+    generateSynapses: function(neuronLayers, synapseGenerator) {
+        let previousLayerNeurons = [];
+        _.forEach(neuronLayers, function(
             neuronLayer,
             neuronLayerIndex,
             neuronLayers
         ) {
             let layerNeurons = neuronLayers[neuronLayerIndex];
             if (neuronLayerIndex > 0) {
-    			_.forEach(layerNeurons, function(
+                _.forEach(layerNeurons, function(
                     layerNeuron,
                     layerNeuronIndex,
                     layerNeurons
                 ) {
                     if (!layerNeuron.fixed) {
-    				    _.forEach(previousLayerNeurons, function(
+                        _.forEach(previousLayerNeurons, function(
                             previousLayerNeuron,
                             previousLayerNeuronIndex,
                             previousLayerNeurons
@@ -126,18 +126,18 @@ Network.prototype = {
                             synapse.outgoingConnection = layerNeuron;
                             previousLayerNeuron.addOutgoingConnection(synapse);
                             layerNeuron.addIncomingConnection(synapse);
-    				    });
+                        });
                     }
-    			});
+                });
             }
             previousLayerNeurons = layerNeurons;
-		});
-	},
+        });
+    },
 
-	generateSynapse: function() {
+    generateSynapse: function() {
         let synapse = Synapse();
-		return synapse;
-	},
+        return synapse;
+    },
 
     setInputPattern: function(inputPattern) {
         _.forEach(this.data.neurons[0], function(
@@ -183,7 +183,7 @@ Network.prototype = {
             expectedOutputPattern[layerNeuronIndex] = layerNeuron.expectedOutput;
         });
         return expectedOutputPattern;
-	},
+    },
 
     setOutputPattern: function(outputPattern) {
         _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
@@ -205,7 +205,7 @@ Network.prototype = {
             outputPattern[layerNeuronIndex] = layerNeuron.output;
         });
         return outputPattern;
-	},
+    },
 
     calculateActivations: function() {
         _.forEach(this.data.neurons, function(
@@ -243,7 +243,7 @@ Network.prototype = {
                 });
             }
         });
-	},
+    },
 
     calculateDeltas: function() {
         _.forEachRight(this.data.neurons, function(
@@ -347,24 +347,24 @@ Network.prototype = {
         });
     },
 
-	train: function(trainingPatterns, callback) {
-		_.forEach(trainingPatterns, function(trainingPattern) {
+    train: function(trainingPatterns, callback) {
+        _.forEach(trainingPatterns, function(trainingPattern) {
             this.setInputPattern(trainingPattern.input);
             this.setExpectedOutputPattern(trainingPattern.output);
             this.calculateActivations();
             this.calculateDeltas();
             this.calculateWeights();
             let outputPattern = this.getOutputPattern();
-			callback(outputPattern);
-		}.bind(this));
-	},
+            callback(outputPattern);
+        }.bind(this));
+    },
 
-	query: function(queryingPatterns, callback) {
-		_.forEach(queryingPatterns, function(queryingPattern) {
-			let outputPattern = this.getOutputPattern(queryingPattern.input);
-			callback(outputPattern);
-		}.bind(this));
-	}
+    query: function(queryingPatterns, callback) {
+        _.forEach(queryingPatterns, function(queryingPattern) {
+            let outputPattern = this.getOutputPattern(queryingPattern.input);
+            callback(outputPattern);
+        }.bind(this));
+    }
 }
 
 export {Network};
