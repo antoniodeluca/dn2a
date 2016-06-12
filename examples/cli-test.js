@@ -25,9 +25,107 @@ dn2a.cerebrum.trainMind([
 	{
 		input: [1, 1],
 		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
+	},
+    {
+		input: [1, 1],
+		output: [0]
 	}
 ], function(outputPattern) {
-    // console.log(outputPattern);
+    _.forEach(outputPattern, function(value) {
+        console.log(value.toString());
+    });
 });
 
 /*
