@@ -2,23 +2,43 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
+m.config({
+    number: "BigNumber",
+    precision: 64
+});
+
 let Neuron = function() {
-    let expectedOutput = 0;
+    let delta = m.bignumber(0);
+    let expectedOutput = m.bignumber(0);
     let fixed = false;
     let incomingConnections = [];
-    let inputSum = 0;
+    let inputSum = m.bignumber(0);
     let inputs = [];
     let outgoingConnections = [];
-    let output = 0;
-    let outputError = 0;
-    let previousExpectedOutput = 0;
+    let output = m.bignumber(0);
+    let outputError = m.bignumber(0);
+    let previousExpectedOutput = m.bignumber(0);
     let previousIncomingConnections = [];
-    let previousInputSum = 0;
+    let previousInputSum = m.bignumber(0);
     let previousInputs = [];
     let previousOutgoingConnections = [];
-    let previousOutput = 0;
-    let previousOutputError = 0;
+    let previousOutput = m.bignumber(0);
+    let previousOutputError = m.bignumber(0);
     let proxy = false;
+    let transferFunction = function(value) {
+        return m.divide(
+            m.bignumber(1),
+            m.sum(
+                m.bignumber(1),
+                m.exp(
+                    m.subtract(
+                        m.bignumber(0),
+                        value
+                    )
+                )
+            )
+        );
+    };
     return {
         addIncomingConnection: function(value) {
             incomingConnections.push(value);
@@ -31,6 +51,12 @@ let Neuron = function() {
         },
         addPreviousOutgoingConnection: function(value) {
             previousOutgoingConnections.push(value);
+        },
+        set delta(value) {
+            delta = value;
+        },
+        get delta() {
+            return delta;
         },
         set expectedOutput(value) {
             expectedOutput = value;
@@ -127,6 +153,12 @@ let Neuron = function() {
         },
         get proxy() {
             return proxy;
+        },
+        set transferFunction(value) {
+            transferFunction = value;
+        },
+        get transferFunction() {
+            return transferFunction;
         }
     };
 };
