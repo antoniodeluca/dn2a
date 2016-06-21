@@ -1,7 +1,28 @@
 var _ = require("lodash");
 
 var DN2A = require("../built/dn2a").DN2A;
-var dn2a = new DN2A();
+var dn2a = new DN2A({
+    brain: {
+
+    },
+    cerebrum: {
+        minds: [
+            {
+                name: "defaultMind", // a mind can be named only with chars and numbers without spaces and special symbols ("cerebrum" is a reserverd word)
+                type: "ffnnalfa",
+                inputsFrom: [
+                    "cerebrum"
+                ], // a mind can get inputs from cerebrum and/or one or more minds
+                parameters: {
+                    layerDimensions: [2, 3, 3, 1],
+                    learningMode: "stepbystep", // could be continuous
+                    learningRate: 0.1,
+                    maximumError: 0.001
+                }
+            }
+        ]
+    }
+});
 
 /*
 dn2a.cerebrum.trainMind([
