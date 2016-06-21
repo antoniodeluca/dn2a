@@ -354,7 +354,6 @@ Network.prototype = {
             this.calculateActivations();
             this.calculateDeltas();
             this.calculateWeights(this.configuration.learningRate);
-            console.log(this.configuration.learningRate);
             let outputPattern = this.getOutputPattern();
             callback(outputPattern);
         }.bind(this));
