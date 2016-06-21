@@ -16,8 +16,8 @@ var dn2a = new DN2A({
                 parameters: {
                     layerDimensions: [2, 3, 3, 1],
                     learningMode: "stepbystep", // could be continuous
-                    learningRate: 0.1,
-                    maximumError: 0.001
+                    learningRate: 0.5,
+                    maximumError: 0.005
                 }
             }
         ]
