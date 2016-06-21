@@ -1,3 +1,3 @@
-import {Brain} from "./brain";
+import {Cerebrum} from "./cerebrum";
 
-export {Brain as Host};
+export {Cerebrum as System};
