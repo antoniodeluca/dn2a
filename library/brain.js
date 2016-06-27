@@ -9,8 +9,8 @@ m.config({
 
 import {Cerebrum} from "./cerebrum";
 
-var Brain = function() {
-
+var Brain = function(configuration) {
+    this.configuration = configuration || {};
 };
 
 export {Brain};

@@ -10,8 +10,7 @@ m.config({
 import {Network} from "./networks/ffnnalfa";
 
 var Cerebrum = function(configuration) {
-    configuration = configuration || {};
-    this.configuration = {};
+    this.configuration = configuration || {};
     this.configuration.minds = configuration.minds || [
         {
             name: "defaultMind", // a mind can be named only with chars and numbers without spaces and special symbols ("cerebrum" is a reserverd word)

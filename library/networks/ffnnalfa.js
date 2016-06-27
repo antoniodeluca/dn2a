@@ -310,7 +310,7 @@ Network.prototype = {
         }.bind(this));
     },
 
-    calculateWeights: function() {
+    calculateWeights: function(learningRate) {
         _.forEach(this.data.neurons, function(
             neuronLayer,
             neuronLayerIndex,
@@ -333,7 +333,7 @@ Network.prototype = {
                             synapse.weight = m.add(
                                 synapse.weight,
                                 m.multiply(
-                                    m.bignumber(0.5),
+                                    m.bignumber(learningRate),
                                     m.multiply(
                                         synapse.outgoingConnection.delta,
                                         layerNeuron.output
@@ -353,7 +353,7 @@ Network.prototype = {
             this.setExpectedOutputPattern(trainingPattern.output);
             this.calculateActivations();
             this.calculateDeltas();
-            this.calculateWeights();
+            this.calculateWeights(this.configuration.learningRate);
             let outputPattern = this.getOutputPattern();
             callback(outputPattern);
         }.bind(this));
