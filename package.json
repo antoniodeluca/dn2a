@@ -26,5 +26,5 @@
     "scripts": {
         "transpile": "babel library -d built"
     },
-    "version": "0.0.1"
+    "version": "0.0.2"
 }
