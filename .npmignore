@@ -1,0 +1,11 @@
+bower_components
+bundle
+examples
+library
+node_modules
+tests
+.babelrc
+.gitignore
+.travis.yml
+bower.json
+Gruntfile.js
