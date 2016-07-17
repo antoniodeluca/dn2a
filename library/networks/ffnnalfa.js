@@ -207,6 +207,24 @@ Network.prototype = {
         return outputPattern;
     },
 
+    getOutputError() {
+        let outputError = m.bignumber(0);
+        outputError = m.divide(
+            _.reduce(
+                this.data.neurons[this.data.neurons.length - 1],
+                function(totalOutputError, layerNeuron) {
+                    return m.add(
+                        totalOutputError,
+                        m.square(layerNeuron.outputError)
+                    );
+                },
+                outputError
+            ),
+            this.data.neurons[this.data.neurons.length - 1].length
+        );
+        return outputError;
+    },
+
     calculateActivations: function() {
         _.forEach(this.data.neurons, function(
             neuronLayer,
@@ -347,16 +365,43 @@ Network.prototype = {
         });
     },
 
+    calculateErrors: function() {
+        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
+            layerNeuron,
+            layerNeuronIndex,
+            layerNeurons
+        ) {
+            layerNeuron.outputError = m.subtract(
+                layerNeuron.expectedOutput,
+                layerNeuron.output
+            );
+        });
+    },
+
     train: function(trainingPatterns, callback) {
-        _.forEach(trainingPatterns, function(trainingPattern) {
-            this.setInputPattern(trainingPattern.input);
-            this.setExpectedOutputPattern(trainingPattern.output);
-            this.calculateActivations();
-            this.calculateDeltas();
-            this.calculateWeights(this.configuration.learningRate);
-            let outputPattern = this.getOutputPattern();
-            callback(outputPattern);
-        }.bind(this));
+        let trainingInterrupt = false;
+        do {
+            trainingInterrupt = _.reduce(
+                trainingPatterns,
+                function(tmpTrainingInterrupt, trainingPattern) {
+                    this.setInputPattern(trainingPattern.input);
+                    this.setExpectedOutputPattern(trainingPattern.output);
+                    this.calculateActivations();
+                    this.calculateDeltas();
+                    this.calculateWeights(this.configuration.learningRate);
+                    this.calculateActivations();
+                    this.calculateErrors();
+                    let outputPattern = this.getOutputPattern();
+                    let outputError = this.getOutputError();
+                    callback({
+                        outputPattern: outputPattern,
+                        outputError: outputError
+                    });
+                    return tmpTrainingInterrupt && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                }.bind(this),
+                true
+            );
+        } while (this.configuration.learningMode === "continuous" && !trainingInterrupt);
     },
 
     query: function(queryingPatterns, callback) {
