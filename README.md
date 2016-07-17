@@ -30,10 +30,10 @@ Module able to facilitate the representation of the data structure around Synaps
 ## Network ##
 Module, available in different variations, able to use Nodes and Links to implement configurable and autonomous Neural Networks.
 
-## System (Cerebrum) ##
+## Host (Cerebrum) ##
 Module for the management of multiple Neural Networks in terms of intercommunication, chained training/querying and parallel computing through Web Workers.
 
-## Host (Brain) ##
+## Bios (Brain) ##
 Module for the normalization of data, interconnection with other external software, communication betweeen installations and monitoring of the whole architecture.
 
 ----------
@@ -41,7 +41,7 @@ Module for the normalization of data, interconnection with other external softwa
 # Helper Modules #
 
 ## DN2A ##
-Module for fast creation and training/querying of Neural Networks.
+Helper module for fast creation and training/querying of Neural Networks.
 
 ----------
 
