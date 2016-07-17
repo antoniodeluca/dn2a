@@ -1,3 +1,6 @@
+var _ = require("lodash");
+
+var DN2A = require("../built/dn2a").DN2A;
 var dn2a = new DN2A({
     brain: {
 
@@ -13,15 +16,14 @@ var dn2a = new DN2A({
                 parameters: {
                     layerDimensions: [2, 3, 3, 1],
                     learningMode: "stepbystep", // could be continuous
-                    learningRate: 0.5,
-                    maximumError: 0.005
+                    learningRate: 0.3,
+                    maximumError: 0.1
                 }
             }
         ]
     }
 });
 
-/*
 dn2a.cerebrum.trainMind([
     {
         input: [0, 0],
@@ -34,43 +36,11 @@ dn2a.cerebrum.trainMind([
     {
         input: [1, 0],
         output: [1]
-    }
-], function() {
-
-});
-*/
-dn2a.cerebrum.trainMind([
+    },
     {
         input: [1, 1],
         output: [0]
     }
-], function() {
-    // console.log(outputPattern);
+], function(result) {
+    console.log(result.outputError.toString());
 });
-
-/*
-var inputs;
-var outputs;
-inputs = [
-    {
-        pattern: [0, 0]
-    }
-];
-outputs = dn2a.cerebrum.queryMind(inputs, function() {});
-// console.log("input " + inputs[0].pattern + " gives " + outputs[0].pattern);
-inputs = [
-    {
-        pattern: [0, 1]
-    },
-    {
-        pattern: [1, 0]
-    },
-    {
-        pattern: [1, 1]
-    }
-];
-outputs = dn2a.cerebrum.queryMind(inputs, function() {});
-for (var inputIndex = 0; inputIndex < inputs.length; inputIndex++) {
-    // console.log("input " + inputs[inputIndex].pattern + " gives " + outputs[inputIndex].pattern);
-}
-*/
