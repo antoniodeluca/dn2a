@@ -4,7 +4,7 @@ import * as m from "mathjs";
 
 m.config({
     number: "BigNumber",
-    precision: 64
+    precision: 32
 });
 
 import {Neuron} from "../neuron";
@@ -12,7 +12,7 @@ import {Synapse} from "../synapse";
 
 var Network = function(configuration, data) {
     this.configuration = configuration || {
-        layerDimensions: [2, 3, 3, 1],
+        layerDimensions: [2, 3, 1],
         learningMode: "stepbystep", // could be continuous
         learningRate: 0.1,
         maximumError: 0.001
@@ -207,6 +207,23 @@ Network.prototype = {
         return outputPattern;
     },
 
+    getOutputError: function() {
+        let outputError = m.divide(
+            _.reduce(
+                this.data.neurons[this.data.neurons.length - 1],
+                function(totalOutputError, layerNeuron) {
+                    return m.add(
+                        totalOutputError,
+                        m.square(layerNeuron.outputError)
+                    );
+                },
+                m.bignumber(0)
+            ),
+            this.data.neurons[this.data.neurons.length - 1].length
+        );
+        return outputError;
+    },
+
     calculateActivations: function() {
         _.forEach(this.data.neurons, function(
             neuronLayer,
@@ -245,67 +262,81 @@ Network.prototype = {
         });
     },
 
+    calculateErrors: function() {
+        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
+            layerNeuron,
+            layerNeuronIndex,
+            layerNeurons
+        ) {
+            layerNeuron.outputError = m.subtract(
+                layerNeuron.expectedOutput,
+                layerNeuron.output
+            );
+        });
+    },
+
     calculateDeltas: function() {
         _.forEachRight(this.data.neurons, function(
             neuronLayer,
             neuronLayerIndex,
             neuronLayers
         ) {
-            let layerNeurons = neuronLayers[neuronLayerIndex];
-            if (neuronLayerIndex === (this.data.neurons.length - 1)) {
-                _.forEach(layerNeurons, function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
-                ) {
-                    layerNeuron.delta = m.chain(
-                        m.subtract(
-                            layerNeuron.expectedOutput,
+            if (neuronLayerIndex > 0) {
+                let layerNeurons = neuronLayers[neuronLayerIndex];
+                if (neuronLayerIndex === (this.data.neurons.length - 1)) {
+                    _.forEach(layerNeurons, function(
+                        layerNeuron,
+                        layerNeuronIndex,
+                        layerNeurons
+                    ) {
+                        layerNeuron.delta = m.chain(
+                            layerNeuron.outputError
+                        ).multiply(
                             layerNeuron.output
-                        )
-                    ).multiply(
-                        layerNeuron.output
-                    ).multiply(
-                        m.subtract(
-                            m.bignumber(1),
-                            layerNeuron.output
-                        )
-                    ).done();
-                });
-            } else {
-                _.forEach(layerNeurons, function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
-                ) {
-                    layerNeuron.delta = m.chain(
-                        _.reduce(
-                            _.map(
-                                layerNeuron.outgoingConnections,
-                                function(synapse) {
-                                    return m.multiply(
-                                        synapse.weight,
-                                        synapse.outgoingConnection.delta
-                                    );
-                                }
-                            ),
-                            function(accumulator, value) {
-                                return m.add(
-                                    accumulator,
-                                    value
-                                );
-                            },
-                            m.bignumber(0)
-                        )
-                    ).multiply(
-                        layerNeuron.output
-                    ).multiply(
-                        m.subtract(
-                            m.bignumber(1),
-                            layerNeuron.output
-                        )
-                    ).done();
-                });
+                        ).multiply(
+                            m.subtract(
+                                m.bignumber(1),
+                                layerNeuron.output
+                            )
+                        ).done();
+                    });
+                } else {
+                    _.forEach(layerNeurons, function(
+                        layerNeuron,
+                        layerNeuronIndex,
+                        layerNeurons
+                    ) {
+                        if (!layerNeuron.fixed) {
+                            layerNeuron.delta = m.chain(
+                                _.reduce(
+                                    _.map(
+                                        layerNeuron.outgoingConnections,
+                                        function(synapse) {
+                                            return m.multiply(
+                                                synapse.weight,
+                                                synapse.outgoingConnection.delta
+                                            );
+                                        }
+                                    ),
+                                    function(accumulator, value) {
+                                        return m.add(
+                                            accumulator,
+                                            value
+                                        );
+                                    },
+                                    m.bignumber(0)
+                                )
+                            ).multiply(
+                                layerNeuron.output
+                            ).multiply(
+                                m.subtract(
+                                    m.bignumber(1),
+                                    layerNeuron.output
+                                )
+                            ).done();
+                        }
+                    });
+                }
             }
         }.bind(this));
     },
@@ -316,47 +347,62 @@ Network.prototype = {
             neuronLayerIndex,
             neuronLayers
         ) {
-            let layerNeurons = neuronLayers[neuronLayerIndex];
-            if (neuronLayerIndex < (neuronLayers.length - 1)) {
+            if (neuronLayerIndex > 0) {
+                let layerNeurons = neuronLayers[neuronLayerIndex];
                 _.forEach(layerNeurons, function(
                     layerNeuron,
                     layerNeuronIndex,
                     layerNeurons
                 ) {
-                    _.forEach(
-                        layerNeuron.outgoingConnections,
-                        function(
-                            synapse,
-                            synapseIndex,
-                            synapses
-                        ) {
-                            synapse.weight = m.add(
-                                synapse.weight,
-                                m.multiply(
-                                    m.bignumber(learningRate),
+                    if (!layerNeuron.fixed) {
+                        _.forEach(
+                            layerNeuron.incomingConnections,
+                            function(
+                                synapse,
+                                synapseIndex,
+                                synapses
+                            ) {
+                                synapse.weight = m.add(
+                                    synapse.weight,
                                     m.multiply(
-                                        synapse.outgoingConnection.delta,
-                                        layerNeuron.output
+                                        m.bignumber(learningRate),
+                                        m.multiply(
+                                            layerNeuron.delta,
+                                            synapse.incomingConnection.output
+                                        )
                                     )
-                                )
-                            );
-                        }
-                    );
+                                );
+                            }
+                        );
+                    }
                 });
             }
         });
     },
 
     train: function(trainingPatterns, callback) {
-        _.forEach(trainingPatterns, function(trainingPattern) {
-            this.setInputPattern(trainingPattern.input);
-            this.setExpectedOutputPattern(trainingPattern.output);
-            this.calculateActivations();
-            this.calculateDeltas();
-            this.calculateWeights(this.configuration.learningRate);
-            let outputPattern = this.getOutputPattern();
-            callback(outputPattern);
-        }.bind(this));
+        let trainingInterrupt = false;
+        do {
+            trainingInterrupt = _.reduce(
+                trainingPatterns,
+                function(tmpTrainingInterrupt, trainingPattern) {
+                    this.setInputPattern(trainingPattern.input);
+                    this.setExpectedOutputPattern(trainingPattern.output);
+                    this.calculateActivations();
+                    this.calculateErrors();
+                    this.calculateDeltas();
+                    this.calculateWeights(this.configuration.learningRate);
+                    let outputPattern = this.getOutputPattern();
+                    let outputError = this.getOutputError();
+                    callback({
+                        outputPattern: outputPattern,
+                        outputError: outputError
+                    });
+                    return tmpTrainingInterrupt && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                }.bind(this),
+                true
+            );
+        } while (this.configuration.learningMode === "continuous" && !trainingInterrupt);
     },
 
     query: function(queryingPatterns, callback) {
