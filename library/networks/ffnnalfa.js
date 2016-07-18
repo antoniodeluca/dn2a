@@ -4,7 +4,7 @@ import * as m from "mathjs";
 
 m.config({
     number: "BigNumber",
-    precision: 64
+    precision: 32
 });
 
 import {Neuron} from "../neuron";
@@ -12,7 +12,7 @@ import {Synapse} from "../synapse";
 
 var Network = function(configuration, data) {
     this.configuration = configuration || {
-        layerDimensions: [2, 3, 3, 1],
+        layerDimensions: [2, 3, 1],
         learningMode: "stepbystep", // could be continuous
         learningRate: 0.1,
         maximumError: 0.001
@@ -207,9 +207,8 @@ Network.prototype = {
         return outputPattern;
     },
 
-    getOutputError() {
-        let outputError = m.bignumber(0);
-        outputError = m.divide(
+    getOutputError: function() {
+        let outputError = m.divide(
             _.reduce(
                 this.data.neurons[this.data.neurons.length - 1],
                 function(totalOutputError, layerNeuron) {
@@ -218,7 +217,7 @@ Network.prototype = {
                         m.square(layerNeuron.outputError)
                     );
                 },
-                outputError
+                m.bignumber(0)
             ),
             this.data.neurons[this.data.neurons.length - 1].length
         );
@@ -263,108 +262,6 @@ Network.prototype = {
         });
     },
 
-    calculateDeltas: function() {
-        _.forEachRight(this.data.neurons, function(
-            neuronLayer,
-            neuronLayerIndex,
-            neuronLayers
-        ) {
-            let layerNeurons = neuronLayers[neuronLayerIndex];
-            if (neuronLayerIndex === (this.data.neurons.length - 1)) {
-                _.forEach(layerNeurons, function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
-                ) {
-                    layerNeuron.delta = m.chain(
-                        m.subtract(
-                            layerNeuron.expectedOutput,
-                            layerNeuron.output
-                        )
-                    ).multiply(
-                        layerNeuron.output
-                    ).multiply(
-                        m.subtract(
-                            m.bignumber(1),
-                            layerNeuron.output
-                        )
-                    ).done();
-                });
-            } else {
-                _.forEach(layerNeurons, function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
-                ) {
-                    layerNeuron.delta = m.chain(
-                        _.reduce(
-                            _.map(
-                                layerNeuron.outgoingConnections,
-                                function(synapse) {
-                                    return m.multiply(
-                                        synapse.weight,
-                                        synapse.outgoingConnection.delta
-                                    );
-                                }
-                            ),
-                            function(accumulator, value) {
-                                return m.add(
-                                    accumulator,
-                                    value
-                                );
-                            },
-                            m.bignumber(0)
-                        )
-                    ).multiply(
-                        layerNeuron.output
-                    ).multiply(
-                        m.subtract(
-                            m.bignumber(1),
-                            layerNeuron.output
-                        )
-                    ).done();
-                });
-            }
-        }.bind(this));
-    },
-
-    calculateWeights: function(learningRate) {
-        _.forEach(this.data.neurons, function(
-            neuronLayer,
-            neuronLayerIndex,
-            neuronLayers
-        ) {
-            let layerNeurons = neuronLayers[neuronLayerIndex];
-            if (neuronLayerIndex < (neuronLayers.length - 1)) {
-                _.forEach(layerNeurons, function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
-                ) {
-                    _.forEach(
-                        layerNeuron.outgoingConnections,
-                        function(
-                            synapse,
-                            synapseIndex,
-                            synapses
-                        ) {
-                            synapse.weight = m.add(
-                                synapse.weight,
-                                m.multiply(
-                                    m.bignumber(learningRate),
-                                    m.multiply(
-                                        synapse.outgoingConnection.delta,
-                                        layerNeuron.output
-                                    )
-                                )
-                            );
-                        }
-                    );
-                });
-            }
-        });
-    },
-
     calculateErrors: function() {
         _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
             layerNeuron,
@@ -378,6 +275,111 @@ Network.prototype = {
         });
     },
 
+    calculateDeltas: function() {
+        _.forEachRight(this.data.neurons, function(
+            neuronLayer,
+            neuronLayerIndex,
+            neuronLayers
+        ) {
+            if (neuronLayerIndex > 0) {
+                let layerNeurons = neuronLayers[neuronLayerIndex];
+                if (neuronLayerIndex === (this.data.neurons.length - 1)) {
+                    _.forEach(layerNeurons, function(
+                        layerNeuron,
+                        layerNeuronIndex,
+                        layerNeurons
+                    ) {
+                        layerNeuron.delta = m.chain(
+                            layerNeuron.outputError
+                        ).multiply(
+                            layerNeuron.output
+                        ).multiply(
+                            m.subtract(
+                                m.bignumber(1),
+                                layerNeuron.output
+                            )
+                        ).done();
+                    });
+                } else {
+                    _.forEach(layerNeurons, function(
+                        layerNeuron,
+                        layerNeuronIndex,
+                        layerNeurons
+                    ) {
+                        if (!layerNeuron.fixed) {
+                            layerNeuron.delta = m.chain(
+                                _.reduce(
+                                    _.map(
+                                        layerNeuron.outgoingConnections,
+                                        function(synapse) {
+                                            return m.multiply(
+                                                synapse.weight,
+                                                synapse.outgoingConnection.delta
+                                            );
+                                        }
+                                    ),
+                                    function(accumulator, value) {
+                                        return m.add(
+                                            accumulator,
+                                            value
+                                        );
+                                    },
+                                    m.bignumber(0)
+                                )
+                            ).multiply(
+                                layerNeuron.output
+                            ).multiply(
+                                m.subtract(
+                                    m.bignumber(1),
+                                    layerNeuron.output
+                                )
+                            ).done();
+                        }
+                    });
+                }
+            }
+        }.bind(this));
+    },
+
+    calculateWeights: function(learningRate) {
+        _.forEach(this.data.neurons, function(
+            neuronLayer,
+            neuronLayerIndex,
+            neuronLayers
+        ) {
+            if (neuronLayerIndex > 0) {
+                let layerNeurons = neuronLayers[neuronLayerIndex];
+                _.forEach(layerNeurons, function(
+                    layerNeuron,
+                    layerNeuronIndex,
+                    layerNeurons
+                ) {
+                    if (!layerNeuron.fixed) {
+                        _.forEach(
+                            layerNeuron.incomingConnections,
+                            function(
+                                synapse,
+                                synapseIndex,
+                                synapses
+                            ) {
+                                synapse.weight = m.add(
+                                    synapse.weight,
+                                    m.multiply(
+                                        m.bignumber(learningRate),
+                                        m.multiply(
+                                            layerNeuron.delta,
+                                            synapse.incomingConnection.output
+                                        )
+                                    )
+                                );
+                            }
+                        );
+                    }
+                });
+            }
+        });
+    },
+
     train: function(trainingPatterns, callback) {
         let trainingInterrupt = false;
         do {
@@ -387,10 +389,9 @@ Network.prototype = {
                     this.setInputPattern(trainingPattern.input);
                     this.setExpectedOutputPattern(trainingPattern.output);
                     this.calculateActivations();
+                    this.calculateErrors();
                     this.calculateDeltas();
                     this.calculateWeights(this.configuration.learningRate);
-                    this.calculateActivations();
-                    this.calculateErrors();
                     let outputPattern = this.getOutputPattern();
                     let outputError = this.getOutputError();
                     callback({

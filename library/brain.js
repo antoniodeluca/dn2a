@@ -4,7 +4,7 @@ import * as m from "mathjs";
 
 m.config({
     number: "BigNumber",
-    precision: 64
+    precision: 32
 });
 
 import {Cerebrum} from "./cerebrum";
