@@ -12,10 +12,11 @@ import {Synapse} from "../synapse";
 
 var Network = function(configuration, data) {
     this.configuration = configuration || {
-        layerDimensions: [2, 3, 1],
+        layerDimensions: [2, 4, 1],
         learningMode: "stepbystep", // could be continuous
-        learningRate: 0.1,
-        maximumError: 0.001
+        learningRate: 0.3,
+        momentumRate: 0.3,
+        maximumError: 0.005
     };
 
     if (!this.checkConfiguration(this.configuration)) {
@@ -341,7 +342,7 @@ Network.prototype = {
         }.bind(this));
     },
 
-    calculateWeights: function(learningRate) {
+    calculateWeights: function(learningRate, momentumRate) {
         _.forEach(this.data.neurons, function(
             neuronLayer,
             neuronLayerIndex,
@@ -362,15 +363,24 @@ Network.prototype = {
                                 synapseIndex,
                                 synapses
                             ) {
-                                synapse.weight = m.add(
-                                    synapse.weight,
+                                synapse.previousWeightChange = synapse.weightChange;
+                                synapse.weightChange = m.add(
                                     m.multiply(
                                         m.bignumber(learningRate),
                                         m.multiply(
                                             layerNeuron.delta,
                                             synapse.incomingConnection.output
                                         )
+                                    ),
+                                    m.multiply(
+                                        m.bignumber(momentumRate),
+                                        synapse.previousWeightChange
                                     )
+                                );
+                                synapse.previousWeight = synapse.weight;
+                                synapse.weight = m.add(
+                                    synapse.weight,
+                                    synapse.weightChange
                                 );
                             }
                         );
@@ -382,6 +392,7 @@ Network.prototype = {
 
     train: function(trainingPatterns, callback) {
         let trainingInterrupt = false;
+        let counter = 0;
         do {
             trainingInterrupt = _.reduce(
                 trainingPatterns,
@@ -391,7 +402,10 @@ Network.prototype = {
                     this.calculateActivations();
                     this.calculateErrors();
                     this.calculateDeltas();
-                    this.calculateWeights(this.configuration.learningRate);
+                    this.calculateWeights(
+                        this.configuration.learningRate,
+                        this.configuration.momentumRate
+                    );
                     let outputPattern = this.getOutputPattern();
                     let outputError = this.getOutputError();
                     callback({
@@ -402,6 +416,8 @@ Network.prototype = {
                 }.bind(this),
                 true
             );
+            counter++;
+            console.log(counter);
         } while (this.configuration.learningMode === "continuous" && !trainingInterrupt);
     },
 

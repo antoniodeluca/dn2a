@@ -12,6 +12,8 @@ let Synapse = function() {
     let outgoingConnection = null;
     let previousIncomingConnections = null;
     let previousOutgoingConnections = null;
+    let previousWeight = m.bignumber(0);
+    let previousWeightChange = m.bignumber(0);
     let weight = m.subtract(
         m.bignumber(1),
         m.multiply(
@@ -27,6 +29,7 @@ let Synapse = function() {
             m.bignumber(2)
         )
     );
+    let weightChange = m.bignumber(0);
     return {
         set incomingConnection(value) {
             incomingConnection = value;
@@ -52,11 +55,29 @@ let Synapse = function() {
         get previousOutgoingConnection() {
             return previousOutgoingConnection;
         },
+        set previousWeight(value) {
+            previousWeight = value;
+        },
+        get previousWeight() {
+            return previousWeight;
+        },
+        set previousWeightChange(value) {
+            previousWeightChange = value;
+        },
+        get previousWeightChange() {
+            return previousWeightChange;
+        },
         set weight(value) {
             weight = value;
         },
         get weight() {
             return weight;
+        },
+        set weightChange(value) {
+            weightChange = value;
+        },
+        get weightChange() {
+            return weightChange;
         }
     };
 };
