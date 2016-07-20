@@ -19,10 +19,11 @@ var Cerebrum = function(configuration) {
                 "cerebrum"
             ], // a mind can get inputs from cerebrum and/or one or more minds
             parameters: {
-                layerDimensions: [2, 3, 3, 1],
+                layerDimensions: [2, 4, 1],
                 learningMode: "stepbystep", // could be continuous
-                learningRate: 0.1,
-                maximumError: 0.001
+                learningRate: 0.3,
+                momentumRate: 0.3,
+                maximumError: 0.005
             }
         }
     ];
