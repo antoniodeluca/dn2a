@@ -7,29 +7,37 @@ m.config({
     precision: 32
 });
 
-import {Network} from "./networks/ffnnalfa";
+import {NetworkAlpha} from "./networks/ffnnalfa";
+import {Neuron} from "./neuron";
+import {Synapse} from "./synapse";
 
-var Cerebrum = function(configuration) {
-    this.configuration = configuration || {};
-    this.configuration.minds = configuration.minds || [
-        {
-            name: "defaultMind", // a mind can be named only with chars and numbers without spaces and special symbols ("cerebrum" is a reserverd word)
-            type: "ffnnalfa",
-            inputsFrom: [
-                "cerebrum"
-            ], // a mind can get inputs from cerebrum and/or one or more minds
-            parameters: {
-                layerDimensions: [2, 4, 1],
-                learningMode: "stepbystep", // could be continuous
-                learningRate: 0.3,
-                momentumRate: 0.3,
-                maximumError: 0.005
+let Cerebrum = function(configuration) {
+    this.configuration = configuration || {
+        minds: [
+            {
+                name: "defaultMind",
+                network: {
+                    generator: NetworkAlpha,
+                    configuration: {
+                        layerDimensions: [2, 4, 1],
+                        learningMode: "stepbystep",
+                        learningRate: 0.3,
+                        momentumRate: 0.7,
+                        maximumError: 0.005,
+                        dataRepository: {},
+                        neuronGenerator: Neuron,
+                        synapseGenerator: Synapse
+                    }
+                },
+                inputsFrom: [
+                    "cerebrum"
+                ]
             }
-        }
-    ];
-    this.configuration.outputsFrom = [
-        "defaultMind"
-    ]; // cerebrum can get outputs from one or more minds
+        ],
+        outputsFrom: [
+            "defaultMind"
+        ]
+    };
 
     if (!this.checkConfiguration(this.configuration)) {
         throw "Invalid Cerebrum Configuration";
@@ -42,8 +50,8 @@ var Cerebrum = function(configuration) {
 
     this.outputs = []; // outputs are objects with the pattern and the name of the source mind (because there could be more than one producing outputs)
 
-    _.forEach(this.configuration.minds, function(mindConfiguration) {
-        this.buildMind(mindConfiguration);
+    _.forEach(this.configuration.minds, function(configuration) {
+        this.buildMind(configuration);
     }.bind(this));
 }
 
@@ -57,15 +65,10 @@ Cerebrum.prototype = {
     },
 
     buildMind: function(configuration) {
-        let name = configuration.name
-        let data = {};
-        let code = new Network(configuration.parameters, data);
-        let mind = {
-            name: name,
-            data: data,
-            code: code
-        };
-        this.minds.push(mind);
+        this.minds.push({
+            name: configuration.name,
+            network: new configuration.network.generator(configuration.network.configuration)
+        });
     },
 
     trainMind: function(trainingPatterns, callback, mindName = "defaultMind") {
@@ -74,7 +77,7 @@ Cerebrum.prototype = {
             {
                 name: mindName
             }
-        ).code;
+        ).network;
         mind.train(trainingPatterns, callback);
     },
 
@@ -84,7 +87,7 @@ Cerebrum.prototype = {
             {
                 name: mindName
             }
-        ).code;
+        ).network;
         mind.query(queryingPatterns, callback);
     },
 

@@ -8,9 +8,44 @@ m.config({
 });
 
 import {Cerebrum} from "./cerebrum";
+import {NetworkAlpha} from "./networks/ffnnalfa";
+import {Neuron} from "./neuron";
+import {Synapse} from "./synapse";
 
-var Brain = function(configuration) {
-    this.configuration = configuration || {};
+let Brain = function(configuration) {
+    this.configuration = configuration || {
+        cerebrum: {
+            generator: Cerebrum,
+            configuration: {
+                minds: [
+                    {
+                        name: "defaultMind",
+                        network: {
+                            generator: NetworkAlpha,
+                            configuration: {
+                                layerDimensions: [2, 4, 1],
+                                learningMode: "stepbystep",
+                                learningRate: 0.3,
+                                momentumRate: 0.7,
+                                maximumError: 0.005,
+                                dataRepository: {},
+                                neuronGenerator: Neuron,
+                                synapseGenerator: Synapse
+                            }
+                        },
+                        inputsFrom: [
+                            "cerebrum"
+                        ]
+                    }
+                ],
+                outputsFrom: [
+                    "defaultMind"
+                ]
+            }
+        }
+    };
+
+    this.cerebrum = new this.configuration.cerebrum.generator(this.configuration.cerebrum.configuration);
 };
 
 export {Brain};

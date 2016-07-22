@@ -1,9 +1,15 @@
 import {Brain} from "./brain";
 import {Cerebrum} from "./cerebrum";
+import {NetworkAlpha} from "./networks/ffnnalfa";
+import {Neuron} from "./neuron";
+import {Synapse} from "./synapse";
 
-var DN2A = function(configuration) {
-    this.cerebrum = new Cerebrum(configuration.cerebrum);
-    this.brain = new Brain(configuration.brain);
+let DN2A = {
+    Brain : Brain,
+    Cerebrum : Cerebrum,
+    NetworkAlpha : NetworkAlpha,
+    Neuron : Neuron,
+    Synapse : Synapse
 };
 
-export {DN2A};
+module.exports = DN2A;
