@@ -416,10 +416,18 @@ Network.prototype = {
     },
 
     query: function(queryingPatterns, callback) {
+        let queryingStatus = {
+            outputPatterns: []
+        };
         _.forEach(queryingPatterns, function(queryingPattern) {
-            let outputPattern = this.getOutputPattern(queryingPattern.input);
-            callback(outputPattern);
+            this.setInputPattern(queryingPattern.input);
+            this.calculateActivations();
+            let outputPattern = this.getOutputPattern();
+            queryingStatus.outputPatterns.push(outputPattern);
         }.bind(this));
+        if (callback) {
+            callback(queryingStatus);
+        }
     }
 }
 
