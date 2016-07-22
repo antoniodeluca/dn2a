@@ -42,6 +42,35 @@ dn2a.cerebrum.trainMind([
         input: [1, 1],
         output: [0]
     }
-], function(result) {
-    console.log(result.outputError.toString());
+], function(trainingStatus) {
+    let errorStatus = _.reduce(
+        trainingStatus.outputErrors,
+        function(errorStatus, outputError) {
+            let error = parseFloat(outputError.toString());
+            return {
+                minimumError: error < errorStatus.minimumError ? error : errorStatus.minimumError,
+                averageError: errorStatus.averageError + (error / trainingStatus.outputErrors.length),
+                maximumError: error > errorStatus.maximumError ? error : errorStatus.maximumError
+            }
+        },
+        {
+            minimumError: 1,
+            averageError: 0,
+            maximumError: 0
+        }
+    );
+    console.log(
+        "Epoch " +
+        trainingStatus.elapsedEpochCounter +
+        "\n" +
+        "Min. Err. = " +
+        errorStatus.minimumError +
+        "\n" +
+        "Avg. Err. = " +
+        errorStatus.averageError +
+        "\n" +
+        "Max. Err. = " +
+        errorStatus.maximumError +
+        "\n"
+    );
 });

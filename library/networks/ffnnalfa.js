@@ -256,23 +256,14 @@ Network.prototype = {
                             }
                         );
                         layerNeuron.output = layerNeuron.transferFunction(layerNeuron.inputSum);
+                        layerNeuron.outputError = m.subtract(
+                            layerNeuron.expectedOutput,
+                            layerNeuron.output
+                        );
                         layerNeuron.inputSum = 0;
                     }
                 });
             }
-        });
-    },
-
-    calculateErrors: function() {
-        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
-            layerNeuron,
-            layerNeuronIndex,
-            layerNeurons
-        ) {
-            layerNeuron.outputError = m.subtract(
-                layerNeuron.expectedOutput,
-                layerNeuron.output
-            );
         });
     },
 
@@ -391,34 +382,37 @@ Network.prototype = {
     },
 
     train: function(trainingPatterns, callback) {
-        let trainingInterrupt = false;
-        let counter = 0;
+        let trainingStatus = {
+            outputErrors: [],
+            interruptionRequest: false,
+            elapsedEpochCounter: 0
+        };
         do {
-            trainingInterrupt = _.reduce(
+            trainingStatus.outputErrors = [];
+            trainingStatus.interruptionRequest = true;
+            trainingStatus = _.reduce(
                 trainingPatterns,
-                function(tmpTrainingInterrupt, trainingPattern) {
+                function(trainingStatus, trainingPattern) {
                     this.setInputPattern(trainingPattern.input);
                     this.setExpectedOutputPattern(trainingPattern.output);
                     this.calculateActivations();
-                    this.calculateErrors();
                     this.calculateDeltas();
                     this.calculateWeights(
                         this.configuration.learningRate,
                         this.configuration.momentumRate
                     );
-                    let outputPattern = this.getOutputPattern();
                     let outputError = this.getOutputError();
-                    callback({
-                        outputPattern: outputPattern,
-                        outputError: outputError
-                    });
-                    return tmpTrainingInterrupt && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                    trainingStatus.outputErrors.push(outputError);
+                    trainingStatus.interruptionRequest = trainingStatus.interruptionRequest && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                    return trainingStatus;
                 }.bind(this),
-                true
+                trainingStatus
             );
-            counter++;
-            console.log(counter);
-        } while (this.configuration.learningMode === "continuous" && !trainingInterrupt);
+            trainingStatus.elapsedEpochCounter++;
+            if (callback) {
+                callback(trainingStatus);
+            }
+        } while (this.configuration.learningMode === "continuous" && !trainingStatus.interruptionRequest);
     },
 
     query: function(queryingPatterns, callback) {
