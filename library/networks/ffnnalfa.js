@@ -10,13 +10,16 @@ m.config({
 import {Neuron} from "../neuron";
 import {Synapse} from "../synapse";
 
-var Network = function(configuration, data) {
+let NetworkAlpha = function(configuration) {
     this.configuration = configuration || {
         layerDimensions: [2, 4, 1],
-        learningMode: "stepbystep", // could be continuous
+        learningMode: "stepbystep",
         learningRate: 0.3,
-        momentumRate: 0.3,
-        maximumError: 0.005
+        momentumRate: 0.7,
+        maximumError: 0.005,
+        dataRepository: {},
+        neuronGenerator: Neuron,
+        synapseGenerator: Synapse
     };
 
     if (!this.checkConfiguration(this.configuration)) {
@@ -24,13 +27,13 @@ var Network = function(configuration, data) {
     }
     this.configuration = this.transformConfiguration(this.configuration);
 
-    this.data = data || {};
+    this.dataRepository = this.configuration.dataRepository;
 
-    this.data.neurons = this.generateNeurons(this.configuration.layerDimensions, this.generateNeuron);
-    this.generateSynapses(this.data.neurons, this.generateSynapse);
+    this.generateNeurons();
+    this.generateSynapses();
 }
 
-Network.prototype = {
+NetworkAlpha.prototype = {
     checkConfiguration: function(configuration) {
         return true;
     },
@@ -40,11 +43,11 @@ Network.prototype = {
     },
 
     set neurons(value) {
-        this.data.neurons = value;
+        this.dataRepository.neurons = value;
     },
 
     get neurons() {
-        return this.data.neurons;
+        return this.dataRepository.neurons;
     },
 
     setNeuron: function() {
@@ -56,7 +59,7 @@ Network.prototype = {
     },
 
     addNeuron: function(value) {
-        this.data.neurons.push(value);
+        this.dataRepository.neurons.push(value);
     },
 
     set synapses(value) {
@@ -75,24 +78,24 @@ Network.prototype = {
 
     },
 
-    generateNeurons: function(layerDimensions, neuronGenerator) {
+    generateNeurons: function() {
         let neuronLayers = [];
-        _.forEach(layerDimensions, function(layerDimension) {
+        _.forEach(this.configuration.layerDimensions, function(layerDimension) {
             let layerNeurons = [];
-            let neuronScope = neuronLayers.length === 0 ? "input" : neuronLayers.length < (layerDimensions.length - 1) ? "hidden" : "output";
+            let neuronScope = neuronLayers.length === 0 ? "input" : neuronLayers.length < (this.configuration.layerDimensions.length - 1) ? "hidden" : "output";
             _.times(layerDimension, function() {
-                layerNeurons.push(neuronGenerator(neuronScope));
-            });
+                layerNeurons.push(this.generateNeuron(neuronScope));
+            }.bind(this));
             if (neuronScope === "input" || neuronScope === "hidden") {
-                layerNeurons.push(neuronGenerator("bias"));
+                layerNeurons.push(this.generateNeuron("bias"));
             }
             neuronLayers.push(layerNeurons);
-        });
-        return neuronLayers;
+        }.bind(this));
+        this.dataRepository.neuronLayers = neuronLayers;
     },
 
     generateNeuron: function(scope) {
-        let neuron = Neuron();
+        let neuron = this.configuration.neuronGenerator();
         let proxy = scope === "input" ? true : false;
         let fixed = scope === "bias" ? true : false;
         let output = m.bignumber(fixed ? 1 : 0);
@@ -102,9 +105,9 @@ Network.prototype = {
         return neuron;
     },
 
-    generateSynapses: function(neuronLayers, synapseGenerator) {
+    generateSynapses: function() {
         let previousLayerNeurons = [];
-        _.forEach(neuronLayers, function(
+        _.forEach(this.dataRepository.neuronLayers, function(
             neuronLayer,
             neuronLayerIndex,
             neuronLayers
@@ -122,26 +125,26 @@ Network.prototype = {
                             previousLayerNeuronIndex,
                             previousLayerNeurons
                         ) {
-                            let synapse = synapseGenerator();
+                            let synapse = this.generateSynapse();
                             synapse.incomingConnection = previousLayerNeuron;
                             synapse.outgoingConnection = layerNeuron;
                             previousLayerNeuron.addOutgoingConnection(synapse);
                             layerNeuron.addIncomingConnection(synapse);
-                        });
+                        }.bind(this));
                     }
-                });
+                }.bind(this));
             }
             previousLayerNeurons = layerNeurons;
-        });
+        }.bind(this));
     },
 
     generateSynapse: function() {
-        let synapse = Synapse();
+        let synapse = this.configuration.synapseGenerator();
         return synapse;
     },
 
     setInputPattern: function(inputPattern) {
-        _.forEach(this.data.neurons[0], function(
+        _.forEach(this.dataRepository.neuronLayers[0], function(
             layerNeuron,
             layerNeuronIndex,
             layerNeurons
@@ -154,7 +157,7 @@ Network.prototype = {
 
     getInputPattern: function() {
         let inputPattern = [];
-        _.forEach(this.data.neurons[0], function(
+        _.forEach(this.dataRepository.neuronLayers[0], function(
             layerNeuron,
             layerNeuronIndex,
             layerNeurons
@@ -165,7 +168,7 @@ Network.prototype = {
     },
 
     setExpectedOutputPattern: function(expectedOutputPattern) {
-        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
+        _.forEach(this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1], function(
             layerNeuron,
             layerNeuronIndex,
             layerNeurons
@@ -176,7 +179,7 @@ Network.prototype = {
 
     getExpectedOutputPattern: function() {
         let expectedOutputPattern = [];
-        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
+        _.forEach(this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1], function(
             layerNeuron,
             layerNeuronIndex,
             layerNeurons
@@ -187,7 +190,7 @@ Network.prototype = {
     },
 
     setOutputPattern: function(outputPattern) {
-        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
+        _.forEach(this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1], function(
             layerNeuron,
             layerNeuronIndex,
             layerNeurons
@@ -198,7 +201,7 @@ Network.prototype = {
 
     getOutputPattern: function() {
         let outputPattern = [];
-        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
+        _.forEach(this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1], function(
             layerNeuron,
             layerNeuronIndex,
             layerNeurons
@@ -211,7 +214,7 @@ Network.prototype = {
     getOutputError: function() {
         let outputError = m.divide(
             _.reduce(
-                this.data.neurons[this.data.neurons.length - 1],
+                this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1],
                 function(totalOutputError, layerNeuron) {
                     return m.add(
                         totalOutputError,
@@ -220,13 +223,13 @@ Network.prototype = {
                 },
                 m.bignumber(0)
             ),
-            this.data.neurons[this.data.neurons.length - 1].length
+            this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].length
         );
         return outputError;
     },
 
     calculateActivations: function() {
-        _.forEach(this.data.neurons, function(
+        _.forEach(this.dataRepository.neuronLayers, function(
             neuronLayer,
             neuronLayerIndex,
             neuronLayers
@@ -256,6 +259,10 @@ Network.prototype = {
                             }
                         );
                         layerNeuron.output = layerNeuron.transferFunction(layerNeuron.inputSum);
+                        layerNeuron.outputError = m.subtract(
+                            layerNeuron.expectedOutput,
+                            layerNeuron.output
+                        );
                         layerNeuron.inputSum = 0;
                     }
                 });
@@ -263,28 +270,15 @@ Network.prototype = {
         });
     },
 
-    calculateErrors: function() {
-        _.forEach(this.data.neurons[this.data.neurons.length - 1], function(
-            layerNeuron,
-            layerNeuronIndex,
-            layerNeurons
-        ) {
-            layerNeuron.outputError = m.subtract(
-                layerNeuron.expectedOutput,
-                layerNeuron.output
-            );
-        });
-    },
-
     calculateDeltas: function() {
-        _.forEachRight(this.data.neurons, function(
+        _.forEachRight(this.dataRepository.neuronLayers, function(
             neuronLayer,
             neuronLayerIndex,
             neuronLayers
         ) {
             if (neuronLayerIndex > 0) {
                 let layerNeurons = neuronLayers[neuronLayerIndex];
-                if (neuronLayerIndex === (this.data.neurons.length - 1)) {
+                if (neuronLayerIndex === (this.dataRepository.neuronLayers.length - 1)) {
                     _.forEach(layerNeurons, function(
                         layerNeuron,
                         layerNeuronIndex,
@@ -343,7 +337,7 @@ Network.prototype = {
     },
 
     calculateWeights: function(learningRate, momentumRate) {
-        _.forEach(this.data.neurons, function(
+        _.forEach(this.dataRepository.neuronLayers, function(
             neuronLayer,
             neuronLayerIndex,
             neuronLayers
@@ -391,42 +385,53 @@ Network.prototype = {
     },
 
     train: function(trainingPatterns, callback) {
-        let trainingInterrupt = false;
-        let counter = 0;
+        let trainingStatus = {
+            outputErrors: [],
+            interruptionRequest: false,
+            elapsedEpochCounter: 0
+        };
         do {
-            trainingInterrupt = _.reduce(
+            trainingStatus.outputErrors = [];
+            trainingStatus.interruptionRequest = true;
+            trainingStatus = _.reduce(
                 trainingPatterns,
-                function(tmpTrainingInterrupt, trainingPattern) {
+                function(trainingStatus, trainingPattern) {
                     this.setInputPattern(trainingPattern.input);
                     this.setExpectedOutputPattern(trainingPattern.output);
                     this.calculateActivations();
-                    this.calculateErrors();
                     this.calculateDeltas();
                     this.calculateWeights(
                         this.configuration.learningRate,
                         this.configuration.momentumRate
                     );
-                    let outputPattern = this.getOutputPattern();
                     let outputError = this.getOutputError();
-                    callback({
-                        outputPattern: outputPattern,
-                        outputError: outputError
-                    });
-                    return tmpTrainingInterrupt && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                    trainingStatus.outputErrors.push(outputError);
+                    trainingStatus.interruptionRequest = trainingStatus.interruptionRequest && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                    return trainingStatus;
                 }.bind(this),
-                true
+                trainingStatus
             );
-            counter++;
-            console.log(counter);
-        } while (this.configuration.learningMode === "continuous" && !trainingInterrupt);
+            trainingStatus.elapsedEpochCounter++;
+            if (callback) {
+                callback(trainingStatus);
+            }
+        } while (this.configuration.learningMode === "continuous" && !trainingStatus.interruptionRequest);
     },
 
     query: function(queryingPatterns, callback) {
+        let queryingStatus = {
+            outputPatterns: []
+        };
         _.forEach(queryingPatterns, function(queryingPattern) {
-            let outputPattern = this.getOutputPattern(queryingPattern.input);
-            callback(outputPattern);
+            this.setInputPattern(queryingPattern.input);
+            this.calculateActivations();
+            let outputPattern = this.getOutputPattern();
+            queryingStatus.outputPatterns.push(outputPattern);
         }.bind(this));
+        if (callback) {
+            callback(queryingStatus);
+        }
     }
 }
 
-export {Network};
+export {NetworkAlpha};
