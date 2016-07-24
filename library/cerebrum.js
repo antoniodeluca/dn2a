@@ -2,11 +2,6 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
-m.config({
-    number: "BigNumber",
-    precision: 32
-});
-
 import {NetworkAlpha} from "./networks/alpha";
 import {Neuron} from "./neuron";
 import {Synapse} from "./synapse";
@@ -26,7 +21,8 @@ let Cerebrum = function(configuration) {
                         maximumError: 0.005,
                         dataRepository: {},
                         neuronGenerator: Neuron,
-                        synapseGenerator: Synapse
+                        synapseGenerator: Synapse,
+                        numbersPrecision: 32
                     }
                 },
                 inputsFrom: [
@@ -49,6 +45,11 @@ let Cerebrum = function(configuration) {
     this.inputs = []; // inputs are objects with the pattern and the name of the recipient mind (because there could be more than one listening for inputs)
 
     this.outputs = []; // outputs are objects with the pattern and the name of the source mind (because there could be more than one producing outputs)
+
+    m.config({
+        number: "BigNumber",
+        precision: this.configuration.numbersPrecision
+    });
 
     _.forEach(this.configuration.minds, function(configuration) {
         this.buildMind(configuration);
