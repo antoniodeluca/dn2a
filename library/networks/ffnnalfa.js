@@ -42,42 +42,6 @@ NetworkAlpha.prototype = {
         return this.configuration;
     },
 
-    set neurons(value) {
-        this.dataRepository.neurons = value;
-    },
-
-    get neurons() {
-        return this.dataRepository.neurons;
-    },
-
-    setNeuron: function() {
-
-    },
-
-    getNeuron: function() {
-
-    },
-
-    addNeuron: function(value) {
-        this.dataRepository.neurons.push(value);
-    },
-
-    set synapses(value) {
-
-    },
-
-    get synapses() {
-
-    },
-
-    setSynapse: function() {
-
-    },
-
-    getSynapse: function() {
-
-    },
-
     generateNeurons: function() {
         let neuronLayers = [];
         _.forEach(this.configuration.layerDimensions, function(layerDimension) {
