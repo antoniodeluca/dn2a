@@ -8,7 +8,7 @@ let Neuron = function(tmpConfiguration) {
     };
     m.config({
         number: "BigNumber",
-        precision: configuration.numbersPrecision;
+        precision: configuration.numbersPrecision
     });
     return function Neuron() {
         let delta = m.bignumber(0);

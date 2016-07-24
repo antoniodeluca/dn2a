@@ -8,7 +8,7 @@ let Synapse = function(tmpConfiguration) {
     };
     m.config({
         number: "BigNumber",
-        precision: configuration.numbersPrecision;
+        precision: configuration.numbersPrecision
     });
     return function Synapse() {
         let incomingConnection = null;
