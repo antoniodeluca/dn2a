@@ -2,11 +2,6 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
-m.config({
-    number: "BigNumber",
-    precision: 32
-});
-
 import {Neuron} from "../neuron";
 import {Synapse} from "../synapse";
 
@@ -19,63 +14,41 @@ let NetworkAlpha = function(configuration) {
         maximumError: 0.005,
         dataRepository: {},
         neuronGenerator: Neuron,
-        synapseGenerator: Synapse
+        synapseGenerator: Synapse,
+        numbersPrecision: 32
     };
 
-    if (!this.checkConfiguration(this.configuration)) {
+    if (!this.checkConfiguration()) {
         throw "Invalid FFNNALFA Engine Configuration";
     }
-    this.configuration = this.transformConfiguration(this.configuration);
+    this.configuration = this.transformConfiguration();
 
     this.dataRepository = this.configuration.dataRepository;
+
+    this.neuronGenerator = this.configuration.neuronGenerator({
+        numbersPrecision: this.configuration.numbersPrecision
+    });
+
+    this.synapseGenerator = this.configuration.synapseGenerator({
+        numbersPrecision: this.configuration.numbersPrecision
+    });
+
+    m.config({
+        number: "BigNumber",
+        precision: this.configuration.numbersPrecision
+    });
 
     this.generateNeurons();
     this.generateSynapses();
 }
 
 NetworkAlpha.prototype = {
-    checkConfiguration: function(configuration) {
+    checkConfiguration: function() {
         return true;
     },
 
-    transformConfiguration: function(configuration) {
-        return configuration;
-    },
-
-    set neurons(value) {
-        this.dataRepository.neurons = value;
-    },
-
-    get neurons() {
-        return this.dataRepository.neurons;
-    },
-
-    setNeuron: function() {
-
-    },
-
-    getNeuron: function() {
-
-    },
-
-    addNeuron: function(value) {
-        this.dataRepository.neurons.push(value);
-    },
-
-    set synapses(value) {
-
-    },
-
-    get synapses() {
-
-    },
-
-    setSynapse: function() {
-
-    },
-
-    getSynapse: function() {
-
+    transformConfiguration: function() {
+        return this.configuration;
     },
 
     generateNeurons: function() {
@@ -95,7 +68,7 @@ NetworkAlpha.prototype = {
     },
 
     generateNeuron: function(scope) {
-        let neuron = this.configuration.neuronGenerator();
+        let neuron = this.neuronGenerator();
         let proxy = scope === "input" ? true : false;
         let fixed = scope === "bias" ? true : false;
         let output = m.bignumber(fixed ? 1 : 0);
@@ -139,7 +112,7 @@ NetworkAlpha.prototype = {
     },
 
     generateSynapse: function() {
-        let synapse = this.configuration.synapseGenerator();
+        let synapse = this.synapseGenerator();
         return synapse;
     },
 
@@ -432,6 +405,6 @@ NetworkAlpha.prototype = {
             callback(queryingStatus);
         }
     }
-}
+};
 
 export {NetworkAlpha};

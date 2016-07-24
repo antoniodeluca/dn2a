@@ -2,12 +2,7 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
-m.config({
-    number: "BigNumber",
-    precision: 32
-});
-
-import {NetworkAlpha} from "./networks/ffnnalfa";
+import {NetworkAlpha} from "./networks/alpha";
 import {Neuron} from "./neuron";
 import {Synapse} from "./synapse";
 
@@ -26,7 +21,8 @@ let Cerebrum = function(configuration) {
                         maximumError: 0.005,
                         dataRepository: {},
                         neuronGenerator: Neuron,
-                        synapseGenerator: Synapse
+                        synapseGenerator: Synapse,
+                        numbersPrecision: 32
                     }
                 },
                 inputsFrom: [
@@ -39,10 +35,10 @@ let Cerebrum = function(configuration) {
         ]
     };
 
-    if (!this.checkConfiguration(this.configuration)) {
+    if (!this.checkConfiguration()) {
         throw "Invalid Cerebrum Configuration";
     }
-    this.configuration = this.transformConfiguration(this.configuration);
+    this.configuration = this.transformConfiguration();
 
     this.minds = [];
 
@@ -50,18 +46,23 @@ let Cerebrum = function(configuration) {
 
     this.outputs = []; // outputs are objects with the pattern and the name of the source mind (because there could be more than one producing outputs)
 
+    m.config({
+        number: "BigNumber",
+        precision: this.configuration.numbersPrecision
+    });
+
     _.forEach(this.configuration.minds, function(configuration) {
         this.buildMind(configuration);
     }.bind(this));
 }
 
 Cerebrum.prototype = {
-    checkConfiguration: function(configuration) {
+    checkConfiguration: function() {
         return true;
     },
 
-    transformConfiguration: function(configuration) {
-        return configuration;
+    transformConfiguration: function() {
+        return this.configuration;
     },
 
     buildMind: function(configuration) {
@@ -89,11 +90,7 @@ Cerebrum.prototype = {
             }
         ).network;
         mind.query(queryingPatterns, callback);
-    },
-
-    query: function(queryingPatterns, callback) {
-
     }
-}
+};
 
 export {Cerebrum};

@@ -2,13 +2,8 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
-m.config({
-    number: "BigNumber",
-    precision: 32
-});
-
 import {Cerebrum} from "./cerebrum";
-import {NetworkAlpha} from "./networks/ffnnalfa";
+import {NetworkAlpha} from "./networks/alpha";
 import {Neuron} from "./neuron";
 import {Synapse} from "./synapse";
 
@@ -30,7 +25,8 @@ let Brain = function(configuration) {
                                 maximumError: 0.005,
                                 dataRepository: {},
                                 neuronGenerator: Neuron,
-                                synapseGenerator: Synapse
+                                synapseGenerator: Synapse,
+                                numbersPrecision: 32
                             }
                         },
                         inputsFrom: [
@@ -45,7 +41,27 @@ let Brain = function(configuration) {
         }
     };
 
+    if (!this.checkConfiguration()) {
+        throw "Invalid Cerebrum Configuration";
+    }
+    this.configuration = this.transformConfiguration();
+
+    m.config({
+        number: "BigNumber",
+        precision: this.configuration.numbersPrecision
+    });
+
     this.cerebrum = new this.configuration.cerebrum.generator(this.configuration.cerebrum.configuration);
+};
+
+Brain.prototype = {
+    checkConfiguration: function() {
+        return true;
+    },
+
+    transformConfiguration: function() {
+        return this.configuration;
+    }
 };
 
 export {Brain};
