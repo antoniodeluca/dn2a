@@ -45,7 +45,22 @@ let Brain = function(configuration) {
         }
     };
 
+    if (!this.checkConfiguration()) {
+        throw "Invalid Cerebrum Configuration";
+    }
+    this.configuration = this.transformConfiguration();
+
     this.cerebrum = new this.configuration.cerebrum.generator(this.configuration.cerebrum.configuration);
+};
+
+Brain.prototype = {
+    checkConfiguration: function() {
+        return true;
+    },
+
+    transformConfiguration: function() {
+        return this.configuration;
+    }
 };
 
 export {Brain};
