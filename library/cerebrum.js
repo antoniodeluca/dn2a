@@ -89,10 +89,6 @@ Cerebrum.prototype = {
             }
         ).network;
         mind.query(queryingPatterns, callback);
-    },
-
-    query: function(queryingPatterns, callback) {
-
     }
 }
 
