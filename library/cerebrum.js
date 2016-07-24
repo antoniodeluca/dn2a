@@ -39,10 +39,10 @@ let Cerebrum = function(configuration) {
         ]
     };
 
-    if (!this.checkConfiguration(this.configuration)) {
+    if (!this.checkConfiguration()) {
         throw "Invalid Cerebrum Configuration";
     }
-    this.configuration = this.transformConfiguration(this.configuration);
+    this.configuration = this.transformConfiguration();
 
     this.minds = [];
 
@@ -56,12 +56,12 @@ let Cerebrum = function(configuration) {
 }
 
 Cerebrum.prototype = {
-    checkConfiguration: function(configuration) {
+    checkConfiguration: function() {
         return true;
     },
 
-    transformConfiguration: function(configuration) {
-        return configuration;
+    transformConfiguration: function() {
+        return this.configuration;
     },
 
     buildMind: function(configuration) {
