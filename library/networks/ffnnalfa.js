@@ -22,10 +22,10 @@ let NetworkAlpha = function(configuration) {
         synapseGenerator: Synapse
     };
 
-    if (!this.checkConfiguration(this.configuration)) {
+    if (!this.checkConfiguration()) {
         throw "Invalid FFNNALFA Engine Configuration";
     }
-    this.configuration = this.transformConfiguration(this.configuration);
+    this.configuration = this.transformConfiguration();
 
     this.dataRepository = this.configuration.dataRepository;
 
@@ -34,12 +34,12 @@ let NetworkAlpha = function(configuration) {
 }
 
 NetworkAlpha.prototype = {
-    checkConfiguration: function(configuration) {
+    checkConfiguration: function() {
         return true;
     },
 
-    transformConfiguration: function(configuration) {
-        return configuration;
+    transformConfiguration: function() {
+        return this.configuration;
     },
 
     set neurons(value) {
