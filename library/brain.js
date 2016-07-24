@@ -8,7 +8,7 @@ m.config({
 });
 
 import {Cerebrum} from "./cerebrum";
-import {NetworkAlpha} from "./networks/ffnnalfa";
+import {NetworkAlpha} from "./networks/alpha";
 import {Neuron} from "./neuron";
 import {Synapse} from "./synapse";
 

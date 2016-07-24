@@ -7,7 +7,7 @@ m.config({
     precision: 32
 });
 
-import {NetworkAlpha} from "./networks/ffnnalfa";
+import {NetworkAlpha} from "./networks/alpha";
 import {Neuron} from "./neuron";
 import {Synapse} from "./synapse";
 
