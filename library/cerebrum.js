@@ -90,6 +90,6 @@ Cerebrum.prototype = {
         ).network;
         mind.query(queryingPatterns, callback);
     }
-}
+};
 
 export {Cerebrum};
