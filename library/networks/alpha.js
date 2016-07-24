@@ -12,6 +12,7 @@ let NetworkAlpha = function(configuration) {
         learningRate: 0.3,
         momentumRate: 0.7,
         maximumError: 0.005,
+        maximumEpoch: 1000,
         dataRepository: {},
         neuronGenerator: Neuron,
         synapseGenerator: Synapse,
@@ -388,7 +389,11 @@ NetworkAlpha.prototype = {
             if (callback) {
                 callback(trainingStatus);
             }
-        } while (this.configuration.learningMode === "continuous" && !trainingStatus.interruptionRequest);
+        } while (
+            this.configuration.learningMode === "continuous" &&
+            !trainingStatus.interruptionRequest &&
+            trainingStatus.elapsedEpochCounter < this.configuration.maximumEpoch
+        );
     },
 
     query: function(queryingPatterns, callback) {

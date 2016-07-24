@@ -23,6 +23,7 @@ let Brain = function(configuration) {
                                 learningRate: 0.3,
                                 momentumRate: 0.7,
                                 maximumError: 0.005,
+                                maximumEpoch: 1000,
                                 dataRepository: {},
                                 neuronGenerator: Neuron,
                                 synapseGenerator: Synapse,
