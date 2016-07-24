@@ -396,6 +396,6 @@ NetworkAlpha.prototype = {
             callback(queryingStatus);
         }
     }
-}
+};
 
 export {NetworkAlpha};
