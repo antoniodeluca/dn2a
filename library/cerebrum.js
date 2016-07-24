@@ -36,7 +36,7 @@ let Cerebrum = function(configuration) {
     };
 
     if (!this.checkConfiguration()) {
-        throw "Invalid Cerebrum Configuration";
+        throw "Invalid Cerebrum Module Configuration";
     }
     this.configuration = this.transformConfiguration();
 

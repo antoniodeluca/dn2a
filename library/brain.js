@@ -42,7 +42,7 @@ let Brain = function(configuration) {
     };
 
     if (!this.checkConfiguration()) {
-        throw "Invalid Cerebrum Configuration";
+        throw "Invalid Brain Module Configuration";
     }
     this.configuration = this.transformConfiguration();
 

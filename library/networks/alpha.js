@@ -19,7 +19,7 @@ let NetworkAlpha = function(configuration) {
     };
 
     if (!this.checkConfiguration()) {
-        throw "Invalid FFNNALFA Engine Configuration";
+        throw "Invalid NetworkAlpha Module Configuration";
     }
     this.configuration = this.transformConfiguration();
 
