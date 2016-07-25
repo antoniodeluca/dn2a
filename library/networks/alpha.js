@@ -8,7 +8,7 @@ import {Synapse} from "../synapse";
 let NetworkAlpha = function(configuration) {
     this.configuration = configuration || {
         layerDimensions: [2, 4, 1],
-        learningMode: "stepbystep",
+        learningMode: "continuous",
         learningRate: 0.3,
         momentumRate: 0.7,
         maximumError: 0.005,

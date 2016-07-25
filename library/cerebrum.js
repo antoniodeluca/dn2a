@@ -15,7 +15,7 @@ let Cerebrum = function(configuration) {
                     generator: NetworkAlpha,
                     configuration: {
                         layerDimensions: [2, 4, 1],
-                        learningMode: "stepbystep",
+                        learningMode: "continuous",
                         learningRate: 0.3,
                         momentumRate: 0.7,
                         maximumError: 0.005,
