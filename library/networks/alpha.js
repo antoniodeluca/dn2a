@@ -8,10 +8,11 @@ import {Synapse} from "../synapse";
 let NetworkAlpha = function(configuration) {
     this.configuration = configuration || {
         layerDimensions: [2, 4, 1],
-        learningMode: "stepbystep",
+        learningMode: "continuous",
         learningRate: 0.3,
         momentumRate: 0.7,
         maximumError: 0.005,
+        maximumEpoch: 1000,
         dataRepository: {},
         neuronGenerator: Neuron,
         synapseGenerator: Synapse,
@@ -19,7 +20,7 @@ let NetworkAlpha = function(configuration) {
     };
 
     if (!this.checkConfiguration()) {
-        throw "Invalid FFNNALFA Engine Configuration";
+        throw "Invalid NetworkAlpha Module Configuration";
     }
     this.configuration = this.transformConfiguration();
 
@@ -388,7 +389,11 @@ NetworkAlpha.prototype = {
             if (callback) {
                 callback(trainingStatus);
             }
-        } while (this.configuration.learningMode === "continuous" && !trainingStatus.interruptionRequest);
+        } while (
+            this.configuration.learningMode === "continuous" &&
+            !trainingStatus.interruptionRequest &&
+            trainingStatus.elapsedEpochCounter < this.configuration.maximumEpoch
+        );
     },
 
     query: function(queryingPatterns, callback) {

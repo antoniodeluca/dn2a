@@ -15,10 +15,11 @@ let Cerebrum = function(configuration) {
                     generator: NetworkAlpha,
                     configuration: {
                         layerDimensions: [2, 4, 1],
-                        learningMode: "stepbystep",
+                        learningMode: "continuous",
                         learningRate: 0.3,
                         momentumRate: 0.7,
                         maximumError: 0.005,
+                        maximumEpoch: 1000,
                         dataRepository: {},
                         neuronGenerator: Neuron,
                         synapseGenerator: Synapse,
@@ -36,7 +37,7 @@ let Cerebrum = function(configuration) {
     };
 
     if (!this.checkConfiguration()) {
-        throw "Invalid Cerebrum Configuration";
+        throw "Invalid Cerebrum Module Configuration";
     }
     this.configuration = this.transformConfiguration();
 

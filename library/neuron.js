@@ -6,6 +6,16 @@ let Neuron = function(tmpConfiguration) {
     let configuration = tmpConfiguration || {
         numbersPrecision: 32
     };
+    let checkConfiguration = function() {
+        return true;
+    };
+    let transformConfiguration = function() {
+        return configuration;
+    };
+    if (!checkConfiguration()) {
+        throw "Invalid Neuron Module Configuration";
+    }
+    configuration = transformConfiguration();
     m.config({
         number: "BigNumber",
         precision: configuration.numbersPrecision
