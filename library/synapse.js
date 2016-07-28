@@ -2,32 +2,38 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
-let Synapse = function(tmpConfiguration) {
-    let configuration = tmpConfiguration || {
+let Synapse = function(precisionConfiguration) {
+    precisionConfiguration = precisionConfiguration || {
         numbersPrecision: 32
     };
-    let checkConfiguration = function() {
-        return true;
-    };
-    let transformConfiguration = function() {
-        return configuration;
-    };
-    if (!checkConfiguration()) {
-        throw "Invalid Synapse Module Configuration";
-    }
-    configuration = transformConfiguration();
-    m.config({
-        number: "BigNumber",
-        precision: configuration.numbersPrecision
-    });
-    return function Synapse() {
-        let incomingConnection = null;
-        let outgoingConnection = null;
-        let previousIncomingConnections = null;
-        let previousOutgoingConnections = null;
-        let previousWeight = m.bignumber(0);
-        let previousWeightChange = m.bignumber(0);
-        let weight = m.subtract(
+    let Synapse = function(configuration) {
+        this.configuration = configuration || {
+            numbersPrecision: precisionConfiguration.numbersPrecision
+        };
+
+        if (!this.checkConfiguration()) {
+            throw "Invalid Synapse Module Configuration";
+        }
+        this.configuration = this.transformConfiguration();
+
+        m.config({
+            number: "BigNumber",
+            precision: this.configuration.numbersPrecision
+        });
+
+        this._incomingConnection = null;
+
+        this._outgoingConnection = null;
+
+        this._previousIncomingConnections = null;
+
+        this._previousOutgoingConnections = null;
+
+        this._previousWeight = m.bignumber(0);
+
+        this._previousWeightChange = m.bignumber(0);
+
+        this._weight = m.subtract(
             m.bignumber(1),
             m.multiply(
                 m.bignumber(
@@ -42,58 +48,67 @@ let Synapse = function(tmpConfiguration) {
                 m.bignumber(2)
             )
         );
-        let weightChange = m.bignumber(0);
-        return {
-            set incomingConnection(value) {
-                incomingConnection = value;
-            },
-            get incomingConnection() {
-                return incomingConnection;
-            },
-            set outgoingConnection(value) {
-                outgoingConnection = value;
-            },
-            get outgoingConnection() {
-                return outgoingConnection;
-            },
-            set previousIncomingConnection(value) {
-                previousIncomingConnection = value;
-            },
-            get previousIncomingConnection() {
-                return previousIncomingConnection;
-            },
-            set previousOutgoingConnection(value) {
-                previousOutgoingConnection = value;
-            },
-            get previousOutgoingConnection() {
-                return previousOutgoingConnection;
-            },
-            set previousWeight(value) {
-                previousWeight = value;
-            },
-            get previousWeight() {
-                return previousWeight;
-            },
-            set previousWeightChange(value) {
-                previousWeightChange = value;
-            },
-            get previousWeightChange() {
-                return previousWeightChange;
-            },
-            set weight(value) {
-                weight = value;
-            },
-            get weight() {
-                return weight;
-            },
-            set weightChange(value) {
-                weightChange = value;
-            },
-            get weightChange() {
-                return weightChange;
-            }
-        };
+
+        this._weightChange = m.bignumber(0);
     };
+
+    Synapse.prototype = {
+        checkConfiguration: function() {
+            return true;
+        },
+        transformConfiguration: function() {
+            return this.configuration;
+        },
+        set incomingConnection(value) {
+            this._incomingConnection = value;
+        },
+        get incomingConnection() {
+            return this._incomingConnection;
+        },
+        set outgoingConnection(value) {
+            this._outgoingConnection = value;
+        },
+        get outgoingConnection() {
+            return this._outgoingConnection;
+        },
+        set previousIncomingConnection(value) {
+            this._previousIncomingConnection = value;
+        },
+        get previousIncomingConnection() {
+            return this._previousIncomingConnection;
+        },
+        set previousOutgoingConnection(value) {
+            this._previousOutgoingConnection = value;
+        },
+        get previousOutgoingConnection() {
+            return this._previousOutgoingConnection;
+        },
+        set previousWeight(value) {
+            this._previousWeight = value;
+        },
+        get previousWeight() {
+            return this._previousWeight;
+        },
+        set previousWeightChange(value) {
+            this._previousWeightChange = value;
+        },
+        get previousWeightChange() {
+            return this._previousWeightChange;
+        },
+        set weight(value) {
+            this._weight = value;
+        },
+        get weight() {
+            return this._weight;
+        },
+        set weightChange(value) {
+            this._weightChange = value;
+        },
+        get weightChange() {
+            return this._weightChange;
+        }
+    };
+    return Synapse;
 };
 
 export {Synapse};

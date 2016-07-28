@@ -1,8 +1,6 @@
 # DN2A - Digital Neural Network Architecture #
 
-> **IMPORTANT**: the system is under heavy development and only tagged versions (at moment not yet available) should be used for production. The package is however already stable and usable for all the various experiments.
-
-----------
+---
 
 ## About ##
 
@@ -20,10 +18,10 @@ DN2A aims to allow you to create and train simple Neural Networks as well as ver
 - **Configurable computation precision**: helps to avoid the noise deriving from operation errors and default system precision limits with great improvement of the learning speed and performance stability.
 - **Configuration checker**: helps to write less details about configuration and to keep compatibility with older version while the project evolves.
 - **StepByStep or Continuous training**: helps to train neural networks without being limited to a particular approach for the greater good of projects with very complex project's needs. 
-- TODO (Brain) **Data normalization**: helps to simplify the interaction within your real domain. 
-- TODO (Cerebrum) **Networks composition**: helps to create very effective architectures of multiple neural networks able to obtain advanced behaviours like in deep learning.
-- TODO (Cerebrum) **Computation parallelization**: helps to improve the scalability of your whole system.
-- TODO (Brain) **Sessions intercommunication**: helps to improve the scalability of your whole system.
+- TODO (Bios) **Data normalization**: helps to simplify the interaction within your real domain. 
+- TODO (Host) **Networks composition**: helps to create very effective architectures of multiple neural networks able to obtain advanced behaviours like in deep learning.
+- TODO (Host) **Computation parallelization**: helps to improve the scalability of your whole system.
+- TODO (Bios) **Sessions intercommunication**: helps to improve the scalability of your whole system.
 
 ----------
 
@@ -40,7 +38,30 @@ Module, available in different variations, able to use Neurons and Synapses to i
 
 #### Available Network Types ####
 
-1. **Alpha**: standard feed forward neural network with error back propagation controlled by layer dimensions, learning mode, learning rate, momentum rate, maximum allowed error and maximum number of epochs.
+01. **Alpha**: standard feed forward neural network with error back propagation controlled by layer dimensions, learning mode, learning rate, momentum rate, maximum allowed error and maximum number of epochs.
+02. **beta**: TODEFINE & TODO
+03. **gamma**: TODEFINE & TODO
+04. **delta**: TODEFINE & TODO
+05. **epsilon**: TODEFINE & TODO
+06. **zeta**: TODEFINE & TODO
+07. **eta**: TODEFINE & TODO
+08. **theta**: TODEFINE & TODO
+09. **iota**: TODEFINE & TODO
+10. **kappa**: TODEFINE & TODO
+11. **lambda**: TODEFINE & TODO
+12. **mu**: TODEFINE & TODO
+13. **nu**: TODEFINE & TODO
+14. **xi**: TODEFINE & TODO
+15. **omicron**: TODEFINE & TODO
+16. **pi**: TODEFINE & TODO
+17. **rho**: TODEFINE & TODO
+18. **sigma**: TODEFINE & TODO
+19. **tau**: TODEFINE & TODO
+20. **upsilon**: TODEFINE & TODO
+21. **phi**: TODEFINE & TODO
+22. **chi**: TODEFINE & TODO
+23. **psi**: TODEFINE & TODO
+24. **omega**: TODEFINE & TODO
 
 ### Host (Cerebrum) ###
 Module for the management of multiple Neural Networks in terms of intercommunication, chained training/querying and parallel computing through Web Workers.
@@ -58,15 +79,16 @@ To install the library through NPM:
 
 	npm install dn2a
 
-or to clone directly from the GitHub repository:
+To get the library directly from the GitHub repository:
 
 	git clone https://github.com/harthur/brain.git
+	npm run transpile
 
 To import from the NPM library in ES5:
 
 	var DN2A = require("dn2a");
 
-or to import from the GitHub repository in ES5:
+To import directly from the local repository in ES5:
 
 	var DN2A = require("[path-of-the-repository]/built/dn2a");
 
@@ -74,39 +96,247 @@ To import from the NPM library in ES6:
 
 	import * as DN2A from ("dn2a");
 
-or to import from the GitHub repository in ES6:
+To import directly from the local repository in ES6:
 
 	import * as DN2A from ("[path-of-the-repository]/built/dn2a");
 
 ### Using in the Browser ###
 
+To install the library through NPM:
+
+	npm install dn2a
+
 To install the library through Bower:
 
 	bower install dn2a
 
-### Training an architecture for the XOR problem solution ###
+To import from the NPM library:
 
-	var DN2A = require("dn2a");
-	var brain = new DN2A.Brain();
+	<script src="[path-of-the-library]/bundle/dn2a.browser.js" type="text/javascript"></script>
 
-	brain.cerebrum.trainMind([
-    	{
-        	input: [0, 0],
-        	output: [0]
-    	},
-    	{
-        	input: [0, 1],
-        	output: [1]
-    	},
-    	{
-        	input: [1, 0],
-        	output: [1]
-    	},
-    	{
-        	input: [1, 1],
-        	output: [0]
-    	}
-	]);
+To import from the Bower library:
+
+	<script src="[path-of-the-library]/bundle/dn2a.browser.js" type="text/javascript"></script>
+
+To import directly from the local repository:
+
+	<script src="[path-of-the-repository]/bundle/dn2a.browser.js" type="text/javascript"></script>
+
+To import through your preferred loader configure it to point to the right place.
+
+### Training/Querying a Network with default parametrization ###
+
+	// Importation	
+	var DN2A = require("../built/dn2a");
+	
+	// Instantiation
+	var neuralNetwork = new DN2A.NetworkAlpha();
+	
+	// Training
+	var trainingPatterns = [
+	    {
+	        input: [0, 0],
+	        output: [0]
+	    },
+	    {
+	        input: [0, 1],
+	        output: [1]
+	    },
+	    {
+	        input: [1, 0],
+	        output: [1]
+	    },
+	    {
+	        input: [1, 1],
+	        output: [0]
+	    }
+	];
+	neuralNetwork.train(trainingPatterns);
+	
+	// Querying
+	//
+	// The object passed to the callback function contains information about the querying process.
+	var inputPatterns = [
+	    [0, 0],
+	    [0, 1],
+	    [1, 0],
+	    [1, 1]
+	];
+	neuralNetwork.query(inputPatterns, function(queryingStatus) {
+	    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
+	        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+	    });
+	});
+
+### Training/Querying a Network with custom parametrization ###
+
+	// Importation
+	// ...
+	
+	// Instantiation
+	//
+	// The object passed to the constructor function contains properties describing the neural network. 
+	// The list of the properties is reported in the main README file.
+	// In case one or more properties are not present they are substituted with defaults. 
+	// Same thing happens if the object is not passed at all. 
+	var neuralNetwork = new DN2A.NetworkAlpha({
+	    layerDimensions: [2, 4, 4, 1], // the default would be [2, 4, 1]
+	    learningMode: "continuous",
+	    learningRate: 0.3,
+	    momentumRate: 0.7,
+	    maximumError: 0.005,
+	    maximumEpoch: 20000, // the default would be 1000
+	    dataRepository: {},
+	    neuron: {
+	        generator: DN2A.Neuron
+	    },
+	    synapse: {
+	        generator: DN2A.Synapse
+	    },
+	    numbersPrecision: 32
+	});
+	
+	// Training
+	// ...
+	
+	// Querying
+	// ...
+
+### Training/Querying a Network with evolution feedback ###
+
+	// Importation
+	// ...
+	
+	// Instantiation
+	// ...
+	
+	// Training
+	//
+	// The object passed to the callback function contains information about the training process.
+	// The list of the properties is reported in the main README file.
+	var trainingPatterns = [
+	    {
+	        input: [0, 0],
+	        output: [0]
+	    },
+	    {
+	        input: [0, 1],
+	        output: [1]
+	    },
+	    {
+	        input: [1, 0],
+	        output: [1]
+	    },
+	    {
+	        input: [1, 1],
+	        output: [0]
+	    }
+	];
+	neuralNetwork.train(trainingPatterns, function(trainingStatus) {
+	    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
+	});
+	
+	// Querying
+	// ...
+
+### Training/Querying a specific Network through the Host ###
+
+	// Importation
+	// ...
+	
+	// Instantiation
+	var cerebrum = new DN2A.Cerebrum({
+	    minds: [
+	        {
+	            name: "firstNeuralNetwork",
+	            network: {
+	                generator: DN2A.NetworkAlpha,
+	                configuration: {
+	                    layerDimensions: [2, 4, 1],
+	                    learningMode: "continuous",
+	                    learningRate: 0.3,
+	                    momentumRate: 0.7,
+	                    maximumError: 0.005,
+	                    maximumEpoch: 1000,
+	                    dataRepository: {},
+	                    neuron: {
+	                        generator: DN2A.Neuron
+	                    },
+	                    synapse: {
+	                        generator: DN2A.Synapse
+	                    },
+	                    numbersPrecision: 32
+	                }
+	            },
+	            inputsFrom: [
+	                "cerebrum"
+	            ]
+	        }
+	    ],
+	    outputsFrom: [
+	        "firstNeuralNetwork"
+	    ]
+	});
+	
+	// Training
+	//
+	// The name passed to the trainMind method specifies which specific mind to train
+	var trainingPatterns = [
+	    {
+	        input: [0, 0],
+	        output: [0]
+	    },
+	    {
+	        input: [0, 1],
+	        output: [1]
+	    },
+	    {
+	        input: [1, 0],
+	        output: [1]
+	    },
+	    {
+	        input: [1, 1],
+	        output: [0]
+	    }
+	];
+	cerebrum.trainMind(trainingPatterns, function(trainingStatus) {
+	    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
+	}, "firstNeuralNetwork");
+	
+	// Querying
+	//
+	// The name passed to the queryMind method specifies which specific mind to query
+	var inputPatterns = [
+	    [0, 0],
+	    [0, 1],
+	    [1, 0],
+	    [1, 1]
+	];
+	cerebrum.queryMind(inputPatterns, function(queryingStatus) {
+	    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
+	        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+	    });
+	}, "firstNeuralNetwork");
+
+### Training/Querying an entire Networks architecture through the Host ###
+
+	TODO
+
+### Training/Querying an entire Networks architecture through the Host ###
+
+	TODO
+
+### Training/Querying a specific Network through the Bios ###
+
+	TODO
+
+### Training/Querying an entire Networks architecture through the Bios ###
+
+	TODO
+
+### Training/Querying an entire Networks architecture through the Bios ###
+
+	TODO
 
 # Creator #
 
