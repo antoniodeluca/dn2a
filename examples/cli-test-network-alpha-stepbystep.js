@@ -1,3 +1,6 @@
+var _ = require("lodash");
+
+var DN2A = require("../built/dn2a");
 var brain = new DN2A.Brain({
     cerebrum: {
         generator: DN2A.Cerebrum,
@@ -9,14 +12,18 @@ var brain = new DN2A.Brain({
                         generator: DN2A.NetworkAlpha,
                         configuration: {
                             layerDimensions: [2, 4, 1],
-                            learningMode: "continuous",
+                            learningMode: "stepbystep",
                             learningRate: 0.3,
                             momentumRate: 0.7,
                             maximumError: 0.005,
                             maximumEpoch: 1000,
                             dataRepository: {},
-                            neuronGenerator: DN2A.Neuron,
-                            synapseGenerator: DN2A.Synapse,
+                            neuron: {
+                                generator: DN2A.Neuron
+                            },
+                            synapse: {
+                                generator: DN2A.Synapse
+                            },
                             numbersPrecision: 32
                         }
                     },

@@ -18,8 +18,12 @@ var brain = new DN2A.Brain({
                             maximumError: 0.005,
                             maximumEpoch: 1000,
                             dataRepository: {},
-                            neuronGenerator: DN2A.Neuron,
-                            synapseGenerator: DN2A.Synapse,
+                            neuron: {
+                                generator: DN2A.Neuron
+                            },
+                            synapse: {
+                                generator: DN2A.Synapse
+                            },
                             numbersPrecision: 32
                         }
                     },
