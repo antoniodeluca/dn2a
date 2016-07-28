@@ -21,8 +21,12 @@ let Cerebrum = function(configuration) {
                         maximumError: 0.005,
                         maximumEpoch: 1000,
                         dataRepository: {},
-                        neuronGenerator: Neuron,
-                        synapseGenerator: Synapse,
+                        neuron: {
+                            generator: Neuron
+                        },
+                        synapse: {
+                            generator: Synapse
+                        },
                         numbersPrecision: 32
                     }
                 },
@@ -55,7 +59,7 @@ let Cerebrum = function(configuration) {
     _.forEach(this.configuration.minds, function(configuration) {
         this.buildMind(configuration);
     }.bind(this));
-}
+};
 
 Cerebrum.prototype = {
     checkConfiguration: function() {

@@ -14,8 +14,12 @@ let NetworkAlpha = function(configuration) {
         maximumError: 0.005,
         maximumEpoch: 1000,
         dataRepository: {},
-        neuronGenerator: Neuron,
-        synapseGenerator: Synapse,
+        neuron: {
+            generator: Neuron
+        },
+        synapse: {
+            generator: Synapse
+        },
         numbersPrecision: 32
     };
 
@@ -26,11 +30,11 @@ let NetworkAlpha = function(configuration) {
 
     this.dataRepository = this.configuration.dataRepository;
 
-    this.neuronGenerator = this.configuration.neuronGenerator({
+    this.neuronGenerator = this.configuration.neuron.generator({
         numbersPrecision: this.configuration.numbersPrecision
     });
 
-    this.synapseGenerator = this.configuration.synapseGenerator({
+    this.synapseGenerator = this.configuration.synapse.generator({
         numbersPrecision: this.configuration.numbersPrecision
     });
 
@@ -41,7 +45,7 @@ let NetworkAlpha = function(configuration) {
 
     this.generateNeurons();
     this.generateSynapses();
-}
+};
 
 NetworkAlpha.prototype = {
     checkConfiguration: function() {
@@ -69,7 +73,7 @@ NetworkAlpha.prototype = {
     },
 
     generateNeuron: function(scope) {
-        let neuron = this.neuronGenerator();
+        let neuron = new this.neuronGenerator();
         let proxy = scope === "input" ? true : false;
         let fixed = scope === "bias" ? true : false;
         let output = m.bignumber(fixed ? 1 : 0);
@@ -113,7 +117,7 @@ NetworkAlpha.prototype = {
     },
 
     generateSynapse: function() {
-        let synapse = this.synapseGenerator();
+        let synapse = new this.synapseGenerator();
         return synapse;
     },
 
@@ -396,12 +400,12 @@ NetworkAlpha.prototype = {
         );
     },
 
-    query: function(queryingPatterns, callback) {
+    query: function(inputPatterns, callback) {
         let queryingStatus = {
             outputPatterns: []
         };
-        _.forEach(queryingPatterns, function(queryingPattern) {
-            this.setInputPattern(queryingPattern.input);
+        _.forEach(inputPatterns, function(inputPattern) {
+            this.setInputPattern(inputPattern);
             this.calculateActivations();
             let outputPattern = this.getOutputPattern();
             queryingStatus.outputPatterns.push(outputPattern);
