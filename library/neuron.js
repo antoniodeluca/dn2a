@@ -2,43 +2,60 @@ import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
-let Neuron = function(tmpConfiguration) {
-    let configuration = tmpConfiguration || {
+let Neuron = function(precisionConfiguration) {
+    precisionConfiguration = precisionConfiguration || {
         numbersPrecision: 32
     };
-    let checkConfiguration = function() {
-        return true;
-    };
-    let transformConfiguration = function() {
-        return configuration;
-    };
-    if (!checkConfiguration()) {
-        throw "Invalid Neuron Module Configuration";
-    }
-    configuration = transformConfiguration();
-    m.config({
-        number: "BigNumber",
-        precision: configuration.numbersPrecision
-    });
-    return function Neuron() {
-        let delta = m.bignumber(0);
-        let expectedOutput = m.bignumber(0);
-        let fixed = false;
-        let incomingConnections = [];
-        let inputSum = m.bignumber(0);
-        let inputs = [];
-        let outgoingConnections = [];
-        let output = m.bignumber(0);
-        let outputError = m.bignumber(0);
-        let previousExpectedOutput = m.bignumber(0);
-        let previousIncomingConnections = [];
-        let previousInputSum = m.bignumber(0);
-        let previousInputs = [];
-        let previousOutgoingConnections = [];
-        let previousOutput = m.bignumber(0);
-        let previousOutputError = m.bignumber(0);
-        let proxy = false;
-        let transferFunction = function(value) {
+    let Neuron = function(configuration) {
+        this.configuration = configuration || {
+            numbersPrecision: precisionConfiguration.numbersPrecision
+        };
+
+        if (!this.checkConfiguration()) {
+            throw "Invalid Neuron Module Configuration";
+        }
+        this.configuration = this.transformConfiguration();
+
+        m.config({
+            number: "BigNumber",
+            precision: this.configuration.numbersPrecision
+        });
+
+        this._delta = m.bignumber(0);
+
+        this._expectedOutput = m.bignumber(0);
+
+        this._fixed = false;
+
+        this._incomingConnections = [];
+
+        this._inputSum = m.bignumber(0);
+
+        this._inputs = [];
+
+        this._outgoingConnections = [];
+
+        this._output = m.bignumber(0);
+
+        this._outputError = m.bignumber(0);
+
+        this._previousExpectedOutput = m.bignumber(0);
+
+        this._previousIncomingConnections = [];
+
+        this._previousInputSum = m.bignumber(0);
+
+        this._previousInputs = [];
+
+        this._previousOutgoingConnections = [];
+
+        this._previousOutput = m.bignumber(0);
+
+        this._previousOutputError = m.bignumber(0);
+
+        this._proxy = false;
+
+        this._transferFunction = function(value) {
             return m.divide(
                 m.bignumber(1),
                 m.sum(
@@ -52,129 +69,137 @@ let Neuron = function(tmpConfiguration) {
                 )
             );
         };
-        return {
-            addIncomingConnection: function(value) {
-                incomingConnections.push(value);
-            },
-            addOutgoingConnection: function(value) {
-                outgoingConnections.push(value);
-            },
-            addPreviousIncomingConnection: function(value) {
-                previousIncomingConnections.push(value);
-            },
-            addPreviousOutgoingConnection: function(value) {
-                previousOutgoingConnections.push(value);
-            },
-            set delta(value) {
-                delta = value;
-            },
-            get delta() {
-                return delta;
-            },
-            set expectedOutput(value) {
-                expectedOutput = value;
-            },
-            get expectedOutput() {
-                return expectedOutput;
-            },
-            set fixed(value) {
-                fixed = value;
-            },
-            get fixed() {
-                return fixed;
-            },
-            set incomingConnections(value) {
-                incomingConnections = value;
-            },
-            get incomingConnections() {
-                return incomingConnections;
-            },
-            set inputSum(value) {
-                inputSum = value;
-            },
-            get inputSum() {
-                return inputSum;
-            },
-            set inputs(value) {
-                inputs = value;
-            },
-            get inputs() {
-                return inputs;
-            },
-            set outgoingConnections(value) {
-                outgoingConnections = value;
-            },
-            get outgoingConnections() {
-                return outgoingConnections;
-            },
-            set output(value) {
-                output = value;
-            },
-            get output() {
-                return output;
-            },
-            set outputError(value) {
-                outputError = value;
-            },
-            get outputError() {
-                return outputError;
-            },
-            set previousExpectedOutput(value) {
-                previousExpectedOutput = value;
-            },
-            get previousExpectedOutput() {
-                return previousExpectedOutput;
-            },
-            set previousIncomingConnections(value) {
-                previousIncomingConnections = value;
-            },
-            get previousIncomingConnections() {
-                return previousIncomingConnections;
-            },
-            set previousInputSum(value) {
-                previousInputSum = value;
-            },
-            get previousInputSum() {
-                return previousInputSum;
-            },
-            set previousInputs(value) {
-                previousInputs = value;
-            },
-            get previousInputs() {
-                return previousInputs;
-            },
-            set previousOutgoingConnections(value) {
-                previousOutgoingConnections = value;
-            },
-            get previousOutgoingConnections() {
-                return previousOutgoingConnections;
-            },
-            set previousOutput(value) {
-                previousOutput = value;
-            },
-            get previousOutput() {
-                return previousOutput;
-            },
-            set previousOutputError(value) {
-                previousOutputError = value;
-            },
-            get previousOutputError() {
-                return previousOutputError;
-            },
-            set proxy(value) {
-                proxy = value;
-            },
-            get proxy() {
-                return proxy;
-            },
-            set transferFunction(value) {
-                transferFunction = value;
-            },
-            get transferFunction() {
-                return transferFunction;
-            }
-        };
     };
+
+    Neuron.prototype = {
+        checkConfiguration: function() {
+            return true;
+        },
+        transformConfiguration: function() {
+            return this.configuration;
+        },
+        addIncomingConnection: function(value) {
+            this._incomingConnections.push(value);
+        },
+        addOutgoingConnection: function(value) {
+            this._outgoingConnections.push(value);
+        },
+        addPreviousIncomingConnection: function(value) {
+            this._previousIncomingConnections.push(value);
+        },
+        addPreviousOutgoingConnection: function(value) {
+            this._previousOutgoingConnections.push(value);
+        },
+        set delta(value) {
+            this._delta = value;
+        },
+        get delta() {
+            return this._delta;
+        },
+        set expectedOutput(value) {
+            this._expectedOutput = value;
+        },
+        get expectedOutput() {
+            return this._expectedOutput;
+        },
+        set fixed(value) {
+            this._fixed = value;
+        },
+        get fixed() {
+            return this._fixed;
+        },
+        set incomingConnections(value) {
+            this._incomingConnections = value;
+        },
+        get incomingConnections() {
+            return this._incomingConnections;
+        },
+        set inputSum(value) {
+            this._inputSum = value;
+        },
+        get inputSum() {
+            return this._inputSum;
+        },
+        set inputs(value) {
+            this._inputs = value;
+        },
+        get inputs() {
+            return this._inputs;
+        },
+        set outgoingConnections(value) {
+            this._outgoingConnections = value;
+        },
+        get outgoingConnections() {
+            return this._outgoingConnections;
+        },
+        set output(value) {
+            this._output = value;
+        },
+        get output() {
+            return this._output;
+        },
+        set outputError(value) {
+            this._outputError = value;
+        },
+        get outputError() {
+            return this._outputError;
+        },
+        set previousExpectedOutput(value) {
+            this._previousExpectedOutput = value;
+        },
+        get previousExpectedOutput() {
+            return this._previousExpectedOutput;
+        },
+        set previousIncomingConnections(value) {
+            this._previousIncomingConnections = value;
+        },
+        get previousIncomingConnections() {
+            return this._previousIncomingConnections;
+        },
+        set previousInputSum(value) {
+            this._previousInputSum = value;
+        },
+        get previousInputSum() {
+            return this._previousInputSum;
+        },
+        set previousInputs(value) {
+            this._previousInputs = value;
+        },
+        get previousInputs() {
+            return this._previousInputs;
+        },
+        set previousOutgoingConnections(value) {
+            this._previousOutgoingConnections = value;
+        },
+        get previousOutgoingConnections() {
+            return this._previousOutgoingConnections;
+        },
+        set previousOutput(value) {
+            this._previousOutput = value;
+        },
+        get previousOutput() {
+            return this._previousOutput;
+        },
+        set previousOutputError(value) {
+            this._previousOutputError = value;
+        },
+        get previousOutputError() {
+            return this._previousOutputError;
+        },
+        set proxy(value) {
+            this._proxy = value;
+        },
+        get proxy() {
+            return this._proxy;
+        },
+        set transferFunction(value) {
+            this._transferFunction = value;
+        },
+        get transferFunction() {
+            return this._transferFunction;
+        }
+    };
+    return Neuron;
 };
 
 export {Neuron};
