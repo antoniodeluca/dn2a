@@ -81,7 +81,7 @@ To install the library through NPM:
 
 To get the library directly from the GitHub repository:
 
-	git clone https://github.com/harthur/brain.git
+	git clone https://github.com/dn2a/dn2a-javascript.git
 	npm run transpile
 
 To import from the NPM library in ES5:
@@ -127,7 +127,7 @@ To import through your preferred loader configure it to point to the right place
 ### Training/Querying a Network with default parametrization ###
 
 	// Importation	
-	var DN2A = require("../built/dn2a");
+	var DN2A = require("dn2a");
 	
 	// Instantiation
 	var neuralNetwork = new DN2A.NetworkAlpha();
