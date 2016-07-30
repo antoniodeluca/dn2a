@@ -1,3 +1,5 @@
+require("jasmine-expect");
+
 var Neuron = require("../built/neuron.js").Neuron;
 
 describe("Neuron", function () {

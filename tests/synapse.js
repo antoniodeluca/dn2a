@@ -1,3 +1,5 @@
+require("jasmine-expect");
+
 var Synapse = require("../built/synapse.js").Synapse;
 
 describe("Synapse", function () {

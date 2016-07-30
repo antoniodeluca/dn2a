@@ -43,6 +43,37 @@
                     src: ["bundled/**/*"]
                 }
             },
+            jasmine_nodejs: {
+                options: {
+                    specNameSuffix: ".js", // also accepts an array
+                    helperNameSuffix: "-helper.js",
+                    useHelpers: false,
+                    random: false,
+                    seed: null,
+                    defaultTimeout: null,
+                    stopOnFailure: false,
+                    traceFatal: true,
+                    reporters: {
+                        console: {
+                            colors: true,
+                            cleanStack: 1,
+                            verbosity: 4,
+                            listStyle: "indent",
+                            activity: false
+                        }
+                    },
+                    customReporters: []
+                },
+                tests: {
+                    options: {
+                        useHelpers: false
+                    },
+                    specs: [
+                        "tests/**/*"
+                    ],
+                    helpers: []
+                }
+            },
             karma: {
                 options: {
                     configFile: "karma.conf.js"
@@ -59,6 +90,7 @@
         grunt.loadNpmTasks("grunt-babel");
         grunt.loadNpmTasks("grunt-browserify");
         grunt.loadNpmTasks("grunt-contrib-clean");
+        grunt.loadNpmTasks("grunt-jasmine-nodejs");
         grunt.loadNpmTasks("grunt-karma");
         grunt.registerTask(
             "build",
@@ -81,6 +113,7 @@
             [
                 "clean:builtFolder",
                 "babel",
+                "jasmine_nodejs",
                 "karma:unitMode"
             ]
         );
