@@ -1,5 +1,7 @@
 # DN2A - Digital Neural Network Architecture #
 
+[![Build Status](https://travis-ci.org/dn2a/dn2a-javascript.svg?branch=master)](https://travis-ci.org/dn2a/dn2a-javascript)
+
 ---
 
 ## About ##
@@ -17,8 +19,8 @@ DN2A aims to allow you to create and train simple Neural Networks as well as ver
 - **Modularized components**: helps the development and the clear separation of concerns with great benefits for who wants to use mixed solutions.
 - **Configurable computation precision**: helps to avoid the noise deriving from operation errors and default system precision limits with great improvement of the learning speed and performance stability.
 - **Configuration checker**: helps to write less details about configuration and to keep compatibility with older version while the project evolves.
-- **StepByStep or Continuous training**: helps to train neural networks without being limited to a particular approach for the greater good of projects with very complex project's needs. 
-- TODO (Bios) **Data normalization**: helps to simplify the interaction within your real domain. 
+- **StepByStep or Continuous training**: helps to train neural networks without being limited to a particular approach for the greater good of projects with very complex project's needs.
+- TODO (Bios) **Data normalization**: helps to simplify the interaction within your real domain.
 - TODO (Host) **Networks composition**: helps to create very effective architectures of multiple neural networks able to obtain advanced behaviours like in deep learning.
 - TODO (Host) **Computation parallelization**: helps to improve the scalability of your whole system.
 - TODO (Bios) **Sessions intercommunication**: helps to improve the scalability of your whole system.
@@ -126,12 +128,12 @@ To import through your preferred loader configure it to point to the right place
 
 ### Training/Querying a Network with default parametrization ###
 
-	// Importation	
+	// Importation
 	var DN2A = require("dn2a");
-	
+
 	// Instantiation
 	var neuralNetwork = new DN2A.NetworkAlpha();
-	
+
 	// Training
 	var trainingPatterns = [
 	    {
@@ -152,7 +154,7 @@ To import through your preferred loader configure it to point to the right place
 	    }
 	];
 	neuralNetwork.train(trainingPatterns);
-	
+
 	// Querying
 	//
 	// The object passed to the callback function contains information about the querying process.
@@ -172,13 +174,13 @@ To import through your preferred loader configure it to point to the right place
 
 	// Importation
 	// ...
-	
+
 	// Instantiation
 	//
-	// The object passed to the constructor function contains properties describing the neural network. 
+	// The object passed to the constructor function contains properties describing the neural network.
 	// The list of the properties is reported in the main README file.
-	// In case one or more properties are not present they are substituted with defaults. 
-	// Same thing happens if the object is not passed at all. 
+	// In case one or more properties are not present they are substituted with defaults.
+	// Same thing happens if the object is not passed at all.
 	var neuralNetwork = new DN2A.NetworkAlpha({
 	    layerDimensions: [2, 4, 4, 1], // the default would be [2, 4, 1]
 	    learningMode: "continuous",
@@ -195,10 +197,10 @@ To import through your preferred loader configure it to point to the right place
 	    },
 	    numbersPrecision: 32
 	});
-	
+
 	// Training
 	// ...
-	
+
 	// Querying
 	// ...
 
@@ -206,10 +208,10 @@ To import through your preferred loader configure it to point to the right place
 
 	// Importation
 	// ...
-	
+
 	// Instantiation
 	// ...
-	
+
 	// Training
 	//
 	// The object passed to the callback function contains information about the training process.
@@ -235,7 +237,7 @@ To import through your preferred loader configure it to point to the right place
 	neuralNetwork.train(trainingPatterns, function(trainingStatus) {
 	    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
 	});
-	
+
 	// Querying
 	// ...
 
@@ -243,7 +245,7 @@ To import through your preferred loader configure it to point to the right place
 
 	// Importation
 	// ...
-	
+
 	// Instantiation
 	var cerebrum = new DN2A.Cerebrum({
 	    minds: [
@@ -277,7 +279,7 @@ To import through your preferred loader configure it to point to the right place
 	        "firstNeuralNetwork"
 	    ]
 	});
-	
+
 	// Training
 	//
 	// The name passed to the trainMind method specifies which specific mind to train
@@ -302,7 +304,7 @@ To import through your preferred loader configure it to point to the right place
 	cerebrum.trainMind(trainingPatterns, function(trainingStatus) {
 	    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
 	}, "firstNeuralNetwork");
-	
+
 	// Querying
 	//
 	// The name passed to the queryMind method specifies which specific mind to query
