@@ -42,7 +42,9 @@
     "url": "https://github.com/dn2a/dn2a-javascript.git"
   },
   "scripts": {
-    "transpile": "babel library -d built"
+    "build": "grunt build",
+    "bundle": "grunt bundle",
+    "test": "grunt test"
   },
   "version": "0.1.1"
 }
