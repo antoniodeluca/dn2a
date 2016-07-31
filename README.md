@@ -1,6 +1,7 @@
 # DN2A - Digital Neural Network Architecture #
 
 [![Build Status](https://travis-ci.org/dn2a/dn2a-javascript.svg?branch=master)](https://travis-ci.org/dn2a/dn2a-javascript)
+[![Code Climate](https://codeclimate.com/github/dn2a/dn2a-javascript.png)](https://codeclimate.com/github/dn2a/dn2a-javascript)
 
 ---
 
