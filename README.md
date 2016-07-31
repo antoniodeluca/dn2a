@@ -1,6 +1,11 @@
 # DN2A - Digital Neural Network Architecture #
 
 [![Build Status](https://travis-ci.org/dn2a/dn2a-javascript.svg?branch=master)](https://travis-ci.org/dn2a/dn2a-javascript)
+[![Code Climate](https://codeclimate.com/github/dn2a/dn2a-javascript.png)](https://codeclimate.com/github/dn2a/dn2a-javascript)
+[![Coverage Status](https://coveralls.io/repos/github/dn2a/dn2a-javascript/badge.svg?branch=master)](https://coveralls.io/github/dn2a/dn2a-javascript?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/579d4ad1aa78d5003c1738c8/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/579d4ad1aa78d5003c1738c8)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/dn2a/dn2a-javascript/master/LICENSE)
+[![npm version](https://badge.fury.io/js/dn2a.svg)](https://badge.fury.io/js/dn2a)
 
 ---
 

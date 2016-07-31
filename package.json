@@ -16,6 +16,7 @@
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-browserify": "^5.0.0",
+    "grunt-jasmine-nodejs": "^1.5.3",
     "grunt-karma": "^2.0.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
@@ -23,11 +24,11 @@
     "gulp-cli": "^1.2.2",
     "jasmine": "^2.4.1",
     "jasmine-expect": "^2.0.2",
+    "jasmine-matchers": "^0.2.3",
     "karma": "^1.1.0",
     "karma-browserify": "^5.0.5",
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
-    "karma-jasmine-matchers": "^2.0.2",
     "phantomjs": "^2.1.7"
   },
   "keywords": [

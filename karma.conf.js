@@ -13,13 +13,11 @@
             ],
             frameworks: [
                 "browserify",
-                "jasmine",
-                "jasmine-matchers"
+                "jasmine"
             ],
             plugins: [
                 "karma-browserify",
                 "karma-jasmine",
-                "karma-jasmine-matchers",
                 "karma-phantomjs-launcher"
             ],
             preprocessors: {
