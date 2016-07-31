@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/dn2a/dn2a-javascript.svg?branch=master)](https://travis-ci.org/dn2a/dn2a-javascript)
 [![Code Climate](https://codeclimate.com/github/dn2a/dn2a-javascript.png)](https://codeclimate.com/github/dn2a/dn2a-javascript)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/dn2a/dn2a-javascript/master/LICENSE)
+[![npm version](https://badge.fury.io/js/dn2a.svg)](https://badge.fury.io/js/dn2a)
 
 ---
 
