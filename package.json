@@ -5,7 +5,7 @@
     "lodash": "^4.9.0",
     "mathjs": "^3.2.1"
   },
-  "description": "DN2A - Digital Neural Network Architecture",
+  "description": "DN2A - Digital Neural Networks Architecture",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.6.5",
@@ -36,7 +36,8 @@
     "machine learning",
     "artificial intelligence"
   ],
-  "main": "./built/dn2a.js",
+  "license": "MIT",
+  "main": "built/dn2a.js",
   "name": "dn2a",
   "repository": {
     "type": "git",
