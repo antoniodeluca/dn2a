@@ -1,3 +1,4 @@
+.git
 bower_components
 examples
 library
@@ -8,3 +9,6 @@ tests
 .travis.yml
 bower.json
 Gruntfile.js
+gulpfile.js
+jasmine.json
+karma.conf.js

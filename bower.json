@@ -1,7 +1,39 @@
 {
-    "name": "dn2a",
-    "version": "0.0.1",
-    "dependencies": {
-        "lodash": "^4.9.0"
-    }
+  "authors": [
+    "Antonio De Luca <contact@antoniodeluca.info>"
+  ],
+  "description": "DN2A - Digital Neural Networks Architecture",
+  "ignore": [
+    ".git",
+    "bower_components",
+    "examples",
+    "library",
+    "node_modules",
+    "tests",
+    ".babelrc",
+    ".gitignore",
+    ".npmignore",
+    ".travis.yml",
+    "Gruntfile.js",
+    "gulpfile.js",
+    "jasmine.json",
+    "karma.conf.js",
+    "package.json"
+  ],
+  "keywords": [
+    "neural networks",
+    "machine learning",
+    "artificial intelligence"
+  ],
+  "license": "MIT",
+  "main": [
+    "bundled/dn2a.browser.js"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "name": "dn2a",
+  "version": "0.1.1"
 }
