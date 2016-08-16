@@ -1,7 +1,6 @@
 {
   "author": "Antonio De Luca <contact@antoniodeluca.info>",
   "dependencies": {
-    "async": "^2.0.1",
     "lodash": "^4.9.0",
     "mathjs": "^3.2.1"
   },

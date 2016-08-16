@@ -1,4 +1,3 @@
-import * as a from "async";
 import * as _ from "lodash";
 import * as m from "mathjs";
 
