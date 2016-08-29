@@ -139,6 +139,7 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
+            // inputPattern[layerNeuronIndex] = m.number(layerNeurons[layerNeuronIndex].output);
             inputPattern[layerNeuronIndex] = layerNeurons[layerNeuronIndex].output;
         });
         return inputPattern;
@@ -161,7 +162,8 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            expectedOutputPattern[layerNeuronIndex] = layerNeuron.expectedOutput;
+            expectedOutputPattern[layerNeuronIndex] = m.number(layerNeuron.expectedOutput);
+            // expectedOutputPattern[layerNeuronIndex] = layerNeuron.expectedOutput;
         });
         return expectedOutputPattern;
     },
@@ -183,25 +185,28 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            outputPattern[layerNeuronIndex] = layerNeuron.output;
+            outputPattern[layerNeuronIndex] = m.number(layerNeuron.output);
+            // outputPattern[layerNeuronIndex] = layerNeuron.output;
         });
         return outputPattern;
     },
 
     getOutputError: function() {
-        let outputError = m.divide(
-            _.reduce(
-                this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1],
-                function(totalOutputError, layerNeuron) {
-                    return m.add(
-                        totalOutputError,
-                        m.square(layerNeuron.outputError)
-                    );
-                },
-                m.bignumber(0)
-            ),
-            this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].length
-        );
+        let outputError = // m.number(
+            m.divide(
+                _.reduce(
+                    this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1],
+                    function(totalOutputError, layerNeuron) {
+                        return m.add(
+                            totalOutputError,
+                            m.square(layerNeuron.outputError)
+                        );
+                    },
+                    m.bignumber(0)
+                ),
+                this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].length
+            );
+        // );
         return outputError;
     },
 
@@ -400,6 +405,7 @@ NetworkAlpha.prototype = {
                     trainingStatus.interruptionRequest = trainingStatus.interruptionRequest && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
                     trainingStatus.elapsedIterationCounter++;
                     trainingStatus.elapsedIterationPattern.input = trainingPattern.input;
+                    trainingStatus.elapsedIterationPattern.target = this.getExpectedOutputPattern();
                     trainingStatus.elapsedIterationPattern.output = this.getOutputPattern();
                     trainingStatus.elapsedIterationPattern.error = outputError;
                     if (iterationCallback) {
