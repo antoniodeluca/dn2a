@@ -47,5 +47,5 @@
     "bundle": "grunt bundle",
     "test": "grunt test"
   },
-  "version": "0.1.1"
+  "version": "0.2.0"
 }
