@@ -76,24 +76,42 @@ Cerebrum.prototype = {
         });
     },
 
-    trainMind: function(trainingPatterns, callback, mindName = "defaultMind") {
+    trainMind: function(
+        trainingPatterns,
+        epochCallback,
+        iterationCallback,
+        mindName = "defaultMind"
+    ) {
         let mind = _.find(
             this.minds,
             {
                 name: mindName
             }
         ).network;
-        mind.train(trainingPatterns, callback);
+        mind.train(
+            trainingPatterns,
+            epochCallback,
+            iterationCallback
+        );
     },
 
-    queryMind: function(queryingPatterns, callback, mindName = "defaultMind") {
+    queryMind: function(
+        queryingPatterns,
+        epochCallback,
+        iterationCallback,
+        mindName = "defaultMind"
+    ) {
         let mind = _.find(
             this.minds,
             {
                 name: mindName
             }
         ).network;
-        mind.query(queryingPatterns, callback);
+        mind.query(
+            queryingPatterns,
+            epochCallback,
+            iterationCallback
+        );
     }
 };
 

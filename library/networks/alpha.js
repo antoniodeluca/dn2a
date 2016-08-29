@@ -361,18 +361,32 @@ NetworkAlpha.prototype = {
         });
     },
 
-    train: function(trainingPatterns, callback) {
+    train: function(
+        trainingPatterns,
+        epochCallback,
+        iterationCallback
+    ) {
         let trainingStatus = {
             outputErrors: [],
             interruptionRequest: false,
-            elapsedEpochCounter: 0
+            elapsedEpochCounter: 0,
+            elapsedIterationCounter: 0,
+            elapsedIterationPattern: {
+                input: [],
+                output: [],
+                error: []
+            }
         };
         do {
             trainingStatus.outputErrors = [];
             trainingStatus.interruptionRequest = true;
+            trainingStatus.elapsedIterationCounter = 0;
             trainingStatus = _.reduce(
                 trainingPatterns,
-                function(trainingStatus, trainingPattern) {
+                function(
+                    trainingStatus,
+                    trainingPattern
+                ) {
                     this.setInputPattern(trainingPattern.input);
                     this.setExpectedOutputPattern(trainingPattern.output);
                     this.calculateActivations();
@@ -384,13 +398,20 @@ NetworkAlpha.prototype = {
                     let outputError = this.getOutputError();
                     trainingStatus.outputErrors.push(outputError);
                     trainingStatus.interruptionRequest = trainingStatus.interruptionRequest && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                    trainingStatus.elapsedIterationCounter++;
+                    trainingStatus.elapsedIterationPattern.input = trainingPattern.input;
+                    trainingStatus.elapsedIterationPattern.output = this.getOutputPattern();
+                    trainingStatus.elapsedIterationPattern.error = outputError;
+                    if (iterationCallback) {
+                        iterationCallback(trainingStatus);
+                    }
                     return trainingStatus;
                 }.bind(this),
                 trainingStatus
             );
             trainingStatus.elapsedEpochCounter++;
-            if (callback) {
-                callback(trainingStatus);
+            if (epochCallback) {
+                epochCallback(trainingStatus);
             }
         } while (
             this.configuration.learningMode === "continuous" &&
@@ -399,18 +420,33 @@ NetworkAlpha.prototype = {
         );
     },
 
-    query: function(inputPatterns, callback) {
+    query: function(
+        inputPatterns,
+        epochCallback,
+        iterationCallback
+    ) {
         let queryingStatus = {
-            outputPatterns: []
+            outputPatterns: [],
+            elapsedIterationCounter: 0,
+            elapsedIterationPattern: {
+                input: [],
+                output: []
+            }
         };
         _.forEach(inputPatterns, function(inputPattern) {
             this.setInputPattern(inputPattern);
             this.calculateActivations();
             let outputPattern = this.getOutputPattern();
             queryingStatus.outputPatterns.push(outputPattern);
+            queryingStatus.elapsedIterationCounter++;
+            queryingStatus.elapsedIterationPattern.input = inputPattern;
+            queryingStatus.elapsedIterationPattern.output = outputPattern;
+            if (iterationCallback) {
+                iterationCallback(queryingStatus);
+            }
         }.bind(this));
-        if (callback) {
-            callback(queryingStatus);
+        if (epochCallback) {
+            epochCallback(queryingStatus);
         }
     }
 };
