@@ -41,9 +41,12 @@ var trainingPatterns = [
         output: [0]
     }
 ];
-neuralNetwork.train(trainingPatterns, function(trainingStatus) {
-    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
-});
+neuralNetwork.train(
+    trainingPatterns,
+    function(trainingStatus) {
+        console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
+    }
+);
 
 // Querying
 //
@@ -54,8 +57,11 @@ var inputPatterns = [
     [1, 0],
     [1, 1]
 ];
-neuralNetwork.query(inputPatterns, function(queryingStatus) {
-    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
-    });
-});
+neuralNetwork.query(
+    inputPatterns,
+    function(queryingStatus) {
+        inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
+            console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+        });
+    }
+);

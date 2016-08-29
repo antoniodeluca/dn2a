@@ -56,9 +56,14 @@ var trainingPatterns = [
         output: [0]
     }
 ];
-cerebrum.trainMind(trainingPatterns, function(trainingStatus) {
-    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
-}, "firstNeuralNetwork");
+cerebrum.trainMind(
+    trainingPatterns,
+    function(trainingStatus) {
+        console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
+    },
+    null,
+    "firstNeuralNetwork"
+);
 
 // Querying
 //
@@ -69,8 +74,13 @@ var inputPatterns = [
     [1, 0],
     [1, 1]
 ];
-cerebrum.queryMind(inputPatterns, function(queryingStatus) {
-    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
-    });
-}, "firstNeuralNetwork");
+cerebrum.queryMind(
+    inputPatterns,
+    function(queryingStatus) {
+        inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
+            console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+        });
+    },
+    null
+    "firstNeuralNetwork"
+);
