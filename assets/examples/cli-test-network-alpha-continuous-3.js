@@ -1,5 +1,5 @@
 // Importation
-var DN2A = require("../built/dn2a");
+var DN2A = require("../dn2a");
 
 // Instantiation
 var cerebrum = new DN2A.Cerebrum({
@@ -68,19 +68,19 @@ cerebrum.trainMind(
 // Querying
 //
 // The name passed to the queryMind method specifies which specific mind to query
-var inputPatterns = [
+var queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ];
 cerebrum.queryMind(
-    inputPatterns,
+    queryingPatterns,
     function(queryingStatus) {
-        inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-            console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+        queryingPatterns.forEach(function(queryingPattern, queryingPatternIndex) {
+            console.log("[" + queryingPatterns[queryingPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[queryingPatternIndex].join(", ") + "]");
         });
     },
-    null
+    null,
     "firstNeuralNetwork"
 );

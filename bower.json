@@ -5,17 +5,22 @@
   "description": "DN2A - Digital Neural Networks Architecture",
   "ignore": [
     ".git",
+    "assets",
     "bower_components",
-    "examples",
-    "library",
+    "bundled",
+    "distributed",
+    "minified",
     "node_modules",
     "tests",
-    ".babelrc",
+    "transpiled",
+    
     ".gitignore",
     ".npmignore",
     ".travis.yml",
-    "Gruntfile.js",
-    "gulpfile.js",
+    "babel.config.js",
+    "gulpfile.babel.js",
+    "gulpfile.config.example",
+    "gulpfile.config.js",
     "jasmine.json",
     "karma.conf.js",
     "package.json"
@@ -27,7 +32,7 @@
   ],
   "license": "MIT",
   "main": [
-    "bundled/dn2a.browser.js"
+    "distributed/dn2a.js"
   ],
   "moduleType": [
     "amd",

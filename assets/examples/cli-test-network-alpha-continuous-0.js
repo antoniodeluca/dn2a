@@ -1,5 +1,5 @@
 // Importation
-var DN2A = require("../built/dn2a");
+var DN2A = require("../dn2a");
 
 // Instantiation
 var neuralNetwork = new DN2A.NetworkAlpha();
@@ -28,17 +28,17 @@ neuralNetwork.train(trainingPatterns);
 // Querying
 //
 // The object passed to the callback function contains information about the querying process.
-var inputPatterns = [
+var queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ];
 neuralNetwork.query(
-    inputPatterns,
+    queryingPatterns,
     function(queryingStatus) {
-        inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-            console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+        queryingPatterns.forEach(function(queryingPattern, queryingPatternIndex) {
+            console.log("[" + queryingPatterns[queryingPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[queryingPatternIndex].join(", ") + "]");
         });
     }
 );

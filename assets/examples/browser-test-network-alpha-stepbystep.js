@@ -1,6 +1,3 @@
-var _ = require("lodash");
-
-var DN2A = require("../built/dn2a");
 var brain = new DN2A.Brain({
     cerebrum: {
         generator: DN2A.Cerebrum,
@@ -12,7 +9,7 @@ var brain = new DN2A.Brain({
                         generator: DN2A.NetworkAlpha,
                         configuration: {
                             layerDimensions: [2, 4, 1],
-                            learningMode: "continuous",
+                            learningMode: "stepbystep",
                             learningRate: 0.3,
                             momentumRate: 0.7,
                             maximumError: 0.005,
@@ -39,61 +36,7 @@ var brain = new DN2A.Brain({
     }
 });
 
-brain.cerebrum.trainMind(
-    [
-        {
-            input: [0, 0],
-            output: [0]
-        },
-        {
-            input: [0, 1],
-            output: [1]
-        },
-        {
-            input: [1, 0],
-            output: [1]
-        },
-        {
-            input: [1, 1],
-            output: [0]
-        }
-    ], function(trainingStatus) {
-        let errorStatus = _.reduce(
-            trainingStatus.outputErrors,
-            function(errorStatus, outputError) {
-                let error = parseFloat(outputError.toString());
-                return {
-                    minimumError: error < errorStatus.minimumError ? error : errorStatus.minimumError,
-                    averageError: errorStatus.averageError + (error / trainingStatus.outputErrors.length),
-                    maximumError: error > errorStatus.maximumError ? error : errorStatus.maximumError
-                }
-            },
-            {
-                minimumError: 1,
-                averageError: 0,
-                maximumError: 0
-            }
-        );
-        console.log(
-            "Epoch " +
-            trainingStatus.elapsedEpochCounter +
-            "\n" +
-            "Min. Err. = " +
-            errorStatus.minimumError +
-            "\n" +
-            "Avg. Err. = " +
-            errorStatus.averageError +
-            "\n" +
-            "Max. Err. = " +
-            errorStatus.maximumError +
-            "\n"
-        );
-    },
-    null,
-    "defaultMind"
-);
-
-var queryingPatterns = [
+brain.cerebrum.trainMind([
     {
         input: [0, 0],
         output: [0]
@@ -110,12 +53,48 @@ var queryingPatterns = [
         input: [1, 1],
         output: [0]
     }
+], function(trainingStatus) {
+    let errorStatus = trainingStatus.outputErrors.reduce(
+        function(errorStatus, outputError) {
+            let error = parseFloat(outputError.toString());
+            return {
+                minimumError: error < errorStatus.minimumError ? error : errorStatus.minimumError,
+                averageError: errorStatus.averageError + (error / trainingStatus.outputErrors.length),
+                maximumError: error > errorStatus.maximumError ? error : errorStatus.maximumError
+            }
+        },
+        {
+            minimumError: 1,
+            averageError: 0,
+            maximumError: 0
+        }
+    );
+    console.log(
+        "Epoch " +
+        trainingStatus.elapsedEpochCounter +
+        "\n" +
+        "Min. Err. = " +
+        errorStatus.minimumError +
+        "\n" +
+        "Avg. Err. = " +
+        errorStatus.averageError +
+        "\n" +
+        "Max. Err. = " +
+        errorStatus.maximumError +
+        "\n"
+    );
+});
+
+var queryingPatterns = [
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
 ];
 brain.cerebrum.queryMind(
     queryingPatterns,
     function(queryingStatus) {
-        _.forEach(
-            queryingStatus.outputPatterns,
+        queryingStatus.outputPatterns.forEach(
             function(
                 outputPattern,
                 outputPatternIndex,
@@ -125,13 +104,11 @@ brain.cerebrum.queryMind(
                     "Query " +
                     outputPatternIndex +
                     "\n" +
-                    "[" + queryingPatterns[outputPatternIndex].input.join(", ") + "] = " +
+                    "[" + queryingPatterns[outputPatternIndex].join(", ") + "] = " +
                     outputPattern[0].toString() +
                     "\n"
                 );
             }
         );
-    },
-    null,
-    "defaultMind"
+    }
 );

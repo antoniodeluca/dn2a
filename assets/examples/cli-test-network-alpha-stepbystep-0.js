@@ -1,6 +1,5 @@
-var _ = require("lodash");
+var DN2A = require("../dn2a");
 
-var DN2A = require("../built/dn2a");
 var brain = new DN2A.Brain({
     cerebrum: {
         generator: DN2A.Cerebrum,
@@ -59,8 +58,7 @@ brain.cerebrum.trainMind(
         }
     ],
     function(trainingStatus) {
-        let errorStatus = _.reduce(
-            trainingStatus.outputErrors,
+        let errorStatus = trainingStatus.outputErrors.reduce(
             function(errorStatus, outputError) {
                 let error = parseFloat(outputError.toString());
                 return {
@@ -95,28 +93,15 @@ brain.cerebrum.trainMind(
 );
 
 var queryingPatterns = [
-    {
-        input: [0, 0],
-        output: [0]
-    },
-    {
-        input: [0, 1],
-        output: [1]
-    },
-    {
-        input: [1, 0],
-        output: [1]
-    },
-    {
-        input: [1, 1],
-        output: [0]
-    }
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
 ];
 brain.cerebrum.queryMind(
     queryingPatterns,
     function(queryingStatus) {
-        _.forEach(
-            queryingStatus.outputPatterns,
+        queryingStatus.outputPatterns.forEach(
             function(
                 outputPattern,
                 outputPatternIndex,
@@ -126,7 +111,7 @@ brain.cerebrum.queryMind(
                     "Query " +
                     outputPatternIndex +
                     "\n" +
-                    "[" + queryingPatterns[outputPatternIndex].input.join(", ") + "] = " +
+                    "[" + queryingPatterns[outputPatternIndex].join(", ") + "] = " +
                     outputPattern[0].toString() +
                     "\n"
                 );

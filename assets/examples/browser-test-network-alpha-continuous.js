@@ -9,7 +9,7 @@ var brain = new DN2A.Brain({
                         generator: DN2A.NetworkAlpha,
                         configuration: {
                             layerDimensions: [2, 4, 1],
-                            learningMode: "stepbystep",
+                            learningMode: "continuous",
                             learningRate: 0.3,
                             momentumRate: 0.7,
                             maximumError: 0.005,
@@ -54,8 +54,7 @@ brain.cerebrum.trainMind([
         output: [0]
     }
 ], function(trainingStatus) {
-    let errorStatus = _.reduce(
-        trainingStatus.outputErrors,
+    let errorStatus = trainingStatus.outputErrors.reduce(
         function(errorStatus, outputError) {
             let error = parseFloat(outputError.toString());
             return {
@@ -87,28 +86,15 @@ brain.cerebrum.trainMind([
 });
 
 var queryingPatterns = [
-    {
-        input: [0, 0],
-        output: [0]
-    },
-    {
-        input: [0, 1],
-        output: [1]
-    },
-    {
-        input: [1, 0],
-        output: [1]
-    },
-    {
-        input: [1, 1],
-        output: [0]
-    }
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
 ];
 brain.cerebrum.queryMind(
     queryingPatterns,
     function(queryingStatus) {
-        _.forEach(
-            queryingStatus.outputPatterns,
+        queryingStatus.outputPatterns.forEach(
             function(
                 outputPattern,
                 outputPatternIndex,
@@ -118,7 +104,7 @@ brain.cerebrum.queryMind(
                     "Query " +
                     outputPatternIndex +
                     "\n" +
-                    "[" + queryingPatterns[outputPatternIndex].input.join(", ") + "] = " +
+                    "[" + queryingPatterns[outputPatternIndex].join(", ") + "] = " +
                     outputPattern[0].toString() +
                     "\n"
                 );

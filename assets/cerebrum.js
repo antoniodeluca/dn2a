@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import * as m from "mathjs";
 
 import {NetworkAlpha} from "./networks/alpha";
@@ -55,7 +54,7 @@ let Cerebrum = function(configuration) {
         precision: this.configuration.numbersPrecision
     });
 
-    _.forEach(this.configuration.minds, function(configuration) {
+    this.configuration.minds.forEach(function(configuration) {
         this.buildMind(configuration);
     }.bind(this));
 };
@@ -82,12 +81,9 @@ Cerebrum.prototype = {
         iterationCallback,
         mindName = "defaultMind"
     ) {
-        let mind = _.find(
-            this.minds,
-            {
-                name: mindName
-            }
-        ).network;
+        let mind = this.minds.find(function(mind) {
+            return mind.name === mindName;
+        }).network;
         mind.train(
             trainingPatterns,
             epochCallback,
@@ -101,12 +97,9 @@ Cerebrum.prototype = {
         iterationCallback,
         mindName = "defaultMind"
     ) {
-        let mind = _.find(
-            this.minds,
-            {
-                name: mindName
-            }
-        ).network;
+        let mind = this.minds.find(function(mind) {
+            return mind.name === mindName;
+        }).network;
         mind.query(
             queryingPatterns,
             epochCallback,

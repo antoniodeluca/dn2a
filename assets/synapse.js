@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import * as m from "mathjs";
 
 let Synapse = function(precisionConfiguration) {
