@@ -1,7 +1,9 @@
-var Node = require("../built/node.js").Node;
+import * as c from 'chai';
+
+import Node from '../../assets/node.js';
 
 describe("Node", function () {
-    var node = null;
+    let node = null;
 
     beforeEach(function() {
         node = new Node();

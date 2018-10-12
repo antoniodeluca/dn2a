@@ -1,15 +1,13 @@
-import {Brain} from "./brain";
-import {Cerebrum} from "./cerebrum";
-import {NetworkAlpha} from "./networks/alpha";
-import {Neuron} from "./neuron";
-import {Synapse} from "./synapse";
+import Brain from "./brain";
+import Cerebrum from "./cerebrum";
+import NetworkAlpha from "./networks/alpha";
+import Neuron from "./neuron";
+import Synapse from "./synapse";
 
-let DN2A = {
-    Brain : Brain,
-    Cerebrum : Cerebrum,
-    NetworkAlpha : NetworkAlpha,
-    Neuron : Neuron,
-    Synapse : Synapse
+export {
+    Brain as Brain,
+    Cerebrum as Cerebrum,
+    NetworkAlpha as NetworkAlpha,
+    Neuron as Neuron,
+    Synapse as Synapse
 };
-
-module.exports = DN2A;

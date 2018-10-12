@@ -2,8 +2,8 @@ import forEachRight from "lodash.foreachright";
 import times from "lodash.times";
 import * as m from "mathjs";
 
-import {Neuron} from "../neuron";
-import {Synapse} from "../synapse";
+import Neuron from "../neuron";
+import Synapse from "../synapse";
 
 let NetworkAlpha = function(configuration) {
     this.configuration = configuration || {
@@ -452,4 +452,4 @@ NetworkAlpha.prototype = {
     }
 };
 
-export {NetworkAlpha};
+export default NetworkAlpha;

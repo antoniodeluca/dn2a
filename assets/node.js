@@ -1,3 +1,5 @@
-import {Neuron} from "./neuron";
+import Neuron from "./neuron";
 
-export {Neuron as Node};
+export {
+    Neuron as Node
+};

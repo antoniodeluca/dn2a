@@ -1,3 +1,5 @@
-import {Synapse} from "./synapse";
+import Synapse from "./synapse";
 
-export {Synapse as Link};
+export {
+    Synapse as Link
+};

@@ -1,7 +1,9 @@
-var Bios = require("../built/bios.js").Bios;
+import * as c from 'chai';
+
+import Bios from '../../assets/bios.js';
 
 describe("Bios", function () {
-    var bios = null;
+    let bios = null;
 
     beforeEach(function() {
         bios = new Bios();

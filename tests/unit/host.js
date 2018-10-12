@@ -1,7 +1,9 @@
-var Host = require("../built/host.js").Host;
+import * as c from 'chai';
+
+import Host from '../../assets/host.js';
 
 describe("Host", function () {
-    var host = null;
+    let host = null;
 
     beforeEach(function() {
         host = new Host();

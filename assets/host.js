@@ -1,3 +1,5 @@
-import {Cerebrum} from "./cerebrum";
+import Cerebrum from "./cerebrum";
 
-export {Cerebrum as System};
+export {
+    Cerebrum as System
+};

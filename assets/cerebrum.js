@@ -1,8 +1,8 @@
 import * as m from "mathjs";
 
-import {NetworkAlpha} from "./networks/alpha";
-import {Neuron} from "./neuron";
-import {Synapse} from "./synapse";
+import NetworkAlpha from "./networks/alpha";
+import Neuron from "./neuron";
+import Synapse from "./synapse";
 
 let Cerebrum = function(configuration) {
     this.configuration = configuration || {
@@ -108,4 +108,4 @@ Cerebrum.prototype = {
     }
 };
 
-export {Cerebrum};
+export default Cerebrum;

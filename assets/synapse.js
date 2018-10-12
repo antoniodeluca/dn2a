@@ -109,4 +109,4 @@ let Synapse = function(precisionConfiguration) {
     return Synapse;
 };
 
-export {Synapse};
+export default Synapse;

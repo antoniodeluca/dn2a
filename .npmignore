@@ -15,5 +15,4 @@ bower.json
 gulpfile.babel.js
 gulpfile.config.example
 gulpfile.config.js
-jasmine.json
 karma.conf.js
