@@ -5,11 +5,9 @@ node_js:
     - "8"
     - "7"
     - "6"
-    - "5"
-    - "4"
 before_script:
     - npm install
     - export NODE_VERSION=$(node -v)
-    - if [[ "$NODE_VERSION" =~ ^v7.* ]] || [[ "$NODE_VERSION" =~ ^v6.* ]] || [[ "$NODE_VERSION" =~ ^v5.* ]] || [[ "$NODE_VERSION" =~ ^v4.* ]]; then npm install -g npx; fi
+    - if [[ "$NODE_VERSION" =~ ^v7.* ]] || [[ "$NODE_VERSION" =~ ^v6.* ]]; then npm install -g npx; fi
 script:
     - npm run test:node:unit
