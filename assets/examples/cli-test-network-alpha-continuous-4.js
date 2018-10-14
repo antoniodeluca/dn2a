@@ -57,9 +57,9 @@ brain.cerebrum.trainMind(
             output: [0]
         }
     ], function(trainingStatus) {
-        let errorStatus = trainingStatus.outputErrors.reduce(
+        const errorStatus = trainingStatus.outputErrors.reduce(
             function(errorStatus, outputError) {
-                let error = parseFloat(outputError.toString());
+                const error = parseFloat(outputError.toString());
                 return {
                     minimumError: error < errorStatus.minimumError ? error : errorStatus.minimumError,
                     averageError: errorStatus.averageError + (error / trainingStatus.outputErrors.length),

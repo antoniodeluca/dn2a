@@ -4,7 +4,7 @@ import NetworkAlpha from "./networks/alpha";
 import Neuron from "./neuron";
 import Synapse from "./synapse";
 
-let Cerebrum = function(configuration) {
+const Cerebrum = function(configuration) {
     this.configuration = configuration || {
         minds: [
             {
@@ -81,7 +81,7 @@ Cerebrum.prototype = {
         iterationCallback,
         mindName = "defaultMind"
     ) {
-        let mind = this.minds.find(function(mind) {
+        const mind = this.minds.find(function(mind) {
             return mind.name === mindName;
         }).network;
         mind.train(
@@ -97,7 +97,7 @@ Cerebrum.prototype = {
         iterationCallback,
         mindName = "defaultMind"
     ) {
-        let mind = this.minds.find(function(mind) {
+        const mind = this.minds.find(function(mind) {
             return mind.name === mindName;
         }).network;
         mind.query(
