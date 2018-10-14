@@ -1,10 +1,10 @@
 import * as m from "mathjs";
 
-let Neuron = function(precisionConfiguration) {
+const Neuron = function(precisionConfiguration) {
     precisionConfiguration = precisionConfiguration || {
         numbersPrecision: 32
     };
-    let Neuron = function(configuration) {
+    const Neuron = function(configuration) {
         this.configuration = configuration || {
             numbersPrecision: precisionConfiguration.numbersPrecision
         };

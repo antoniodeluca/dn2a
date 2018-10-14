@@ -5,7 +5,7 @@ import NetworkAlpha from "./networks/alpha";
 import Neuron from "./neuron";
 import Synapse from "./synapse";
 
-let Brain = function(configuration) {
+const Brain = function(configuration) {
     this.configuration = configuration || {
         cerebrum: {
             generator: Cerebrum,
