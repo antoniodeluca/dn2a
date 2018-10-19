@@ -1,4 +1,4 @@
-var DN2A = require("../dn2a");
+var DN2A = require("../index");
 
 var brain = new DN2A.Brain({
     cerebrum: {

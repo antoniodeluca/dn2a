@@ -1,5 +1,5 @@
 // Importation
-var DN2A = require("../dn2a");
+var DN2A = require("../index");
 
 // Instantiation
 var neuralNetwork = new DN2A.NetworkAlpha({
