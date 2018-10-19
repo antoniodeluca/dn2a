@@ -38,11 +38,11 @@
     "artificial intelligence"
   ],
   "license": "MIT",
-  "main": "distributed/dn2a.js",
+  "main": "distributed/index.js",
   "name": "dn2a",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dn2a/dn2a-javascript.git"
+    "url": "https://github.com/antoniodeluca/dn2a.js.git"
   },
   "scripts": {
     "build": "npm run build:production",
