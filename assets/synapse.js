@@ -1,4 +1,11 @@
-import * as m from "mathjs";
+import {
+    bignumber,
+    config,
+    format,
+    multiply,
+    random,
+    subtract
+} from "mathjs";
 
 const Synapse = function(precisionConfiguration) {
     precisionConfiguration = precisionConfiguration || {
@@ -14,7 +21,7 @@ const Synapse = function(precisionConfiguration) {
         }
         this.configuration = this.transformConfiguration();
 
-        m.config({
+        config({
             number: "BigNumber",
             precision: this.configuration.numbersPrecision
         });
@@ -27,27 +34,27 @@ const Synapse = function(precisionConfiguration) {
 
         this._previousOutgoingConnections = null;
 
-        this._previousWeight = m.bignumber(0);
+        this._previousWeight = bignumber(0);
 
-        this._previousWeightChange = m.bignumber(0);
+        this._previousWeightChange = bignumber(0);
 
-        this._weight = m.subtract(
-            m.bignumber(1),
-            m.multiply(
-                m.bignumber(
-                    m.format(
-                        m.random(0, 1),
+        this._weight = subtract(
+            bignumber(1),
+            multiply(
+                bignumber(
+                    format(
+                        random(0, 1),
                         {
                             notation: "fixed",
                             precision: 15
                         }
                     )
                 ),
-                m.bignumber(2)
+                bignumber(2)
             )
         );
 
-        this._weightChange = m.bignumber(0);
+        this._weightChange = bignumber(0);
     };
 
     Synapse.prototype = {

@@ -1,4 +1,6 @@
-import * as m from "mathjs";
+import {
+    config
+} from "mathjs";
 
 import Cerebrum from "./cerebrum";
 import NetworkAlpha from "./networks/alpha";
@@ -49,7 +51,7 @@ const Brain = function(configuration) {
     }
     this.configuration = this.transformConfiguration();
 
-    m.config({
+    config({
         number: "BigNumber",
         precision: this.configuration.numbersPrecision
     });
