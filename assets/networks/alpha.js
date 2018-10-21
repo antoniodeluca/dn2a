@@ -1,6 +1,17 @@
 import forEachRight from "lodash.foreachright";
 import times from "lodash.times";
-import * as m from "mathjs";
+import {
+    add,
+    bignumber,
+    chain,
+    config,
+    divide,
+    multiply,
+    number,
+    smallerEq,
+    square,
+    subtract
+} from "mathjs";
 
 import Neuron from "../neuron";
 import Synapse from "../synapse";
@@ -38,7 +49,7 @@ const NetworkAlpha = function(configuration) {
         numbersPrecision: this.configuration.numbersPrecision
     });
 
-    m.config({
+    config({
         number: "BigNumber",
         precision: this.configuration.numbersPrecision
     });
@@ -76,7 +87,7 @@ NetworkAlpha.prototype = {
         const neuron = new this.neuronGenerator();
         const proxy = scope === "input" ? true : false;
         const fixed = scope === "bias" ? true : false;
-        const output = m.bignumber(fixed ? 1 : 0);
+        const output = bignumber(fixed ? 1 : 0);
         neuron.proxy = proxy;
         neuron.fixed = fixed;
         neuron.output = output;
@@ -128,7 +139,7 @@ NetworkAlpha.prototype = {
             layerNeurons
         ) {
             if (!layerNeuron.fixed) {
-                layerNeurons[layerNeuronIndex].output = m.bignumber(inputPattern[layerNeuronIndex]);
+                layerNeurons[layerNeuronIndex].output = bignumber(inputPattern[layerNeuronIndex]);
             }
         });
     },
@@ -140,7 +151,7 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            // inputPattern[layerNeuronIndex] = m.number(layerNeurons[layerNeuronIndex].output);
+            // inputPattern[layerNeuronIndex] = number(layerNeurons[layerNeuronIndex].output);
             inputPattern[layerNeuronIndex] = layerNeurons[layerNeuronIndex].output;
         });
         return inputPattern;
@@ -152,7 +163,7 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            layerNeurons[layerNeuronIndex].expectedOutput = m.bignumber(expectedOutputPattern[layerNeuronIndex]);
+            layerNeurons[layerNeuronIndex].expectedOutput = bignumber(expectedOutputPattern[layerNeuronIndex]);
         });
     },
 
@@ -163,7 +174,7 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            expectedOutputPattern[layerNeuronIndex] = m.number(layerNeuron.expectedOutput);
+            expectedOutputPattern[layerNeuronIndex] = number(layerNeuron.expectedOutput);
             // expectedOutputPattern[layerNeuronIndex] = layerNeuron.expectedOutput;
         });
         return expectedOutputPattern;
@@ -175,7 +186,7 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            layerNeurons[layerNeuronIndex].output = m.bignumber(outputPattern[layerNeuronIndex]);
+            layerNeurons[layerNeuronIndex].output = bignumber(outputPattern[layerNeuronIndex]);
         });
     },
 
@@ -186,23 +197,23 @@ NetworkAlpha.prototype = {
             layerNeuronIndex,
             layerNeurons
         ) {
-            outputPattern[layerNeuronIndex] = m.number(layerNeuron.output);
+            outputPattern[layerNeuronIndex] = number(layerNeuron.output);
             // outputPattern[layerNeuronIndex] = layerNeuron.output;
         });
         return outputPattern;
     },
 
     getOutputError: function() {
-        const outputError = // m.number(
-            m.divide(
+        const outputError = // number(
+            divide(
                 this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].reduce(
                     function(totalOutputError, layerNeuron) {
-                        return m.add(
+                        return add(
                             totalOutputError,
-                            m.square(layerNeuron.outputError)
+                            square(layerNeuron.outputError)
                         );
                     },
-                    m.bignumber(0)
+                    bignumber(0)
                 ),
                 this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].length
             );
@@ -230,9 +241,9 @@ NetworkAlpha.prototype = {
                                 synapseIndex,
                                 synapses
                             ) {
-                                layerNeuron.inputSum = m.add(
+                                layerNeuron.inputSum = add(
                                     layerNeuron.inputSum,
-                                    m.multiply(
+                                    multiply(
                                         synapse.incomingConnection.output,
                                         synapse.weight
                                     )
@@ -240,7 +251,7 @@ NetworkAlpha.prototype = {
                             }
                         );
                         layerNeuron.output = layerNeuron.transferFunction(layerNeuron.inputSum);
-                        layerNeuron.outputError = m.subtract(
+                        layerNeuron.outputError = subtract(
                             layerNeuron.expectedOutput,
                             layerNeuron.output
                         );
@@ -265,13 +276,13 @@ NetworkAlpha.prototype = {
                         layerNeuronIndex,
                         layerNeurons
                     ) {
-                        layerNeuron.delta = m.chain(
+                        layerNeuron.delta = chain(
                             layerNeuron.outputError
                         ).multiply(
                             layerNeuron.output
                         ).multiply(
-                            m.subtract(
-                                m.bignumber(1),
+                            subtract(
+                                bignumber(1),
                                 layerNeuron.output
                             )
                         ).done();
@@ -283,28 +294,28 @@ NetworkAlpha.prototype = {
                         layerNeurons
                     ) {
                         if (!layerNeuron.fixed) {
-                            layerNeuron.delta = m.chain(
+                            layerNeuron.delta = chain(
                                 layerNeuron.outgoingConnections.map(
                                     function(synapse) {
-                                        return m.multiply(
+                                        return multiply(
                                             synapse.weight,
                                             synapse.outgoingConnection.delta
                                         );
                                     }
                                 ).reduce(
                                     function(accumulator, value) {
-                                        return m.add(
+                                        return add(
                                             accumulator,
                                             value
                                         );
                                     },
-                                    m.bignumber(0)
+                                    bignumber(0)
                                 )
                             ).multiply(
                                 layerNeuron.output
                             ).multiply(
-                                m.subtract(
-                                    m.bignumber(1),
+                                subtract(
+                                    bignumber(1),
                                     layerNeuron.output
                                 )
                             ).done();
@@ -336,21 +347,21 @@ NetworkAlpha.prototype = {
                                 synapses
                             ) {
                                 synapse.previousWeightChange = synapse.weightChange;
-                                synapse.weightChange = m.add(
-                                    m.multiply(
-                                        m.bignumber(learningRate),
-                                        m.multiply(
+                                synapse.weightChange = add(
+                                    multiply(
+                                        bignumber(learningRate),
+                                        multiply(
                                             layerNeuron.delta,
                                             synapse.incomingConnection.output
                                         )
                                     ),
-                                    m.multiply(
-                                        m.bignumber(momentumRate),
+                                    multiply(
+                                        bignumber(momentumRate),
                                         synapse.previousWeightChange
                                     )
                                 );
                                 synapse.previousWeight = synapse.weight;
-                                synapse.weight = m.add(
+                                synapse.weight = add(
                                     synapse.weight,
                                     synapse.weightChange
                                 );
@@ -397,7 +408,7 @@ NetworkAlpha.prototype = {
                     );
                     const outputError = this.getOutputError();
                     trainingStatus.outputErrors.push(outputError);
-                    trainingStatus.interruptionRequest = trainingStatus.interruptionRequest && m.smallerEq(outputError, m.bignumber(this.configuration.maximumError));
+                    trainingStatus.interruptionRequest = trainingStatus.interruptionRequest && smallerEq(outputError, bignumber(this.configuration.maximumError));
                     trainingStatus.elapsedIterationCounter++;
                     trainingStatus.elapsedIterationPattern.input = trainingPattern.input;
                     trainingStatus.elapsedIterationPattern.target = this.getExpectedOutputPattern();

@@ -1,4 +1,11 @@
-import * as m from "mathjs";
+import {
+    bignumber,
+    config,
+    divide,
+    exp,
+    subtract,
+    sum
+} from "mathjs";
 
 const Neuron = function(precisionConfiguration) {
     precisionConfiguration = precisionConfiguration || {
@@ -14,53 +21,53 @@ const Neuron = function(precisionConfiguration) {
         }
         this.configuration = this.transformConfiguration();
 
-        m.config({
+        config({
             number: "BigNumber",
             precision: this.configuration.numbersPrecision
         });
 
-        this._delta = m.bignumber(0);
+        this._delta = bignumber(0);
 
-        this._expectedOutput = m.bignumber(0);
+        this._expectedOutput = bignumber(0);
 
         this._fixed = false;
 
         this._incomingConnections = [];
 
-        this._inputSum = m.bignumber(0);
+        this._inputSum = bignumber(0);
 
         this._inputs = [];
 
         this._outgoingConnections = [];
 
-        this._output = m.bignumber(0);
+        this._output = bignumber(0);
 
-        this._outputError = m.bignumber(0);
+        this._outputError = bignumber(0);
 
-        this._previousExpectedOutput = m.bignumber(0);
+        this._previousExpectedOutput = bignumber(0);
 
         this._previousIncomingConnections = [];
 
-        this._previousInputSum = m.bignumber(0);
+        this._previousInputSum = bignumber(0);
 
         this._previousInputs = [];
 
         this._previousOutgoingConnections = [];
 
-        this._previousOutput = m.bignumber(0);
+        this._previousOutput = bignumber(0);
 
-        this._previousOutputError = m.bignumber(0);
+        this._previousOutputError = bignumber(0);
 
         this._proxy = false;
 
         this._transferFunction = function(value) {
-            return m.divide(
-                m.bignumber(1),
-                m.sum(
-                    m.bignumber(1),
-                    m.exp(
-                        m.subtract(
-                            m.bignumber(0),
+            return divide(
+                bignumber(1),
+                sum(
+                    bignumber(1),
+                    exp(
+                        subtract(
+                            bignumber(0),
                             value
                         )
                     )

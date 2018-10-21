@@ -1,4 +1,6 @@
-import * as m from "mathjs";
+import {
+    config
+} from "mathjs";
 
 import NetworkAlpha from "./networks/alpha";
 import Neuron from "./neuron";
@@ -49,7 +51,7 @@ const Cerebrum = function(configuration) {
 
     this.outputs = []; // outputs are objects with the pattern and the name of the source mind (because there could be more than one producing outputs)
 
-    m.config({
+    config({
         number: "BigNumber",
         precision: this.configuration.numbersPrecision
     });
