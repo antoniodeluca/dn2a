@@ -2,7 +2,6 @@
 assets
 bower_components
 bundled
-distributed
 minified
 node_modules
 tests
