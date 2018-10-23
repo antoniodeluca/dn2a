@@ -15,6 +15,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
+    "eslint": "^5.7.0",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-batch": "^1.0.5",
