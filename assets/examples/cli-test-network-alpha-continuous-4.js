@@ -72,6 +72,7 @@ brain.cerebrum.trainMind(
                 maximumError: 0
             }
         );
+        /* eslint-disable no-console */
         console.log(
             "Epoch " +
             trainingStatus.elapsedEpochCounter +
@@ -86,6 +87,7 @@ brain.cerebrum.trainMind(
             errorStatus.maximumError +
             "\n"
         );
+        /* eslint-enable no-console */
     },
     null,
     "defaultMind"
@@ -103,9 +105,9 @@ brain.cerebrum.queryMind(
         queryingStatus.outputPatterns.forEach(
             function(
                 outputPattern,
-                outputPatternIndex,
-                outputPatterns
+                outputPatternIndex
             ) {
+                /* eslint-disable no-console */
                 console.log(
                     "Query " +
                     outputPatternIndex +
@@ -114,6 +116,7 @@ brain.cerebrum.queryMind(
                     outputPattern[0].toString() +
                     "\n"
                 );
+                /* eslint-enable no-console */
             }
         );
     },

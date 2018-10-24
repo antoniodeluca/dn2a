@@ -1,4 +1,4 @@
-var run = function() {
+var run = function(DN2A) {
     var brain = new DN2A.Brain({
         cerebrum: {
             generator: DN2A.Cerebrum,
@@ -70,6 +70,7 @@ var run = function() {
                 maximumError: 0
             }
         );
+        /* eslint-disable no-console */
         console.log(
             "Epoch " +
             trainingStatus.elapsedEpochCounter +
@@ -84,6 +85,7 @@ var run = function() {
             errorStatus.maximumError +
             "\n"
         );
+        /* eslint-enable no-console */
     });
 
     var queryingPatterns = [
@@ -98,9 +100,9 @@ var run = function() {
             queryingStatus.outputPatterns.forEach(
                 function(
                     outputPattern,
-                    outputPatternIndex,
-                    outputPatterns
+                    outputPatternIndex
                 ) {
+                    /* eslint-disable no-console */
                     console.log(
                         "Query " +
                         outputPatternIndex +
@@ -109,12 +111,13 @@ var run = function() {
                         outputPattern[0].toString() +
                         "\n"
                     );
+                    /* eslint-enable no-console */
                 }
             );
         }
     );
 };
 
-document.addEventListener('DOMContentLoaded', function(event) {
-    run();
+document.addEventListener('DOMContentLoaded', function() {
+    run(window.DN2A);
 });
