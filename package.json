@@ -50,13 +50,14 @@
     "build:development": "npx gulp build-for-development",
     "build:testing": "npx gulp build-for-testing",
     "build:production": "npx gulp build-for-production",
+    "lint": "npx eslint ./assets/**/*.js",
+    "test": "npx npm-run-all --parallel test:**",
+    "test:node:unit": "npx mocha --require @babel/register --recursive ./tests",
+    "test:browser:unit": "npx karma start",
     "watch": "npm run watch:production",
     "watch:development": "npx gulp watch-for-development",
     "watch:testing": "npx gulp watch-for-testing",
-    "watch:production": "npx gulp watch-for-production",
-    "test": "npx npm-run-all --parallel test:**",
-    "test:node:unit": "npx mocha --require @babel/register --recursive ./tests",
-    "test:browser:unit": "npx karma start"
+    "watch:production": "npx gulp watch-for-production"
   },
   "version": "0.2.0"
 }

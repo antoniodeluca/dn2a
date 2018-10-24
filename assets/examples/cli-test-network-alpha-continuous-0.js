@@ -38,7 +38,15 @@ neuralNetwork.query(
     queryingPatterns,
     function(queryingStatus) {
         queryingPatterns.forEach(function(queryingPattern, queryingPatternIndex) {
-            console.log("[" + queryingPatterns[queryingPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[queryingPatternIndex].join(", ") + "]");
+            /* eslint-disable no-console */
+            console.log(
+                "[" +
+                queryingPatterns[queryingPatternIndex].join(", ") +
+                "] => [" +
+                queryingStatus.outputPatterns[queryingPatternIndex].join(", ") +
+                "]"
+            );
+            /* eslint-enable no-console */
         });
     }
 );

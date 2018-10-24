@@ -44,6 +44,7 @@ var trainingPatterns = [
 neuralNetwork.train(
     trainingPatterns,
     function(trainingStatus) {
+        /* eslint-disable-next-line no-console */
         console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
     }
 );
@@ -61,7 +62,15 @@ neuralNetwork.query(
     queryingPatterns,
     function(queryingStatus) {
         queryingPatterns.forEach(function(queryingPattern, queryingPatternIndex) {
-            console.log("[" + queryingPatterns[queryingPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[queryingPatternIndex].join(", ") + "]");
+            /* eslint-disable no-console */
+            console.log(
+                "[" +
+                queryingPatterns[queryingPatternIndex].join(", ") +
+                "] => [" +
+                queryingStatus.outputPatterns[queryingPatternIndex].join(", ") +
+                "]"
+            );
+            /* eslint-enable no-console */
         });
     }
 );

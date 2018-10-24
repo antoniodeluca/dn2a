@@ -104,15 +104,11 @@ NetworkAlpha.prototype = {
             const layerNeurons = neuronLayers[neuronLayerIndex];
             if (neuronLayerIndex > 0) {
                 layerNeurons.forEach(function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
+                    layerNeuron
                 ) {
                     if (!layerNeuron.fixed) {
                         previousLayerNeurons.forEach(function(
-                            previousLayerNeuron,
-                            previousLayerNeuronIndex,
-                            previousLayerNeurons
+                            previousLayerNeuron
                         ) {
                             const synapse = this.generateSynapse();
                             synapse.incomingConnection = previousLayerNeuron;
@@ -171,8 +167,7 @@ NetworkAlpha.prototype = {
         const expectedOutputPattern = [];
         this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].forEach(function(
             layerNeuron,
-            layerNeuronIndex,
-            layerNeurons
+            layerNeuronIndex
         ) {
             expectedOutputPattern[layerNeuronIndex] = number(layerNeuron.expectedOutput);
             // expectedOutputPattern[layerNeuronIndex] = layerNeuron.expectedOutput;
@@ -194,8 +189,7 @@ NetworkAlpha.prototype = {
         const outputPattern = [];
         this.dataRepository.neuronLayers[this.dataRepository.neuronLayers.length - 1].forEach(function(
             layerNeuron,
-            layerNeuronIndex,
-            layerNeurons
+            layerNeuronIndex
         ) {
             outputPattern[layerNeuronIndex] = number(layerNeuron.output);
             // outputPattern[layerNeuronIndex] = layerNeuron.output;
@@ -230,16 +224,12 @@ NetworkAlpha.prototype = {
             const layerNeurons = neuronLayers[neuronLayerIndex];
             if (neuronLayerIndex > 0) {
                 layerNeurons.forEach(function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
+                    layerNeuron
                 ) {
                     if (!layerNeuron.fixed) {
                         layerNeuron.incomingConnections.forEach(
                             function(
-                                synapse,
-                                synapseIndex,
-                                synapses
+                                synapse
                             ) {
                                 layerNeuron.inputSum = add(
                                     layerNeuron.inputSum,
@@ -272,9 +262,7 @@ NetworkAlpha.prototype = {
                 const layerNeurons = neuronLayers[neuronLayerIndex];
                 if (neuronLayerIndex === (this.dataRepository.neuronLayers.length - 1)) {
                     layerNeurons.forEach(function(
-                        layerNeuron,
-                        layerNeuronIndex,
-                        layerNeurons
+                        layerNeuron
                     ) {
                         layerNeuron.delta = chain(
                             layerNeuron.outputError
@@ -289,9 +277,7 @@ NetworkAlpha.prototype = {
                     });
                 } else {
                     layerNeurons.forEach(function(
-                        layerNeuron,
-                        layerNeuronIndex,
-                        layerNeurons
+                        layerNeuron
                     ) {
                         if (!layerNeuron.fixed) {
                             layerNeuron.delta = chain(
@@ -335,16 +321,12 @@ NetworkAlpha.prototype = {
             if (neuronLayerIndex > 0) {
                 const layerNeurons = neuronLayers[neuronLayerIndex];
                 layerNeurons.forEach(function(
-                    layerNeuron,
-                    layerNeuronIndex,
-                    layerNeurons
+                    layerNeuron
                 ) {
                     if (!layerNeuron.fixed) {
                         layerNeuron.incomingConnections.forEach(
                             function(
-                                synapse,
-                                synapseIndex,
-                                synapses
+                                synapse
                             ) {
                                 synapse.previousWeightChange = synapse.weightChange;
                                 synapse.weightChange = add(

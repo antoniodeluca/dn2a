@@ -59,6 +59,7 @@ var trainingPatterns = [
 cerebrum.trainMind(
     trainingPatterns,
     function(trainingStatus) {
+        /* eslint-disable-next-line no-console */
         console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
     },
     null,
@@ -78,7 +79,15 @@ cerebrum.queryMind(
     queryingPatterns,
     function(queryingStatus) {
         queryingPatterns.forEach(function(queryingPattern, queryingPatternIndex) {
-            console.log("[" + queryingPatterns[queryingPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[queryingPatternIndex].join(", ") + "]");
+            /* eslint-disable no-console */
+            console.log(
+                "[" +
+                queryingPatterns[queryingPatternIndex].join(", ") +
+                "] => [" +
+                queryingStatus.outputPatterns[queryingPatternIndex].join(", ") +
+                "]"
+            );
+            /* eslint-enable no-console */
         });
     },
     null,
