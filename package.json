@@ -51,7 +51,7 @@
     "build:testing": "npx gulp build-for-testing",
     "build:production": "npx gulp build-for-production",
     "lint": "npx eslint ./assets/**/*.js",
-    "test": "npx npm-run-all --parallel test:**",
+    "test": "npx npm-run-all lint --parallel test:**",
     "test:node:unit": "npx mocha --require @babel/register --recursive ./tests",
     "test:browser:unit": "npx karma start",
     "watch": "npm run watch:production",
