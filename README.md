@@ -26,35 +26,35 @@ DN2A side goals are to simplify integration, to speed up training/querying, to a
 - **Modularized components**: helps the development and the clear separation of concerns with great benefits for who wants to use mixed solutions.
 - **Configurable precision**: helps to avoid the noise deriving from operation errors and default system precision limits with great improvement of the learning speed and performance stability.
 - **Configuration checker**: helps to write less details about configuration and to keep compatibility with older version while the project evolves.
-- **StepByStep training**: helps to train neural networks doing a single iteration over the passed information without trying to reach a specific parametric condition.
-- **StepByGoal training**: helps to train neural networks doing a finite or infinite number of iterations over the passed information unless a specific parametric condition is reached.
+- **StepByStep training**: helps to train neural networks doing a single iteration over the passed information.
+- **StopAtGoal training**: helps to train neural networks doing a finite number of iterations over the passed information until a specific parametric condition is reached.
 - **Continuous training**: helps to train neural networks doing an infinite number of iterations over the passed information.
-- TODO (Bios) **Data normalization**: helps to simplify the interaction within your real domain.
-- TODO (Host) **Networks composition**: helps to create very effective architectures of multiple neural networks able to obtain advanced behaviours like in deep learning.
-- TODO (Host) **Computation parallelization**: helps to improve the scalability of your whole system.
-- TODO (Bios) **Sessions intercommunication**: helps to improve the scalability of your whole system.
+- TODO (Brain) **Data normalization**: helps to simplify the interaction within your real domain.
+- TODO (Cerebrum) **Networks composition**: helps to create very effective architectures of multiple neural networks able to obtain advanced behaviours like in deep learning.
+- TODO (Cerebrum) **Computation parallelization**: helps to improve the scalability of your whole system.
+- TODO (Brain) **Sessions intercommunication**: helps to improve the scalability of your whole system.
 
 ----------
 
 ## Modules ##
 
-### Node (Neuron) ###
+### Neuron ###
 Module able to facilitate the representation of the data structure around Neurons and to hold relative common functionalities.
 
-### Link (Synapse) ###
+### Synapse ###
 Module able to facilitate the representation of the data structure around Synapses and to hold relative common functionalities.
 
-### Network (Neural Network or Cortical Column) ###
+### Network ###
 Module, available in different variations, able to use Neurons and Synapses to implement configurable and autonomous Neural Networks.
 
 #### Available Network Types ####
 
-01. **alpha**: standard feed forward neural network with error back propagation controlled by layer dimensions, learning mode, learning rate, momentum rate, maximum allowed error and maximum number of epochs.
+1.  **alpha**: standard feed forward neural network with error back propagation controlled by layer dimensions, learning mode, learning rate, momentum rate, maximum allowed error and maximum number of epochs.
 
-### Host (Cerebrum) ###
+### Cerebrum ###
 Module for the management of multiple Neural Networks in terms of configuration/coordination, training/querying chaining and parallel computing.
 
-### Bios (Brain) ###
+### Brain ###
 Module for the management of data normalization, integration/intercommunication with other external software and monitoring of the whole session.
 
 ----------
@@ -229,7 +229,7 @@ neuralNetwork.query(inputPatterns, function(queryingStatus) {
 });
 ```
 
-### Training and Querying a Single Network through the Host (ES5) ###
+### Training and Querying a Single Network through the Cerebrum (ES5) ###
 
 ```javascript
 // Importation
@@ -308,15 +308,15 @@ cerebrum.queryMind(inputPatterns, function(queryingStatus) {
 }, "firstNeuralNetwork");
 ```
 
-### Training and Querying an entire Networks Chain  through the Host (ES5) ###
+### Training and Querying an entire Networks Chain  through the Cerebrum (ES5) ###
 
 	TODO
 
-### Training and Querying a Single Network through the Bios (ES5) ###
+### Training and Querying a Single Network through the Brain (ES5) ###
 
 	TODO
 
-### Training and Querying an entire Networks Chain through the Bios (ES5) ###
+### Training and Querying an entire Networks Chain through the Brain (ES5) ###
 
 	TODO
 
