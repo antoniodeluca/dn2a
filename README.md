@@ -1,7 +1,6 @@
-# DN2A - Digital Neural Networks Architecture #
+# DN2A - Digital Neural Networks Architecture (JavaScript) #
 
 [![Build Status](https://travis-ci.org/antoniodeluca/dn2a.js.svg?branch=master)](https://travis-ci.org/antoniodeluca/dn2a.js)
-[![Code Climate](https://codeclimate.com/github/antoniodeluca/dn2a.js.png)](https://codeclimate.com/github/antoniodeluca/dn2a.js)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/antoniodeluca/dn2a.js/master/LICENSE)
 [![npm version](https://badge.fury.io/js/dn2a.svg)](https://badge.fury.io/js/dn2a)
 
