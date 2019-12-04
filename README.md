@@ -1,4 +1,6 @@
-# DN2A - Digital Neural Networks Architecture (JavaScript) #
+# DN2A (JavaScript) #
+
+## Digital Neural Networks Architecture ##
 
 [![Build Status](https://travis-ci.org/antoniodeluca/dn2a.js.svg?branch=master)](https://travis-ci.org/antoniodeluca/dn2a.js)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/antoniodeluca/dn2a.js/master/LICENSE)
