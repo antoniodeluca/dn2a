@@ -6,8 +6,6 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/antoniodeluca/dn2a.js/master/LICENSE)
 [![npm version](https://badge.fury.io/js/dn2a.svg)](https://badge.fury.io/js/dn2a)
 
----
-
 ## About ##
 
 DN2A is a set of highly decoupled JavaScript modules for Neural Networks and Artificial Intelligence development.
