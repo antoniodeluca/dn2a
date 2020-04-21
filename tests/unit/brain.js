@@ -1,6 +1,13 @@
-import * as c from 'chai';
+import {
+    expect
+} from 'chai';
+import {
+    beforeEach,
+    describe,
+    it
+} from 'mocha';
 
-import Brain from '../../assets/brain.js';
+import {Brain} from '../../assets/index';
 
 describe("Brain", function () {
     let brain = null;
@@ -10,6 +17,6 @@ describe("Brain", function () {
     });
 
     it("Should have a configuration object", function () {
-        c.expect(brain.configuration).to.be.an('object');
+        expect(brain.configuration).to.be.an('object');
     });
 });

@@ -1,6 +1,13 @@
-import * as c from 'chai';
+import {
+    expect
+} from 'chai';
+import {
+    beforeEach,
+    describe,
+    it
+} from 'mocha';
 
-import Neuron from '../../assets/neuron.js';
+import {Neuron} from '../../assets/index';
 
 describe("Neuron", function () {
     let neuronGenerator = null;
@@ -12,6 +19,6 @@ describe("Neuron", function () {
     });
 
     it("Should have a configuration object", function () {
-        c.expect(neuron.configuration).to.be.an('object');
+        expect(neuron.configuration).to.be.an('object');
     });
 });

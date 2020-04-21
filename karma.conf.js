@@ -1,29 +1,34 @@
 module.exports = function(config) {
     config.set({
-        autoWatch: true,
+        autoWatch: false,
         basePath: '',
-        browserify: {
-            debug: true,
-            transform: ['babelify']
-        },
         browsers: [
-            'Firefox', 
+            'Firefox',
             'Chrome'
         ],
         colors: true,
         concurrency: Infinity,
         exclude: [],
-        files: ['tests/**/*.js'],
+        files: [
+            {
+                pattern: 'tests/**/*.js',
+                watched: false
+            }
+        ],
         frameworks: [
-            'browserify',
             'mocha'
         ],
         logLevel: config.LOG_INFO,
         port: 9876,
         preprocessors: {
-            'tests/**/*.js': ['browserify']
+            'tests/**/*.js': ['webpack']
         },
         reporters: ['mocha'],
-        singleRun: true
+        singleRun: true,
+        webpack: {
+            node: {
+                fs: 'empty'
+            }
+        }
     })
 };
