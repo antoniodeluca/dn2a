@@ -1,38 +1,38 @@
 {
   "author": "Antonio De Luca <contact@antoniodeluca.info>",
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "@babel/polyfill": "^7.8.7",
     "lodash.foreachright": "^4.4.0",
     "lodash.times": "^4.3.2",
-    "mathjs": "^5.2.0"
+    "mathjs": "^6.6.4"
   },
   "description": "DN2A - Digital Neural Networks Architecture",
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/register": "^7.0.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.9.0",
     "babelify": "^10.0.0",
-    "browserify": "^16.2.3",
+    "browserify": "^16.5.1",
     "chai": "^4.2.0",
-    "eslint": "^5.7.0",
-    "gulp": "^4.0.0",
+    "eslint": "^6.8.0",
+    "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-batch": "^1.0.5",
     "gulp-buffer": "0.0.2",
     "gulp-clean": "^0.4.0",
-    "gulp-tap": "^1.0.1",
-    "gulp-uglify": "^3.0.1",
+    "gulp-tap": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
     "gulp-watch": "^5.0.1",
-    "karma": "^3.0.0",
-    "karma-browserify": "^5.0.5",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-firefox-launcher": "^1.1.0",
-    "karma-mocha": "^1.3.0",
+    "karma": "^5.0.2",
+    "karma-browserify": "^7.0.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-firefox-launcher": "^1.3.0",
+    "karma-mocha": "^2.0.0",
     "karma-mocha-reporter": "^2.2.5",
-    "mocha": "^5.2.0",
-    "npm-run-all": "^4.1.3",
-    "sinon": "^7.4.2"
+    "mocha": "^7.1.1",
+    "npm-run-all": "^4.1.5",
+    "sinon": "^9.0.2"
   },
   "keywords": [
     "neural networks",
@@ -60,5 +60,5 @@
     "watch:testing": "npx gulp watch-for-testing",
     "watch:production": "npx gulp watch-for-production"
   },
-  "version": "0.2.1"
+  "version": "0.2.2"
 }
