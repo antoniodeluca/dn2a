@@ -10,7 +10,7 @@ import {
     it
 } from 'mocha';
 
-import NetworkAlpha from '../../../assets/networks/alpha.js';
+import {NetworkAlpha} from '../../../assets/index';
 
 describe('NetworkAlpha', function () {
     let networkAlpha = null;

@@ -1,4 +1,4 @@
-var DN2A = require("../index");
+var DN2A = require("../../distributed/cjs");
 
 var brain = new DN2A.Brain({
     cerebrum: {

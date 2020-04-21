@@ -1,6 +1,13 @@
-import * as c from 'chai';
+import {
+    expect
+} from 'chai';
+import {
+    beforeEach,
+    describe,
+    it
+} from 'mocha';
 
-import Cerebrum from '../../assets/cerebrum.js';
+import {Cerebrum} from '../../assets/index';
 
 describe("Cerebrum", function () {
     let cerebrum = null;
@@ -10,6 +17,6 @@ describe("Cerebrum", function () {
     });
 
     it("Should have a configuration object", function () {
-        c.expect(cerebrum.configuration).to.be.an('object');
+        expect(cerebrum.configuration).to.be.an('object');
     });
 });

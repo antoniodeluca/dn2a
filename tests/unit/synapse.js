@@ -1,6 +1,13 @@
-import * as c from 'chai';
+import {
+    expect
+} from 'chai';
+import {
+    beforeEach,
+    describe,
+    it
+} from 'mocha';
 
-import Synapse from '../../assets/synapse.js';
+import {Synapse} from '../../assets/index';
 
 describe("Synapse", function () {
     let synapseGenerator = null;
@@ -12,6 +19,6 @@ describe("Synapse", function () {
     });
 
     it("Should have a configuration object", function () {
-        c.expect(synapse.configuration).to.be.an('object');
+        expect(synapse.configuration).to.be.an('object');
     });
 });

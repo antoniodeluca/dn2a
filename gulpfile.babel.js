@@ -1,12 +1,12 @@
-import browserify from 'browserify';
 import gulp from 'gulp';
 import gulpBabel from 'gulp-babel';
 import gulpBatch from 'gulp-batch';
-import gulpBuffer from 'gulp-buffer';
 import gulpClean from 'gulp-clean';
-import gulpTap from 'gulp-tap';
+import gulpRename from "gulp-rename";
 import gulpUglify from 'gulp-uglify';
 import gulpWatch from 'gulp-watch';
+import webpack from 'webpack';
+import webpackStream from 'webpack-stream';
 
 import {
     exportedName
@@ -48,80 +48,79 @@ const cleanTranspiledFolder = () => gulp.src(
     gulpClean()
 );
 
-const copyFilesFromAssetsToTranspiled = () => gulp.src(
-    'assets/**/*'
+const copyBrowserFileFromBundledToDistributed = () => gulp.src(
+    'bundled/index.js'
 ).pipe(
-    gulp.dest('transpiled')
+    gulp.dest('distributed/browser')
 );
 
-const copyFilesFromBundledToMinified = () => gulp.src(
-    'bundled/**/*'
+const copyBrowserFileFromMinifiedToDistributed = () => gulp.src(
+    'minified/index.js'
 ).pipe(
-    gulp.dest('minified')
+    gulpRename("index.min.js")
+).pipe(
+    gulp.dest('distributed/browser')
 );
 
-const copyFilesFromMinifiedToDistributed = () => gulp.src(
-    'minified/**/*'
+const copyCjsFilesFromTranspiledToDistributed = () => gulp.src(
+    'transpiled/**/*.js'
 ).pipe(
-    gulp.dest('distributed')
+    gulp.dest('distributed/cjs')
 );
 
-const copyFilesFromTranspiledToBundled = () => gulp.src(
-    'transpiled/**/*'
+const copyEsmFilesFromAssetsToDistributed = () => gulp.src(
+    'assets/**/*.js'
 ).pipe(
-    gulp.dest('bundled')
+    gulp.dest('distributed/esm')
 );
 
 const promoteToBundled = gulp.series(
-    cleanBundledFolder,
-    copyFilesFromTranspiledToBundled
+    cleanBundledFolder
 );
 
 const promoteToDistributed = gulp.series(
     cleanDistributedFolder,
-    copyFilesFromMinifiedToDistributed
+    copyBrowserFileFromBundledToDistributed,
+    copyBrowserFileFromMinifiedToDistributed,
+    copyCjsFilesFromTranspiledToDistributed,
+    copyEsmFilesFromAssetsToDistributed
 );
 
 const promoteToMinified = gulp.series(
-    cleanMinifiedFolder,
-    copyFilesFromBundledToMinified
+    cleanMinifiedFolder
 );
 
 const promoteToTranspiled = gulp.series(
-    cleanTranspiledFolder,
-    copyFilesFromAssetsToTranspiled
+    cleanTranspiledFolder
 );
 
 const bundleJavaScriptFiles = () => gulp.src(
     [
-        'transpiled/**/*.js',
-        '!transpiled/**/examples*/',
-        '!transpiled/**/examples*/**/*'
-    ],
-    {
-        read: false
-    }
+        'transpiled/index.js'
+    ]
 ).pipe(
-    gulpTap((source) => {
-        source.contents = browserify(
-            source.path,
-            {
-                standalone: exportedName,
-                node: true
-            }
-        ).bundle();
-    })
-).pipe(
-    gulpBuffer()
+    webpackStream(
+        {
+            mode: "production",
+            optimization: {
+                minimize: false
+            },
+            output: {
+                filename: 'index.js',
+                library: exportedName,
+                libraryTarget: "window"
+            },
+            target: 'web'
+        },
+        webpack
+    )
 ).pipe(
     gulp.dest('bundled')
 );
 
 const minifyJavaScriptFiles = () => gulp.src(
     [
-        'bundled/**/*.js',
-        '!bundled/**/examples*/',
-        '!bundled/**/examples*/**/*'
+        'bundled/index.js'
     ]
 ).pipe(
     gulpUglify()
@@ -131,9 +130,7 @@ const minifyJavaScriptFiles = () => gulp.src(
 
 const transpileJavaScriptFiles = () => gulp.src(
     [
-        'assets/**/*.js',
-        '!assets/**/examples*/',
-        '!assets/**/examples*/**/*'
+        'assets/**/*.js'
     ]
 ).pipe(
     gulpBabel({
@@ -162,34 +159,11 @@ const transpile = (done) => gulp.series(
     transpileJavaScriptFiles
 )(done);
 
-const buildForDevelopment = (done) => gulp.series(
-    transpile,
-    bundle
-)(done);
-
-const buildForProduction = (done) => gulp.series(
+const build = (done) => gulp.series(
     transpile,
     bundle,
     minify,
     distribute
-)(done);
-
-const buildForTesting = (done) => gulp.series(
-    transpile,
-    bundle,
-    minify,
-)(done);
-
-const watchForDevelopment = (done) => gulp.series(
-    watcher(buildForDevelopment)
-)(done);
-
-const watchForProduction = (done) => gulp.series(
-    watcher(buildForProduction)
-)(done);
-
-const watchForTesting = (done) => gulp.series(
-    watcher(buildForTesting)
 )(done);
 
 const watcher = (action) => function watch() {
@@ -204,32 +178,16 @@ const watcher = (action) => function watch() {
     );
 };
 
+const watch = (done) => gulp.series(
+    watcher(build)
+)(done);
+
 gulp.task(
-    'build-for-development',
-    buildForDevelopment
+    'build',
+    build
 );
 
 gulp.task(
-    'build-for-production',
-    buildForProduction
-);
-
-gulp.task(
-    'build-for-testing',
-    buildForTesting
-);
-
-gulp.task(
-    'watch-for-development',
-    watchForDevelopment
-);
-
-gulp.task(
-    'watch-for-production',
-    watchForProduction
-);
-
-gulp.task(
-    'watch-for-testing',
-    watchForTesting
+    'watch',
+    watch
 );
