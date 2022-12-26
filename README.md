@@ -3,7 +3,7 @@
 ## Digital Neural Networks Architecture ##
 
 [![Build Status](https://travis-ci.org/antoniodeluca/dn2a.svg?branch=master)](https://travis-ci.org/antoniodeluca/dn2a)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/antoniodeluca/dn2a/master/LICENSE)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/antoniodeluca/dn2a/main/LICENSE)
 [![npm version](https://badge.fury.io/js/dn2a.svg)](https://badge.fury.io/js/dn2a)
 
 ## About ##
