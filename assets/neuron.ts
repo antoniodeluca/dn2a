@@ -1,17 +1,12 @@
-import {
-    bignumber,
-    config,
-    divide,
-    exp,
-    subtract,
-    sum
-} from "mathjs";
+import {create, all} from "mathjs";
 
-const Neuron = function(precisionConfiguration) {
+const mathjs = create(all);
+
+const Neuron = function(precisionConfiguration?) {
     precisionConfiguration = precisionConfiguration || {
-        numbersPrecision: 32
+        numbersPrecision: 64
     };
-    const Neuron = function(configuration) {
+    const Neuron = function(configuration?) {
         this.configuration = configuration || {
             numbersPrecision: precisionConfiguration.numbersPrecision
         };
@@ -21,53 +16,53 @@ const Neuron = function(precisionConfiguration) {
         }
         this.configuration = this.transformConfiguration();
 
-        config({
+        mathjs.config({
             number: "BigNumber",
-            precision: this.configuration.numbersPrecision
+            // precision: this.configuration.numbersPrecision
         });
 
-        this._delta = bignumber(0);
+        this._delta = mathjs.bignumber(0);
 
-        this._expectedOutput = bignumber(0);
+        this._expectedOutput = mathjs.bignumber(0);
 
         this._fixed = false;
 
         this._incomingConnections = [];
 
-        this._inputSum = bignumber(0);
+        this._inputSum = mathjs.bignumber(0);
 
         this._inputs = [];
 
         this._outgoingConnections = [];
 
-        this._output = bignumber(0);
+        this._output = mathjs.bignumber(0);
 
-        this._outputError = bignumber(0);
+        this._outputError = mathjs.bignumber(0);
 
-        this._previousExpectedOutput = bignumber(0);
+        this._previousExpectedOutput = mathjs.bignumber(0);
 
         this._previousIncomingConnections = [];
 
-        this._previousInputSum = bignumber(0);
+        this._previousInputSum = mathjs.bignumber(0);
 
         this._previousInputs = [];
 
         this._previousOutgoingConnections = [];
 
-        this._previousOutput = bignumber(0);
+        this._previousOutput = mathjs.bignumber(0);
 
-        this._previousOutputError = bignumber(0);
+        this._previousOutputError = mathjs.bignumber(0);
 
         this._proxy = false;
 
         this._transferFunction = function(value) {
-            return divide(
-                bignumber(1),
-                sum(
-                    bignumber(1),
-                    exp(
-                        subtract(
-                            bignumber(0),
+            return mathjs.divide(
+                mathjs.bignumber(1),
+                mathjs.sum(
+                    mathjs.bignumber(1),
+                    mathjs.exp(
+                        mathjs.subtract(
+                            mathjs.bignumber(0),
                             value
                         )
                     )

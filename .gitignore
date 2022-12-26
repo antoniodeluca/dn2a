@@ -1,8 +1,5 @@
+.parcel-cache
 bower_components
-bundled
+dist
 distributed
-minified
 node_modules
-transpiled
-
-gulpfile.config.js
