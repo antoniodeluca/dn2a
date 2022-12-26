@@ -1,17 +1,12 @@
-import {
-    bignumber,
-    config,
-    format,
-    multiply,
-    random,
-    subtract
-} from "mathjs";
+import {create, all} from "mathjs";
 
-const Synapse = function(precisionConfiguration) {
+const mathjs = create(all);
+
+const Synapse = function(precisionConfiguration?) {
     precisionConfiguration = precisionConfiguration || {
-        numbersPrecision: 32
+        numbersPrecision: 64
     };
-    const Synapse = function(configuration) {
+    const Synapse = function(configuration?) {
         this.configuration = configuration || {
             numbersPrecision: precisionConfiguration.numbersPrecision
         };
@@ -21,9 +16,9 @@ const Synapse = function(precisionConfiguration) {
         }
         this.configuration = this.transformConfiguration();
 
-        config({
+        mathjs.config({
             number: "BigNumber",
-            precision: this.configuration.numbersPrecision
+            // precision: this.configuration.numbersPrecision
         });
 
         this._incomingConnection = null;
@@ -34,27 +29,27 @@ const Synapse = function(precisionConfiguration) {
 
         this._previousOutgoingConnections = null;
 
-        this._previousWeight = bignumber(0);
+        this._previousWeight = mathjs.bignumber(0);
 
-        this._previousWeightChange = bignumber(0);
+        this._previousWeightChange = mathjs.bignumber(0);
 
-        this._weight = subtract(
-            bignumber(1),
-            multiply(
-                bignumber(
-                    format(
-                        random(0, 1),
+        this._weight = mathjs.subtract(
+            mathjs.bignumber(1),
+            mathjs.multiply(
+                mathjs.bignumber(
+                    mathjs.format(
+                        mathjs.random(0, 1),
                         {
                             notation: "fixed",
                             precision: 15
                         }
                     )
                 ),
-                bignumber(2)
+                mathjs.bignumber(2)
             )
         );
 
-        this._weightChange = bignumber(0);
+        this._weightChange = mathjs.bignumber(0);
     };
 
     Synapse.prototype = {

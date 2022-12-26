@@ -1,5 +1,0 @@
-const exportedName = 'DN2A';
-
-export {
-    exportedName
-};
