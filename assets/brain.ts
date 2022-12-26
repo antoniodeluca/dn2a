@@ -1,13 +1,13 @@
-import {
-    config
-} from "mathjs";
+import {create, all} from "mathjs";
 
 import Cerebrum from "./cerebrum";
 import NetworkAlpha from "./networks/alpha";
 import Neuron from "./neuron";
 import Synapse from "./synapse";
 
-const Brain = function(configuration) {
+const mathjs = create(all);
+
+const Brain = function(configuration?: any) {
     this.configuration = configuration || {
         cerebrum: {
             generator: Cerebrum,
@@ -31,7 +31,7 @@ const Brain = function(configuration) {
                                 synapse: {
                                     generator: Synapse
                                 },
-                                numbersPrecision: 32
+                                numbersPrecision: 64
                             }
                         },
                         inputsFrom: [
@@ -44,16 +44,16 @@ const Brain = function(configuration) {
                 ]
             }
         }
-    };
+    } as any;
 
     if (!this.checkConfiguration()) {
         throw "Invalid Brain Module Configuration";
     }
     this.configuration = this.transformConfiguration();
 
-    config({
+    mathjs.config({
         number: "BigNumber",
-        precision: this.configuration.numbersPrecision
+        // precision: this.configuration.numbersPrecision
     });
 
     this.cerebrum = new this.configuration.cerebrum.generator(this.configuration.cerebrum.configuration);

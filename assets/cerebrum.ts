@@ -1,12 +1,12 @@
-import {
-    config
-} from "mathjs";
+import {create, all} from "mathjs";
 
 import NetworkAlpha from "./networks/alpha";
 import Neuron from "./neuron";
 import Synapse from "./synapse";
 
-const Cerebrum = function(configuration) {
+const mathjs = create(all);
+
+const Cerebrum = function(configuration?) {
     this.configuration = configuration || {
         minds: [
             {
@@ -27,7 +27,7 @@ const Cerebrum = function(configuration) {
                         synapse: {
                             generator: Synapse
                         },
-                        numbersPrecision: 32
+                        numbersPrecision: 64
                     }
                 },
                 inputsFrom: [
@@ -51,9 +51,9 @@ const Cerebrum = function(configuration) {
 
     this.outputs = []; // outputs are objects with the pattern and the name of the source mind (because there could be more than one producing outputs)
 
-    config({
+    mathjs.config({
         number: "BigNumber",
-        precision: this.configuration.numbersPrecision
+        // precision: this.configuration.numbersPrecision
     });
 
     this.configuration.minds.forEach(function(configuration) {

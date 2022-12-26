@@ -1,17 +1,14 @@
 .git
+.parcel-cache
 assets
 bower_components
-bundled
-minified
+distributed
 node_modules
 tests
-transpiled
 
+.eslintrc.js
 .gitignore
 .travis.yml
-babel.config.js
 bower.json
-gulpfile.babel.js
-gulpfile.config.example
-gulpfile.config.js
-karma.conf.js
+jest.config.ts
+tsconfig.json
