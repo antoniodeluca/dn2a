@@ -124,7 +124,6 @@ var DN2A = require("dn2a");
 
 // Instantiation
 // The object expected by the constructor can specify properties that describe the neural network.
-// The list of the valid properties together their accepted ranges and default values is reported in this README file.
 // The object can be completely omitted and in this case default values are used for all properties.
 var neuralNetwork = new DN2A.NetworkAlpha();
 
@@ -191,7 +190,6 @@ var neuralNetwork = new DN2A.NetworkAlpha();
 
 // Training
 // The object passed to the callback function contains information about the training process.
-// The list of the valid properties together their accepted ranges and default values is reported in this README file.
 var trainingPatterns = [
     {
         input: [0, 0],
