@@ -202,4 +202,6 @@ const Neuron = function(precisionConfiguration?) {
     return Neuron;
 };
 
-export default Neuron;
+export { 
+    Neuron
+};

@@ -2,8 +2,8 @@ import forEachRight from "lodash.foreachright";
 import times from "lodash.times";
 import {create, all} from "mathjs";
 
-import Neuron from "../neuron";
-import Synapse from "../synapse";
+import { Neuron } from "../neuron";
+import { Synapse } from "../synapse";
 
 const mathjs = create(all);
 
@@ -436,4 +436,6 @@ NetworkAlpha.prototype = {
     }
 };
 
-export default NetworkAlpha;
+export { 
+    NetworkAlpha
+}

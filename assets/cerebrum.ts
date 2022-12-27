@@ -1,8 +1,8 @@
 import {create, all} from "mathjs";
 
-import NetworkAlpha from "./networks/alpha";
-import Neuron from "./neuron";
-import Synapse from "./synapse";
+import { NetworkAlpha } from "./networks/alpha";
+import { Neuron } from "./neuron";
+import { Synapse } from "./synapse";
 
 const mathjs = create(all);
 
@@ -110,4 +110,6 @@ Cerebrum.prototype = {
     }
 };
 
-export default Cerebrum;
+export {
+    Cerebrum
+};
