@@ -1,6 +1,6 @@
 {
   "author": "Antonio De Luca <contact@antoniodeluca.info>",
-  "browser": "distributed/browser/index.min.js",
+  "browser": "distributed/browser.js",
   "dependencies": {
     "lodash.foreachright": "^4.4.0",
     "lodash.times": "^4.3.2",
@@ -37,5 +37,5 @@
   },
   "source": "assets/index.ts",
   "types": "distributed/types.d.ts",
-  "version": "0.3.0"
+  "version": "0.3.1"
 }

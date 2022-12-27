@@ -111,4 +111,6 @@ const Synapse = function(precisionConfiguration?) {
     return Synapse;
 };
 
-export default Synapse;
+export {
+    Synapse
+};
