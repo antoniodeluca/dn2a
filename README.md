@@ -57,32 +57,23 @@ Module for the management of multiple Neural Networks in terms of configuration/
 Module for the management of data normalization, integration/intercommunication with other external software and monitoring of the whole session.
 
 ----------
-
+ 
 ## Tutorials ##
 
-### Using in Node  ###
+### Installation  ###
 
 To install the library through NPM:
 
 	npm install dn2a
 
-### Using in the Browser ###
-
-To install the library through Bower:
-
-	bower install dn2a
-
-### Training and Querying a Single Network with default parametrization (ES5) ###
+### Training and Querying a Single Network with default parametrization ###
 
 ```javascript
-// Importation
-var DN2A = require("dn2a");
+import { NetworkAlpha } from "dn2a";
 
-// Instantiation
-var neuralNetwork = new DN2A.NetworkAlpha();
+const neuralNetwork = new NetworkAlpha();
 
-// Training
-var trainingPatterns = [
+const trainingPatterns = [
     {
         input: [0, 0],
         output: [0]
@@ -100,34 +91,31 @@ var trainingPatterns = [
         output: [0]
     }
 ];
+
+// Training
 neuralNetwork.train(trainingPatterns);
 
-// Querying
-var inputPatterns = [
+const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ];
-neuralNetwork.query(inputPatterns, function(queryingStatus) {
-    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+
+// Querying
+neuralNetwork.query(inputPatterns, (queryingStatus) => {
+    inputPatterns.forEach((inputPatten, inputPatternIndex) => {
+        console.log(``[${inputPatterns[inputPatternIndex].join(", ")}] => [${queryingStatus.outputPatterns[inputPatternIndex].join (", ")}]``);
     });
 });
 ```
 
-### Training and Querying a Single Network with custom parametrization (ES5) ###
+### Training and Querying a Single Network with custom parametrization ###
 
 ```javascript
-// Importation
-var DN2A = require("dn2a");
+import { NetworkAlpha, NeuronFactory, SynapseFactory } from "dn2a";
 
-// Instantiation
-// The object expected by the constructor can specify properties that describe the neural network.
-// The object can be completely omitted and in this case default values are used for all properties.
-var neuralNetwork = new DN2A.NetworkAlpha();
-
-var neuralNetwork = new DN2A.NetworkAlpha({
+const neuralNetwork = new NetworkAlpha({
     layerDimensions: [2, 4, 4, 1],
     learningMode: "continuous",
     learningRate: 0.3,
@@ -136,16 +124,15 @@ var neuralNetwork = new DN2A.NetworkAlpha({
     maximumEpoch: 20000,
     dataRepository: {},
     neuron: {
-        generator: DN2A.Neuron
+        generator: NeuronFactory.getInstance
     },
     synapse: {
-        generator: DN2A.Synapse
+        generator: SynapseFactory.getInstance
     },
-    numbersPrecision: 32
+    numbersPrecision: 64
 });
 
-// Training
-var trainingPatterns = [
+const trainingPatterns = [
     {
         input: [0, 0],
         output: [0]
@@ -163,34 +150,33 @@ var trainingPatterns = [
         output: [0]
     }
 ];
+
+// Training
 neuralNetwork.train(trainingPatterns);
 
-// Querying
-var inputPatterns = [
+const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ];
-neuralNetwork.query(inputPatterns, function(queryingStatus) {
-    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
+
+// Querying
+neuralNetwork.query(queryingPatterns, (queryingStatus) => {
+    inputPatterns.forEach((inputPatten, inputPatternIndex) => {
+        console.log(``[${inputPatterns[inputPatternIndex].join(", ")}] => [${queryingStatus.outputPatterns[inputPatternIndex].join(", ")}]``);
     });
 });
 ```
 
-### Training and Querying a Single Network with evolution feedback (ES5) ###
+### Training and Querying a Single Network with evolution feedback ###
 
 ```javascript
-// Importation
-var DN2A = require("dn2a");
+import { NetworkAlpha } from "dn2a";
 
-// Instantiation
-var neuralNetwork = new DN2A.NetworkAlpha();
+const neuralNetwork = new NetworkAlpha();
 
-// Training
-// The object passed to the callback function contains information about the training process.
-var trainingPatterns = [
+const trainingPatterns = [
     {
         input: [0, 0],
         output: [0]
@@ -208,37 +194,44 @@ var trainingPatterns = [
         output: [0]
     }
 ];
-neuralNetwork.train(trainingPatterns, function(trainingStatus) {
-    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
-});
 
-// Querying
-var inputPatterns = [
+// Training
+neuralNetwork.train(
+    trainingPatterns, 
+    (trainingStatus) => {
+        console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
+    }
+);
+
+const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ];
-neuralNetwork.query(inputPatterns, function(queryingStatus) {
-    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
-    });
-});
+
+// Querying
+neuralNetwork.query(
+    queryingPatterns, 
+    (queryingStatus) => {
+        inputPatterns.forEach((inputPatten, inputPatternIndex) => {
+            console.log(``[${inputPatterns[inputPatternIndex].join(", ")}] => [${queryingStatus.outputPatterns[inputPatternIndex].join(", ")}]``);
+        });
+    }
+);
 ```
 
-### Training and Querying a Single Network through the Cerebrum (ES5) ###
+### Training and Querying a Single Network through the Cerebrum ###
 
 ```javascript
-// Importation
-var DN2A = require("dn2a");
+import { Cerebrum, CerebrumConfiguration, NetworkAlphaFactory, NeuronFactory, SynapseFactory } from "dn2a";
 
-// Instantiation
-var cerebrum = new DN2A.Cerebrum({
+const neuralNetwork = new NetworkAlpha({
     minds: [
         {
             name: "firstNeuralNetwork",
             network: {
-                generator: DN2A.NetworkAlpha,
+                generator: NetworkAlphaFactory.getInstance,
                 configuration: {
                     layerDimensions: [2, 4, 1],
                     learningMode: "continuous",
@@ -248,12 +241,12 @@ var cerebrum = new DN2A.Cerebrum({
                     maximumEpoch: 1000,
                     dataRepository: {},
                     neuron: {
-                        generator: DN2A.Neuron
+                        generator: NeuronFactory.getInstance
                     },
                     synapse: {
-                        generator: DN2A.Synapse
+                        generator: SynapseFactory.getInstance
                     },
-                    numbersPrecision: 32
+                    numbersPrecision: 64
                 }
             },
             inputsFrom: [
@@ -266,9 +259,7 @@ var cerebrum = new DN2A.Cerebrum({
     ]
 });
 
-// Training
-// The name expected as third parameter by the trainMind method specifies which specific mind to train
-var trainingPatterns = [
+const trainingPatterns = [
     {
         input: [0, 0],
         output: [0]
@@ -286,36 +277,34 @@ var trainingPatterns = [
         output: [0]
     }
 ];
-cerebrum.trainMind(trainingPatterns, function(trainingStatus) {
-    console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
-}, "firstNeuralNetwork");
 
-// Querying
-// The name expected as third parameter by the queryMind method specifies which specific mind to query
-var inputPatterns = [
+// Training
+cerebrum.trainMind(
+    trainingPatterns, 
+    (trainingStatus) => {
+        console.log(``Epoch: ${trainingStatus.elapsedEpochCounter}``);
+    }, 
+    "firstNeuralNetwork"
+);
+
+const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
     [1, 1]
 ];
-cerebrum.queryMind(inputPatterns, function(queryingStatus) {
-    inputPatterns.forEach(function(inputPatten, inputPatternIndex) {
-        console.log("[" + inputPatterns[inputPatternIndex].join(", ") + "] => [" + queryingStatus.outputPatterns[inputPatternIndex].join(", ") + "]");
-    });
-}, "firstNeuralNetwork");
+
+// Querying
+cerebrum.queryMind(
+    queryingPatterns, 
+    (queryingStatus) => {
+        inputPatterns.forEach((inputPatten, inputPatternIndex) => {
+            console.log(``[${inputPatterns[inputPatternIndex].join(", ")}] => [${queryingStatus.outputPatterns[inputPatternIndex].join(", ")}]``);
+        });
+    }, 
+    "firstNeuralNetwork"
+);
 ```
-
-### Training and Querying an entire Networks Chain  through the Cerebrum (ES5) ###
-
-	TODO
-
-### Training and Querying a Single Network through the Brain (ES5) ###
-
-	TODO
-
-### Training and Querying an entire Networks Chain through the Brain (ES5) ###
-
-	TODO
 
 # Creator #
 

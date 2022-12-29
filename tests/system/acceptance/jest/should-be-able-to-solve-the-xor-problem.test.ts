@@ -1,29 +1,34 @@
-import { Brain, Cerebrum, NetworkAlpha, Neuron, Synapse } from "../../../../assets/"
-
+import { Brain } from "../../../../assets"
+import { CerebrumFactory } from "../../../../assets/CerebrumFactory";
+import { CerebrumConfiguration } from "../../../../assets/CerebrumInterface";
+import { NetworkAlphaFactory } from "../../../../assets/networks/alpha/NetworkAlphaFactory";
+import { NeuronFactory } from "../../../../assets/networks/alpha/NeuronFactory";
+import { SynapseFactory } from "../../../../assets/networks/alpha/SynapseFactory";
+ 
 describe("When trained with training examples about the XOR problem", () => {
     it("Should be able to train up to a satisfying accuracy", () => {
-        const brain = new (Brain as any)({
+        const brain = new Brain({
             cerebrum: {
-                generator: Cerebrum,
+                generator: CerebrumFactory.getInstance,
                 configuration: {
                     minds: [
                         {
                             name: "defaultMind",
                             network: {
-                                generator: NetworkAlpha,
+                                generator: NetworkAlphaFactory.getInstance,
                                 configuration: {
                                     layerDimensions: [2, 4, 1],
                                     learningMode: "continuous",
                                     learningRate: 0.3,
                                     momentumRate: 0.7,
                                     maximumError: 0.005,
-                                    maximumEpoch: 1000,
-                                    dataRepository: {},
+                                    maximumEpoch: 1000000,
+                                    dataRepository: { neuronLayers: [] },
                                     neuron: {
-                                        generator: Neuron
+                                        generator: NeuronFactory.getInstance
                                     },
                                     synapse: {
-                                        generator: Synapse
+                                        generator: SynapseFactory.getInstance
                                     },
                                     numbersPrecision: 64
                                 }
@@ -36,7 +41,7 @@ describe("When trained with training examples about the XOR problem", () => {
                     outputsFrom: [
                         "defaultMind"
                     ]
-                }
+                } as CerebrumConfiguration
             }
         });
         const trainingPatterns = [
@@ -96,7 +101,7 @@ describe("When trained with training examples about the XOR problem", () => {
                     }
                 );
             },
-            null,
+            undefined,
             "defaultMind"
         );
 
