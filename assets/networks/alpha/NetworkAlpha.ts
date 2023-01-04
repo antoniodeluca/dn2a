@@ -1,4 +1,4 @@
-import {all, BigNumber, create} from "mathjs";
+import {all, BigNumber, create, EvalFunction, MathExpression, MathJsStatic} from "mathjs";
  
 import { NeuronFactory } from "./NeuronFactory";
 import { SynapseFactory } from "./SynapseFactory";
@@ -6,8 +6,6 @@ import { DataRepository, NetworkAlphaConfiguration } from "./NetworkAlphaInterfa
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
 import { QueryingPatterns, TrainingPatterns } from "../../InputOutputInterface";
-
-const mathjs = create(all);
 
 class NetworkAlpha {
     private defaultConfiguration = {
@@ -31,9 +29,22 @@ class NetworkAlpha {
 
     private _dataRepository: DataRepository;
 
+    private mathjsInstance: MathJsStatic;
+
+    private compiledExpressions: { [key: string]: EvalFunction } = {};
+
     private neuronGenerator: (configuration?: NeuronConfiguration) => NeuronInterface;
 
     private synapseGenerator: (configuration?: SynapseConfiguration) => SynapseInterface;
+
+    private evaluate(expression: MathExpression, scope: unknown) {
+        const compiledExpressionIndex = expression.toString();
+        if (!this.compiledExpressions[compiledExpressionIndex]) {
+            this.compiledExpressions[compiledExpressionIndex] = this.mathjsInstance.compile(expression);
+        }
+
+        return this.compiledExpressions[compiledExpressionIndex].evaluate(scope);
+    }
 
     private checkConfiguration() {
         return true;
@@ -63,7 +74,7 @@ class NetworkAlpha {
         const neuron = this.neuronGenerator();
         const proxy = scope === "input" ? true : false;
         const fixed = scope === "bias" ? true : false;
-        const output = mathjs.bignumber(fixed ? 1 : 0);
+        const output = this.mathjsInstance.bignumber(fixed ? 1 : 0);
         neuron.proxy = proxy;
         neuron.fixed = fixed;
         neuron.output = output;
@@ -109,7 +120,7 @@ class NetworkAlpha {
             layerNeuronIndex: number
         ) => {
             if (!layerNeuron.fixed) {
-                layerNeuron.output = mathjs.bignumber(inputPattern[layerNeuronIndex]);
+                layerNeuron.output = this.mathjsInstance.bignumber(inputPattern[layerNeuronIndex]);
             }
         });
     }
@@ -120,7 +131,7 @@ class NetworkAlpha {
             layerNeuron: NeuronInterface,
             layerNeuronIndex: number
         ) => {
-            inputPattern[layerNeuronIndex] = mathjs.number(layerNeuron.output);
+            inputPattern[layerNeuronIndex] = this.mathjsInstance.number(layerNeuron.output);
         });
         return inputPattern;
     }
@@ -130,7 +141,7 @@ class NetworkAlpha {
             layerNeuron: NeuronInterface,
             layerNeuronIndex: number
         ) => {
-            layerNeuron.expectedOutput = mathjs.bignumber(expectedOutputPattern[layerNeuronIndex]);
+            layerNeuron.expectedOutput = this.mathjsInstance.bignumber(expectedOutputPattern[layerNeuronIndex]);
         });
     }
 
@@ -140,7 +151,7 @@ class NetworkAlpha {
             layerNeuron: NeuronInterface,
             layerNeuronIndex: number
         ) => {
-            expectedOutputPattern[layerNeuronIndex] = mathjs.number(layerNeuron.expectedOutput);
+            expectedOutputPattern[layerNeuronIndex] = this.mathjsInstance.number(layerNeuron.expectedOutput);
         });
         return expectedOutputPattern;
     }
@@ -150,7 +161,7 @@ class NetworkAlpha {
             layerNeuron: NeuronInterface,
             layerNeuronIndex: number
         ) => {
-            layerNeuron.output = mathjs.bignumber(outputPattern[layerNeuronIndex]);
+            layerNeuron.output = this.mathjsInstance.bignumber(outputPattern[layerNeuronIndex]);
         });
     }
 
@@ -160,28 +171,22 @@ class NetworkAlpha {
             layerNeuron: NeuronInterface,
             layerNeuronIndex: number
         ) => {
-            outputPattern[layerNeuronIndex] = mathjs.number(layerNeuron.output);
+            outputPattern[layerNeuronIndex] = this.mathjsInstance.number(layerNeuron.output);
         });
         return outputPattern;
     }
 
     private getOutputError() {
-        const outputError =
-            mathjs.bignumber(mathjs.divide(
-                this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1].reduce(
-                    (
-                        totalOutputError: BigNumber, 
-                        layerNeuron: NeuronInterface
-                    ) => {
-                        return mathjs.add(
-                            totalOutputError,
-                            mathjs.square(layerNeuron.outputError)
-                        );
-                    },
-                    mathjs.bignumber(0)
-                ),
-                this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1].length
-            ).toString());
+        const layerNeurons = this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1];
+        const numberOfNeuronsInTheLayer = layerNeurons.length;
+        const layerNeuronOutputErrors = layerNeurons.map(
+            (layerNeuron: NeuronInterface) => layerNeuron.outputError
+        );
+        const outputError = this.evaluate(
+            "sum(dotPow(layerNeuronOutputErrors, 2)) / numberOfNeuronsInTheLayer",
+            { layerNeuronOutputErrors, numberOfNeuronsInTheLayer }
+        );
+        
         return outputError;
     }
 
@@ -200,9 +205,9 @@ class NetworkAlpha {
                             (
                                 synapse
                             ) => {
-                                layerNeuron.inputSum = mathjs.bignumber(mathjs.add(
+                                layerNeuron.inputSum = this.mathjsInstance.bignumber(this.mathjsInstance.add(
                                     layerNeuron.inputSum,
-                                    mathjs.multiply(
+                                    this.mathjsInstance.multiply(
                                         synapse.incomingConnection.output,
                                         synapse.weight
                                     )
@@ -210,11 +215,11 @@ class NetworkAlpha {
                             }
                         );
                         layerNeuron.output = layerNeuron.transferFunction(layerNeuron.inputSum);
-                        layerNeuron.outputError = mathjs.subtract(
+                        layerNeuron.outputError = this.mathjsInstance.subtract(
                             layerNeuron.expectedOutput,
                             layerNeuron.output
                         );
-                        layerNeuron.inputSum = mathjs.bignumber(0);
+                        layerNeuron.inputSum = this.mathjsInstance.bignumber(0);
                     }
                 });
             }
@@ -233,13 +238,13 @@ class NetworkAlpha {
                     layerNeurons.forEach((
                         layerNeuron
                     ) => {
-                        layerNeuron.delta = mathjs.bignumber(mathjs.chain(
+                        layerNeuron.delta = this.mathjsInstance.bignumber(this.mathjsInstance.chain(
                             layerNeuron.outputError
                         ).multiply(
                             layerNeuron.output
                         ).multiply(
-                            mathjs.subtract(
-                                mathjs.bignumber(1),
+                            this.mathjsInstance.subtract(
+                                this.mathjsInstance.bignumber(1),
                                 layerNeuron.output
                             )
                         ).done().toString());
@@ -249,28 +254,28 @@ class NetworkAlpha {
                         layerNeuron
                     ) => {
                         if (!layerNeuron.fixed) {
-                            layerNeuron.delta = mathjs.bignumber(mathjs.chain(
+                            layerNeuron.delta = this.mathjsInstance.bignumber(this.mathjsInstance.chain(
                                 layerNeuron.outgoingConnections.map(
                                     (synapse) => {
-                                        return mathjs.multiply(
+                                        return this.mathjsInstance.multiply(
                                             synapse.weight,
                                             synapse.outgoingConnection.delta
                                         );
                                     }
                                 ).reduce(
                                     (accumulator, value) => {
-                                        return mathjs.add(
+                                        return this.mathjsInstance.add(
                                             accumulator,
                                             value
                                         );
                                     },
-                                    mathjs.bignumber(0)
+                                    this.mathjsInstance.bignumber(0)
                                 )
                             ).multiply(
                                 layerNeuron.output
                             ).multiply(
-                                mathjs.subtract(
-                                    mathjs.bignumber(1),
+                                this.mathjsInstance.subtract(
+                                    this.mathjsInstance.bignumber(1),
                                     layerNeuron.output
                                 )
                             ).done().toString());
@@ -297,21 +302,21 @@ class NetworkAlpha {
                                 synapse
                             ) => {
                                 synapse.previousWeightChange = synapse.weightChange;
-                                synapse.weightChange = mathjs.bignumber(mathjs.add(
-                                    mathjs.multiply(
-                                        mathjs.bignumber(learningRate),
-                                        mathjs.multiply(
+                                synapse.weightChange = this.mathjsInstance.bignumber(this.mathjsInstance.add(
+                                    this.mathjsInstance.multiply(
+                                        this.mathjsInstance.bignumber(learningRate),
+                                        this.mathjsInstance.multiply(
                                             layerNeuron.delta,
                                             synapse.incomingConnection.output
                                         )
                                     ),
-                                    mathjs.multiply(
-                                        mathjs.bignumber(momentumRate),
+                                    this.mathjsInstance.multiply(
+                                        this.mathjsInstance.bignumber(momentumRate),
                                         synapse.previousWeightChange
                                     )
                                 ).toString());
                                 synapse.previousWeight = synapse.weight;
-                                synapse.weight = mathjs.add(
+                                synapse.weight = this.mathjsInstance.add(
                                     synapse.weight,
                                     synapse.weightChange
                                 );
@@ -333,11 +338,13 @@ class NetworkAlpha {
 
         this._dataRepository = this.configuration.dataRepository;
 
+        this.mathjsInstance = create(all);
+
         this.neuronGenerator = this.configuration.neuron.generator;
 
         this.synapseGenerator = this.configuration.synapse.generator;
 
-        mathjs.config({
+        this.mathjsInstance.config({
             number: "BigNumber",
         });
 
@@ -367,7 +374,7 @@ class NetworkAlpha {
                 input: [] as number[],
                 target: [] as number[],
                 output: [] as number[],
-                error: mathjs.bignumber(0)
+                error: this.mathjsInstance.bignumber(0)
             }
         };
         do {
@@ -389,7 +396,7 @@ class NetworkAlpha {
                     );
                     const outputError = this.getOutputError();
                     trainingStatus.outputErrors.push(outputError);
-                    trainingStatus.interruptionRequest = Boolean(trainingStatus.interruptionRequest && mathjs.smallerEq(outputError, mathjs.bignumber(this.configuration.maximumError)));
+                    trainingStatus.interruptionRequest = Boolean(trainingStatus.interruptionRequest && this.mathjsInstance.smallerEq(outputError, this.mathjsInstance.bignumber(this.configuration.maximumError)));
                     trainingStatus.elapsedIterationCounter++;
                     trainingStatus.elapsedIterationPattern.input = trainingPattern.input;
                     trainingStatus.elapsedIterationPattern.target = this.getExpectedOutputPattern();
