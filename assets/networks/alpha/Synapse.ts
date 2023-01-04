@@ -3,11 +3,12 @@ import {all, create} from "mathjs";
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
 
 const mathjs = create(all);
+mathjs.config({
+    number: "number",
+});
 
 class Synapse implements SynapseInterface {
-    private defaultConfiguration = {
-        numbersPrecision: 64
-    } as SynapseConfiguration;
+    private defaultConfiguration = {} as SynapseConfiguration;
 
     private configuration: SynapseConfiguration;
 
@@ -19,21 +20,19 @@ class Synapse implements SynapseInterface {
 
     private _previousOutgoingConnection;
 
-    private _previousWeight = mathjs.bignumber(0);
+    private _previousWeight = 0;
 
-    private _previousWeightChange = mathjs.bignumber(0);
+    private _previousWeightChange = 0;
 
-    private _weight = mathjs.bignumber(mathjs.subtract(
-        mathjs.bignumber(1),
+    private _weight = mathjs.subtract(
+        1,
         mathjs.multiply(
-            mathjs.bignumber(
-                mathjs.random(0, 1)
-            ),
-            mathjs.bignumber(2)
+            mathjs.random(0, 1),
+            2
         )
-    ).toString());
+    );
 
-    private _weightChange = mathjs.bignumber(0);
+    private _weightChange = 0;
 
     private checkConfiguration() {
         return true;
@@ -50,10 +49,6 @@ class Synapse implements SynapseInterface {
             throw "Invalid Synapse Module Configuration";
         }
         this.configuration = this.transformConfiguration();
-
-        mathjs.config({
-            number: "BigNumber",
-        });
     };
 
     set incomingConnection(value) {

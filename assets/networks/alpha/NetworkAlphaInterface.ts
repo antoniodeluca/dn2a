@@ -3,30 +3,29 @@ import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface"
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface"
  
 interface DataRepository {
-    neuronLayers: NeuronInterface[][]
+    neuronLayers: NeuronInterface[][];
 }
 
 interface NetworkAlphaInterface extends NetworkInterface {
-    dataRepository: DataRepository
+    dataRepository: DataRepository;
 }
 
 interface NetworkAlphaConfiguration {
-    layerDimensions: number[],
-    learningMode: "continuous" | "stepatgoal" | "stepbystep",
-    learningRate: number,
-    momentumRate: number,
-    maximumError: number,
-    maximumEpoch: number,
-    dataRepository: DataRepository,
+    layerDimensions: number[];
+    learningMode: "continuous" | "stepatgoal" | "stepbystep";
+    learningRate: number;
+    momentumRate: number;
+    maximumError: number;
+    maximumEpoch: number;
+    dataRepository: DataRepository;
     neuron: {
-        generator: (configuration?: NeuronConfiguration) => NeuronInterface,
-        configuration?: NeuronConfiguration
+        generator: (configuration?: NeuronConfiguration) => NeuronInterface;
+        configuration?: NeuronConfiguration;
     },
     synapse: {
-        generator: (configuration?: SynapseConfiguration) => SynapseInterface,
-        configuration?: SynapseConfiguration
-    },
-    numbersPrecision: number
+        generator: (configuration?: SynapseConfiguration) => SynapseInterface;
+        configuration?: SynapseConfiguration;
+    }
 }
 
 export {

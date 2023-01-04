@@ -1,13 +1,13 @@
 interface TrainingPattern {
-    input: number[],
-    output: number[]
+    input: number[];
+    output: number[];
 }
  
-type TrainingPatterns = TrainingPattern[]
+type TrainingPatterns = TrainingPattern[];
 
-type QueryingPattern = number[]
+type QueryingPattern = number[];
 
-type QueryingPatterns = QueryingPattern[]
+type QueryingPatterns = QueryingPattern[];
 
 export {
     TrainingPattern,

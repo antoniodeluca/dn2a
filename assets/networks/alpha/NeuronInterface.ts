@@ -1,56 +1,52 @@
-import { BigNumber } from "mathjs";
- 
 import { SynapseInterface } from "./SynapseInterface";
 
 interface NeuronInterface {
-    delta: BigNumber
+    delta: number;
 
-    expectedOutput: BigNumber
+    expectedOutput: number;
 
-    fixed: boolean
+    fixed: boolean;
 
-    incomingConnections: SynapseInterface[]
+    incomingConnections: SynapseInterface[];
 
-    inputSum: BigNumber
+    inputSum: number;
 
-    inputs: number[]
+    inputs: number[];
 
-    outgoingConnections: SynapseInterface[]
+    outgoingConnections: SynapseInterface[];
 
-    output: BigNumber
-    toString
-    outputError: BigNumber
+    output: number;
 
-    previousExpectedOutput: BigNumber
+    outputError: number;
 
-    previousIncomingConnections: SynapseInterface[]
+    previousExpectedOutput: number;
 
-    previousInputSum: BigNumber
+    previousIncomingConnections: SynapseInterface[];
 
-    previousInputs: number[]
+    previousInputSum: number;
 
-    previousOutgoingConnections: SynapseInterface[]
+    previousInputs: number[];
 
-    previousOutput: BigNumber
+    previousOutgoingConnections: SynapseInterface[];
 
-    previousOutputError: BigNumber
+    previousOutput: number;
 
-    proxy: boolean
+    previousOutputError: number;
 
-    transferFunction: (value: BigNumber) => BigNumber 
+    proxy: boolean;
 
-    addIncomingConnection: (value: SynapseInterface) => void
+    transferFunction: (value: number) => number;
 
-    addOutgoingConnection: (value: SynapseInterface) => void
+    addIncomingConnection: (value: SynapseInterface) => void;
 
-    addPreviousIncomingConnection: (value: SynapseInterface) => void
+    addOutgoingConnection: (value: SynapseInterface) => void;
 
-    addPreviousOutgoingConnection: (value: SynapseInterface) => void
+    addPreviousIncomingConnection: (value: SynapseInterface) => void;
+
+    addPreviousOutgoingConnection: (value: SynapseInterface) => void;
 }
 
-interface NeuronConfiguration {
-    numbersPrecision: number
-}
+interface NeuronConfiguration {}
 
 export {
     NeuronConfiguration,

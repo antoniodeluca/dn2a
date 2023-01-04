@@ -1,28 +1,24 @@
-import { BigNumber } from "mathjs";
- 
 import { NeuronInterface } from "./NeuronInterface";
 
 interface SynapseInterface {
-    incomingConnection: NeuronInterface
+    incomingConnection: NeuronInterface;
 
-    outgoingConnection: NeuronInterface
+    outgoingConnection: NeuronInterface;
 
-    previousIncomingConnection: NeuronInterface
+    previousIncomingConnection: NeuronInterface;
 
-    previousOutgoingConnection: NeuronInterface
+    previousOutgoingConnection: NeuronInterface;
 
-    previousWeight: BigNumber
+    previousWeight: number;
 
-    previousWeightChange: BigNumber
+    previousWeightChange: number;
 
-    weight: BigNumber
+    weight: number;
 
-    weightChange: BigNumber
-}toString
-
-interface SynapseConfiguration {
-    numbersPrecision: number
+    weightChange: number;
 }
+
+interface SynapseConfiguration {}
 
 export {
     SynapseConfiguration,
