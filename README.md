@@ -23,7 +23,6 @@ DN2A side goals are to simplify integration, to speed up training/querying, to a
 ## Features ##
 
 - **Modularized components**: helps the development and the clear separation of concerns with great benefits for who wants to use mixed solutions.
-- **Configurable precision**: helps to avoid the noise deriving from operation errors and default system precision limits with great improvement of the learning speed and performance stability.
 - **Configuration checker**: helps to write less details about configuration and to keep compatibility with older version while the project evolves.
 - **StepByStep training**: helps to train neural networks doing a single iteration over the passed information.
 - **StopAtGoal training**: helps to train neural networks doing a finite number of iterations over the passed information until a specific parametric condition is reached.
@@ -128,8 +127,7 @@ const neuralNetwork = new NetworkAlpha({
     },
     synapse: {
         generator: SynapseFactory.getInstance
-    },
-    numbersPrecision: 64
+    }
 });
 
 const trainingPatterns = [
@@ -245,8 +243,7 @@ const neuralNetwork = new NetworkAlpha({
                     },
                     synapse: {
                         generator: SynapseFactory.getInstance
-                    },
-                    numbersPrecision: 64
+                    }
                 }
             },
             inputsFrom: [

@@ -29,8 +29,7 @@ describe("When trained with training examples about the XOR problem", () => {
                                     },
                                     synapse: {
                                         generator: SynapseFactory.getInstance
-                                    },
-                                    numbersPrecision: 64
+                                    }
                                 }
                             },
                             inputsFrom: [

@@ -1,64 +1,59 @@
-import {all, BigNumber, create} from "mathjs";
+import { all, create, EvalFunction, MathExpression } from "mathjs";
  
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
 import { SynapseInterface } from "./SynapseInterface";
 
 const mathjs = create(all);
+mathjs.config({
+    number: "number",
+});
 
 class Neuron implements NeuronInterface {
-    private defaultConfiguration = {
-        numbersPrecision: 64
-    } as NeuronConfiguration;
+    private defaultConfiguration = {} as NeuronConfiguration;
 
     private configuration: NeuronConfiguration;
 
-    private _delta = mathjs.bignumber(0);
+    private compiledExpressions: { [key: string]: EvalFunction } = {};
 
-    private _expectedOutput = mathjs.bignumber(0);
+    private _delta = 0;
+
+    private _expectedOutput = 0;
 
     private _fixed = false;
 
     private _incomingConnections = [] as SynapseInterface[];
 
-    private _inputSum = mathjs.bignumber(0);
+    private _inputSum = 0;
 
     private _inputs: number[] = [];
 
     private _outgoingConnections = [] as SynapseInterface[];
 
-    private _output = mathjs.bignumber(0);
+    private _output = 0;
 
-    private _outputError = mathjs.bignumber(0);
+    private _outputError = 0;
 
-    private _previousExpectedOutput = mathjs.bignumber(0);
+    private _previousExpectedOutput = 0;
 
     private _previousIncomingConnections = [] as SynapseInterface[];
 
-    private _previousInputSum = mathjs.bignumber(0);
+    private _previousInputSum = 0;
 
     private _previousInputs: number[] = [];
 
     private _previousOutgoingConnections = [] as SynapseInterface[];
 
-    private _previousOutput = mathjs.bignumber(0);
+    private _previousOutput = 0;
 
-    private _previousOutputError = mathjs.bignumber(0);
+    private _previousOutputError = 0;
 
     private _proxy = false;
 
-    private _transferFunction = (value: BigNumber) => {
-        return mathjs.bignumber(mathjs.divide(
-            mathjs.bignumber(1),
-            mathjs.sum(
-                mathjs.bignumber(1),
-                mathjs.exp(
-                    mathjs.subtract(
-                        mathjs.bignumber(0),
-                        value
-                    )
-                )
-            )
-        ).toString());
+    private _transferFunction = (value: number) => {
+        return this.evaluate(
+            "1 / (1 + e^-value)",
+            { value }
+        );
     };
 
     private checkConfiguration() {
@@ -69,6 +64,15 @@ class Neuron implements NeuronInterface {
         return this.configuration;
     }
 
+    private evaluate(expression: MathExpression, scope: unknown) {
+        const compiledExpressionIndex = expression.toString();
+        if (!this.compiledExpressions[compiledExpressionIndex]) {
+            this.compiledExpressions[compiledExpressionIndex] = mathjs.compile(expression);
+        }
+
+        return this.compiledExpressions[compiledExpressionIndex].evaluate(scope);
+    }
+
     constructor(configuration?: NeuronConfiguration) {
         this.configuration = configuration ? configuration : this.defaultConfiguration
 
@@ -76,10 +80,6 @@ class Neuron implements NeuronInterface {
             throw "Invalid Neuron Module Configuration";
         }
         this.configuration = this.transformConfiguration();
-
-        mathjs.config({
-            number: "BigNumber",
-        });
     };
 
     addIncomingConnection(value: SynapseInterface) {

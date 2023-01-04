@@ -1,5 +1,6 @@
 .parcel-cache
 bower_components
+coverage
 dist
 distributed
 node_modules

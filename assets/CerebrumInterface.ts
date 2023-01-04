@@ -3,30 +3,30 @@ import { NetworkAlphaConfiguration, NetworkAlphaInterface } from "./networks/alp
 import { NetworkInterface } from "./networks/alpha/NetworkInterface"
  
 interface CerebrumInterface {
-    buildMind: (configuration: MindConfiguration) => void
+    buildMind: (configuration: MindConfiguration) => void;
 
-    trainMind: (trainingPatterns: TrainingPatterns, epochCallback?: Function, iterationCallback?: Function, mindName?: string) => void
+    trainMind: (trainingPatterns: TrainingPatterns, epochCallback?: Function, iterationCallback?: Function, mindName?: string) => void;
 
-    queryMind: (queryingPatterns: QueryingPatterns, epochCallback?: Function, iterationCallback?: Function, mindName?: string) => void
+    queryMind: (queryingPatterns: QueryingPatterns, epochCallback?: Function, iterationCallback?: Function, mindName?: string) => void;
 }
 
 interface MindConfiguration {
-    name: string,
+    name: string;
     network: {
-        generator: (configuration?: NetworkAlphaConfiguration) => NetworkAlphaInterface,
-        configuration?: NetworkAlphaConfiguration
+        generator: (configuration?: NetworkAlphaConfiguration) => NetworkAlphaInterface;
+        configuration?: NetworkAlphaConfiguration;
     },
-    inputsFrom: string[]
+    inputsFrom: string[];
 }
 
 interface CerebrumConfiguration {
-    minds: MindConfiguration[],
-    outputsFrom: string[]
+    minds: MindConfiguration[];
+    outputsFrom: string[];
 }
 
 interface Mind {
-    name: string
-    network: NetworkInterface
+    name: string;
+    network: NetworkInterface;
 }
 
 export {

@@ -1,13 +1,13 @@
 import { CerebrumConfiguration, CerebrumInterface } from "./CerebrumInterface"
  
 interface BrainInterface {
-    cerebrum: CerebrumInterface
+    cerebrum: CerebrumInterface;
 }
 
 interface BrainConfiguration {
     cerebrum: {
-        generator: (configuration?: CerebrumConfiguration) => CerebrumInterface,
-        configuration?: CerebrumConfiguration
+        generator: (configuration?: CerebrumConfiguration) => CerebrumInterface;
+        configuration?: CerebrumConfiguration;
     }
 }
 
