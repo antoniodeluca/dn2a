@@ -1,0 +1,5 @@
+.parcel-cache
+coverage
+dist
+distributed
+node_modules
