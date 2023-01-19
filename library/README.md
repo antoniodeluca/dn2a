@@ -18,8 +18,6 @@ To install the library through NPM:
 
 ## Modules ##
 
-----------
-
 ### Network ###
 
 Module, available in different variations, able to use neurons and synapses to implement configurable and autonomous Neural Networks.
@@ -27,8 +25,6 @@ Module, available in different variations, able to use neurons and synapses to i
 #### Available Network Types ####
 
 1. **alpha**: standard feed forward neural network with error back propagation controlled by layer dimensions, learning mode, learning rate, momentum rate, maximum allowed error and maximum number of epochs.
-
-----------
 
 ### Cerebrum ###
 
