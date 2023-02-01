@@ -1,4 +1,4 @@
-## v0.2.1 (6 Sep 2019)
+## vX.Y.Z (in progress)
 
 * NPM modules update. From [@antoniodeluca](https://github.com/antoniodeluca) with PR [#70](https://github.com/antoniodeluca/dn2a/pull/70)
 * Updated README. From [@antoniodeluca](https://github.com/antoniodeluca) with PR [#67](https://github.com/antoniodeluca/dn2a/pull/67)
