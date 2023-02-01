@@ -39,5 +39,5 @@
   },
   "source": "assets/index.ts",
   "types": "distributed/types.d.ts",
-  "version": "0.2.1"
+  "version": "0.3.0"
 }
