@@ -7,3 +7,7 @@
 ## About ##
 
 A library and a visual workspace around dynamic neural networks architectures.
+
+## Privacy Note ##
+
+*If you arrived to this page through the domain dn2a.org then Cloudflare (<a href="https://cloudflare.com">cloudflare.com</a>) has been involved in the request. You can find their privacy statement on their website while the GitHub privacy statement is available here on GitHub.*
