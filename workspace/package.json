@@ -5,7 +5,7 @@
   "name": "dn2a-workspace",
   "scripts": {
     "format": "prettier ./assets/**/*.{ts,tsx} ./public/**/*.{html,css} ./tests/**/*.{ts,tsx} --write",
-    "lint": "eslint ./assets/**/*.{ts,tsx} ./tests/**/*.{ts,tsx}",
+    "lint": "eslint ./assets/**/*.{ts,tsx} ./public/**/*.{html,css} ./tests/**/*.{ts,tsx}",
     "start:client": "npx parcel ./public/index.html",
     "start:server": "npx ts-node ./assets/server/index.ts",
     "test": "npm run test:client:unit && npm run test:client:acceptance && npm run test:server:unit && npm run test:server:acceptance",
