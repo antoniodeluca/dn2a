@@ -5,7 +5,7 @@
   "name": "dn2a-workspace",
   "scripts": {
     "format": "prettier ./assets/**/*.{ts,tsx} ./public/**/*.{html,css} ./tests/**/*.{ts,tsx} --write",
-    "lint": "eslint ./assets/**/*.{ts,tsx} ./public/**/*.{html,css} ./tests/**/*.{ts,tsx}",
+    "lint": "eslint ./assets/**/*.{ts,tsx} ./tests/**/*.{ts,tsx}",
     "start:client": "npx parcel ./public/index.html",
     "start:server": "npx ts-node ./assets/server/index.ts",
     "test": "npm run test:client:unit && npm run test:client:acceptance && npm run test:server:unit && npm run test:server:acceptance",
@@ -26,7 +26,6 @@
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
-    "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
