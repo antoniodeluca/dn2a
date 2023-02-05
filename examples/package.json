@@ -43,5 +43,5 @@
     "start:cli:alpha-continuous-4": "npx ts-node assets/cli-test-network-alpha-continuous-4.ts",
     "start:cli:alpha-stepbystep-0": "npx ts-node assets/cli-test-network-alpha-stepbystep-0.ts"
   },
-  "version": "0.1.1"
+  "version": "0.1.2"
 }
