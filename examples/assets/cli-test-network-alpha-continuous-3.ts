@@ -1,5 +1,11 @@
-import { Cerebrum, CerebrumConfiguration, NetworkAlphaFactory, NetworkAlphaNeuronFactory, NetworkAlphaSynapseFactory } from "dn2a";
- 
+import {
+    Cerebrum,
+    CerebrumConfiguration,
+    NetworkAlphaFactory,
+    NetworkAlphaNeuronFactory,
+    NetworkAlphaSynapseFactory,
+} from "dn2a";
+
 const cerebrum = new Cerebrum({
     minds: [
         {
@@ -15,40 +21,36 @@ const cerebrum = new Cerebrum({
                     maximumEpoch: 1000,
                     dataRepository: { neuronLayers: [] },
                     neuron: {
-                        generator: NetworkAlphaNeuronFactory.getInstance
+                        generator: NetworkAlphaNeuronFactory.getInstance,
                     },
                     synapse: {
-                        generator: NetworkAlphaSynapseFactory.getInstance
-                    }
-                }
+                        generator: NetworkAlphaSynapseFactory.getInstance,
+                    },
+                },
             },
-            inputsFrom: [
-                "cerebrum"
-            ]
-        }
+            inputsFrom: ["cerebrum"],
+        },
     ],
-    outputsFrom: [
-        "firstNeuralNetwork"
-    ]
+    outputsFrom: ["firstNeuralNetwork"],
 } as CerebrumConfiguration);
 
 const trainingPatterns = [
     {
         input: [0, 0],
-        output: [0]
+        output: [0],
     },
     {
         input: [0, 1],
-        output: [1]
+        output: [1],
     },
     {
         input: [1, 0],
-        output: [1]
+        output: [1],
     },
     {
         input: [1, 1],
-        output: [0]
-    }
+        output: [0],
+    },
 ];
 
 // Training
@@ -72,7 +74,7 @@ const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
-    [1, 1]
+    [1, 1],
 ];
 
 // Querying
@@ -85,7 +87,13 @@ cerebrum.queryMind(
         queryingPatterns.forEach(
             (queryingPattern: any, queryingPatternIndex: any) => {
                 /* eslint-disable no-console */
-                console.log(`[${queryingPatterns[queryingPatternIndex].join(", ")}] => [${queryingStatus.outputPatterns[queryingPatternIndex].join(", ")}]`);
+                console.log(
+                    `[${queryingPatterns[queryingPatternIndex].join(
+                        ", "
+                    )}] => [${queryingStatus.outputPatterns[
+                        queryingPatternIndex
+                    ].join(", ")}]`
+                );
                 /* eslint-enable no-console */
             }
         );

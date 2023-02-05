@@ -1,5 +1,11 @@
-import { Brain, CerebrumFactory, NetworkAlphaFactory, NetworkAlphaNeuronFactory, NetworkAlphaSynapseFactory } from "dn2a";
- 
+import {
+    Brain,
+    CerebrumFactory,
+    NetworkAlphaFactory,
+    NetworkAlphaNeuronFactory,
+    NetworkAlphaSynapseFactory,
+} from "dn2a";
+
 const brain = new Brain({
     cerebrum: {
         generator: CerebrumFactory.getInstance,
@@ -18,42 +24,40 @@ const brain = new Brain({
                             maximumEpoch: 1000,
                             dataRepository: { neuronLayers: [] },
                             neuron: {
-                                generator: NetworkAlphaNeuronFactory.getInstance
+                                generator:
+                                    NetworkAlphaNeuronFactory.getInstance,
                             },
                             synapse: {
-                                generator: NetworkAlphaSynapseFactory.getInstance
-                            }
-                        }
+                                generator:
+                                    NetworkAlphaSynapseFactory.getInstance,
+                            },
+                        },
                     },
-                    inputsFrom: [
-                        "cerebrum"
-                    ]
-                }
+                    inputsFrom: ["cerebrum"],
+                },
             ],
-            outputsFrom: [
-                "defaultMind"
-            ]
-        }
-    }
+            outputsFrom: ["defaultMind"],
+        },
+    },
 });
 
 const trainingPatterns = [
     {
         input: [0, 0],
-        output: [0]
+        output: [0],
     },
     {
         input: [0, 1],
-        output: [1]
+        output: [1],
     },
     {
         input: [1, 0],
-        output: [1]
+        output: [1],
     },
     {
         input: [1, 1],
-        output: [0]
-    }
+        output: [0],
+    },
 ];
 
 // Training
@@ -66,19 +70,29 @@ brain.cerebrum.trainMind(
             (errorStatus: any, outputError: any) => {
                 const error = parseFloat(outputError.toString());
                 return {
-                    minimumError: error < errorStatus.minimumError ? error : errorStatus.minimumError,
-                    averageError: errorStatus.averageError + (error / trainingStatus.outputErrors.length),
-                    maximumError: error > errorStatus.maximumError ? error : errorStatus.maximumError
-                }
+                    minimumError:
+                        error < errorStatus.minimumError
+                            ? error
+                            : errorStatus.minimumError,
+                    averageError:
+                        errorStatus.averageError +
+                        error / trainingStatus.outputErrors.length,
+                    maximumError:
+                        error > errorStatus.maximumError
+                            ? error
+                            : errorStatus.maximumError,
+                };
             },
             {
                 minimumError: 1,
                 averageError: 0,
-                maximumError: 0
+                maximumError: 0,
             }
         );
         /* eslint-disable no-console */
-        console.log(`Epoch ${trainingStatus.elapsedEpochCounter}\nMin. Err. = ${errorStatus.minimumError}\nAvg. Err. = ${errorStatus.averageError}\nMax. Err. = ${errorStatus.maximumError}\n`);
+        console.log(
+            `Epoch ${trainingStatus.elapsedEpochCounter}\nMin. Err. = ${errorStatus.minimumError}\nAvg. Err. = ${errorStatus.averageError}\nMax. Err. = ${errorStatus.maximumError}\n`
+        );
         /* eslint-enable no-console */
     },
     undefined,
@@ -89,7 +103,7 @@ const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
-    [1, 1]
+    [1, 1],
 ];
 
 // Querying
@@ -101,7 +115,11 @@ brain.cerebrum.queryMind(
         queryingStatus.outputPatterns.forEach(
             (outputPattern: any, outputPatternIndex: any) => {
                 /* eslint-disable no-console */
-                console.log(`Query ${outputPatternIndex}\n[${queryingPatterns[outputPatternIndex].join(", ")}] = ${outputPattern[0].toString()}\n`);
+                console.log(
+                    `Query ${outputPatternIndex}\n[${queryingPatterns[
+                        outputPatternIndex
+                    ].join(", ")}] = ${outputPattern[0].toString()}\n`
+                );
                 /* eslint-enable no-console */
             }
         );

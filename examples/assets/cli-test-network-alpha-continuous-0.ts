@@ -1,24 +1,24 @@
 import { NetworkAlpha } from "dn2a";
- 
+
 const neuralNetwork = new NetworkAlpha();
 
 const trainingPatterns = [
     {
         input: [0, 0],
-        output: [0]
+        output: [0],
     },
     {
         input: [0, 1],
-        output: [1]
+        output: [1],
     },
     {
         input: [1, 0],
-        output: [1]
+        output: [1],
     },
     {
         input: [1, 1],
-        output: [0]
-    }
+        output: [0],
+    },
 ];
 
 // Training
@@ -28,7 +28,7 @@ const queryingPatterns = [
     [0, 0],
     [0, 1],
     [1, 0],
-    [1, 1]
+    [1, 1],
 ];
 
 // Querying
@@ -40,7 +40,13 @@ neuralNetwork.query(
         queryingPatterns.forEach(
             (queryingPattern: any, queryingPatternIndex: any) => {
                 /* eslint-disable no-console */
-                console.log(`[${queryingPatterns[queryingPatternIndex].join(", ")}] => [${queryingStatus.outputPatterns[queryingPatternIndex].join(", ")}]`);
+                console.log(
+                    `[${queryingPatterns[queryingPatternIndex].join(
+                        ", "
+                    )}] => [${queryingStatus.outputPatterns[
+                        queryingPatternIndex
+                    ].join(", ")}]`
+                );
                 /* eslint-enable no-console */
             }
         );
