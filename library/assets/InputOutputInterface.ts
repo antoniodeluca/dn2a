@@ -5,37 +5,49 @@ interface TrainingPattern {
 
 type TrainingPatterns = TrainingPattern[];
 
+interface TrainingIterationPattern {
+    input: number[];
+    target: number[];
+    output: number[];
+    error: number;
+}
+
 interface TrainingStatus {
     outputErrors: number[];
     interruptionRequest: boolean;
     elapsedEpochCounter: number;
     elapsedIterationCounter: number;
-    elapsedIterationPattern: {
-        input: number[];
-        target: number[];
-        output: number[];
-        error: number;
-    };
+    elapsedIterationPattern: TrainingIterationPattern;
 }
 
-type QueryingPattern = number[];
+type QueryingInputPattern = number[];
 
-type QueryingPatterns = QueryingPattern[];
+type QueryingInputPatterns = QueryingInputPattern[];
+
+type QueryingOutputPattern = number[];
+
+type QueryingOutputPatterns = QueryingOutputPattern[];
+
+interface QueryingIterationPattern {
+    input: number[];
+    output: number[];
+}
 
 interface QueryingStatus {
     outputPatterns: number[][];
     elapsedIterationCounter: number;
-    elapsedIterationPattern: {
-        input: number[];
-        output: number[];
-    };
+    elapsedIterationPattern: QueryingIterationPattern;
 }
 
 export {
     TrainingPattern,
     TrainingPatterns,
+    TrainingIterationPattern,
     TrainingStatus,
-    QueryingPattern,
-    QueryingPatterns,
+    QueryingInputPattern,
+    QueryingInputPatterns,
+    QueryingOutputPattern,
+    QueryingOutputPatterns,
+    QueryingIterationPattern,
     QueryingStatus,
 };

@@ -1,9 +1,10 @@
-import { Brain } from "../../../../assets"
-import { CerebrumFactory } from "../../../../assets/CerebrumFactory";
-import { CerebrumConfiguration } from "../../../../assets/CerebrumInterface";
-import { NetworkAlphaFactory } from "../../../../assets/networks/alpha/NetworkAlphaFactory";
-import { NeuronFactory } from "../../../../assets/networks/alpha/NeuronFactory";
-import { SynapseFactory } from "../../../../assets/networks/alpha/SynapseFactory";
+import { Brain } from "../../assets"
+import { CerebrumFactory } from "../../assets/CerebrumFactory";
+import { CerebrumConfiguration } from "../../assets/CerebrumInterface";
+import { QueryingInputPattern, QueryingOutputPattern, QueryingStatus } from "../../assets/InputOutputInterface";
+import { NetworkAlphaFactory } from "../../assets/networks/alpha/NetworkAlphaFactory";
+import { NeuronFactory } from "../../assets/networks/alpha/NeuronFactory";
+import { SynapseFactory } from "../../assets/networks/alpha/SynapseFactory";
  
 describe("When trained with training examples about the XOR problem", () => {
     it("Should be able to train up to a satisfying accuracy", () => {
@@ -87,12 +88,15 @@ describe("When trained with training examples about the XOR problem", () => {
         ];
 
         brain.cerebrum.trainMind(trainingPatterns);
-        let queryingResults = [] as any[]; 
+        const queryingResults = [] as {
+            input: QueryingInputPattern,
+            output: QueryingOutputPattern
+        }[];
         brain.cerebrum.queryMind(
             queryingPatterns,
-            (queryingStatus: any) => {
+            (queryingStatus: QueryingStatus) => {
                 queryingPatterns.forEach(
-                    (queryingPattern: any, queryingPatternIndex: any) => {
+                    (queryingPattern: QueryingInputPattern, queryingPatternIndex: number) => {
                         queryingResults.push({
                             input: queryingPattern,
                             output: queryingStatus.outputPatterns[queryingPatternIndex]
