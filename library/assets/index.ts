@@ -7,7 +7,7 @@ import { Neuron as NetworkAlphaNeuron } from "./networks/alpha/Neuron";
 import { NeuronFactory as NetworkAlphaNeuronFactory } from "./networks/alpha/NeuronFactory";
 import { Synapse as NetworkAlphaSynapse } from "./networks/alpha/Synapse";
 import { SynapseFactory as NetworkAlphaSynapseFactory } from "./networks/alpha/SynapseFactory";
- 
+
 export {
     Brain,
     Cerebrum,
@@ -17,5 +17,5 @@ export {
     NetworkAlphaNeuron,
     NetworkAlphaNeuronFactory,
     NetworkAlphaSynapse,
-    NetworkAlphaSynapseFactory
+    NetworkAlphaSynapseFactory,
 };

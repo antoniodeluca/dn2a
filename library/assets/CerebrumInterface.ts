@@ -1,21 +1,40 @@
-import { QueryingPatterns, TrainingPatterns } from "./InputOutputInterface"
-import { NetworkAlphaConfiguration, NetworkAlphaInterface } from "./networks/alpha/NetworkAlphaInterface"
-import { NetworkInterface } from "./networks/alpha/NetworkInterface"
- 
+import { QueryingPatterns, TrainingPatterns } from "./InputOutputInterface";
+import {
+    NetworkAlphaConfiguration,
+    NetworkAlphaInterface,
+    QueryingEpochCallback,
+    QueryingIterationCallback,
+    TrainingEpochCallback,
+    TrainingIterationCallback,
+} from "./networks/alpha/NetworkAlphaInterface";
+import { NetworkInterface } from "./networks/alpha/NetworkInterface";
+
 interface CerebrumInterface {
     buildMind: (configuration: MindConfiguration) => void;
 
-    trainMind: (trainingPatterns: TrainingPatterns, epochCallback?: Function, iterationCallback?: Function, mindName?: string) => void;
+    trainMind: (
+        trainingPatterns: TrainingPatterns,
+        epochCallback?: TrainingEpochCallback,
+        iterationCallback?: TrainingIterationCallback,
+        mindName?: string
+    ) => void;
 
-    queryMind: (queryingPatterns: QueryingPatterns, epochCallback?: Function, iterationCallback?: Function, mindName?: string) => void;
+    queryMind: (
+        queryingPatterns: QueryingPatterns,
+        epochCallback?: QueryingEpochCallback,
+        iterationCallback?: QueryingIterationCallback,
+        mindName?: string
+    ) => void;
 }
 
 interface MindConfiguration {
     name: string;
     network: {
-        generator: (configuration?: NetworkAlphaConfiguration) => NetworkAlphaInterface;
+        generator: (
+            configuration?: NetworkAlphaConfiguration
+        ) => NetworkAlphaInterface;
         configuration?: NetworkAlphaConfiguration;
-    },
+    };
     inputsFrom: string[];
 }
 
@@ -29,9 +48,4 @@ interface Mind {
     network: NetworkInterface;
 }
 
-export {
-    CerebrumConfiguration,
-    CerebrumInterface,
-    Mind,
-    MindConfiguration
-}
+export { CerebrumConfiguration, CerebrumInterface, Mind, MindConfiguration };

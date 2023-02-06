@@ -46,9 +46,8 @@ interface NeuronInterface {
     addPreviousOutgoingConnection: (value: SynapseInterface) => void;
 }
 
-interface NeuronConfiguration {}
-
-export {
-    NeuronConfiguration,
-    NeuronInterface
+interface NeuronConfiguration {
+    transferFunction?: (value: number) => number;
 }
+
+export { NeuronConfiguration, NeuronInterface };

@@ -1,7 +1,8 @@
-import { NetworkInterface } from "./NetworkInterface"
-import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface"
-import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface"
- 
+import { QueryingStatus, TrainingStatus } from "../../InputOutputInterface";
+import { NetworkInterface } from "./NetworkInterface";
+import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
+import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
+
 interface DataRepository {
     neuronLayers: NeuronInterface[][];
 }
@@ -21,15 +22,27 @@ interface NetworkAlphaConfiguration {
     neuron: {
         generator: (configuration?: NeuronConfiguration) => NeuronInterface;
         configuration?: NeuronConfiguration;
-    },
+    };
     synapse: {
         generator: (configuration?: SynapseConfiguration) => SynapseInterface;
         configuration?: SynapseConfiguration;
-    }
+    };
 }
+
+type TrainingEpochCallback = (trainingStatus: TrainingStatus) => void;
+
+type TrainingIterationCallback = (trainingStatus: TrainingStatus) => void;
+
+type QueryingEpochCallback = (queryingStatus: QueryingStatus) => void;
+
+type QueryingIterationCallback = (queryingStatus: QueryingStatus) => void;
 
 export {
     DataRepository,
     NetworkAlphaInterface,
-    NetworkAlphaConfiguration
-}
+    NetworkAlphaConfiguration,
+    QueryingEpochCallback,
+    QueryingIterationCallback,
+    TrainingEpochCallback,
+    TrainingIterationCallback,
+};
