@@ -12,7 +12,10 @@ import {
 } from "./NetworkAlphaInterface";
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
-import { QueryingPatterns, TrainingPatterns } from "../../InputOutputInterface";
+import {
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "../../InputOutputInterface";
 
 const mathjs = create(all);
 mathjs.config({
@@ -439,7 +442,7 @@ class NetworkAlpha {
     }
 
     public query(
-        inputPatterns: QueryingPatterns,
+        inputPatterns: QueryingInputPatterns,
         epochCallback?: QueryingEpochCallback,
         iterationCallback?: QueryingIterationCallback
     ) {

@@ -5,7 +5,10 @@ import {
     Mind,
     MindConfiguration,
 } from "./CerebrumInterface";
-import { QueryingPatterns, TrainingPatterns } from "./InputOutputInterface";
+import {
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "./InputOutputInterface";
 import {
     QueryingEpochCallback,
     QueryingIterationCallback,
@@ -83,7 +86,7 @@ class Cerebrum implements CerebrumInterface {
     }
 
     queryMind(
-        queryingPatterns: QueryingPatterns,
+        queryingPatterns: QueryingInputPatterns,
         epochCallback?: QueryingEpochCallback,
         iterationCallback?: QueryingIterationCallback,
         mindName = "defaultMind"
