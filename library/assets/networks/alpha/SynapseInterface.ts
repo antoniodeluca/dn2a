@@ -18,9 +18,8 @@ interface SynapseInterface {
     weightChange: number;
 }
 
-interface SynapseConfiguration {}
-
-export {
-    SynapseConfiguration,
-    SynapseInterface
+interface SynapseConfiguration {
+    initializationFunction?: () => number;
 }
+
+export { SynapseConfiguration, SynapseInterface };

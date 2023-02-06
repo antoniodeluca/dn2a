@@ -1,7 +1,18 @@
 import { NetworkAlphaFactory } from "./networks/alpha/NetworkAlphaFactory";
-import { CerebrumConfiguration, CerebrumInterface, Mind, MindConfiguration } from "./CerebrumInterface";
+import {
+    CerebrumConfiguration,
+    CerebrumInterface,
+    Mind,
+    MindConfiguration,
+} from "./CerebrumInterface";
 import { QueryingPatterns, TrainingPatterns } from "./InputOutputInterface";
- 
+import {
+    QueryingEpochCallback,
+    QueryingIterationCallback,
+    TrainingEpochCallback,
+    TrainingIterationCallback,
+} from "./networks/alpha/NetworkAlphaInterface";
+
 class Cerebrum implements CerebrumInterface {
     private defaultConfiguration = {
         minds: [
@@ -10,14 +21,10 @@ class Cerebrum implements CerebrumInterface {
                 network: {
                     generator: NetworkAlphaFactory.getInstance,
                 },
-                inputsFrom: [
-                    "cerebrum"
-                ]
-            }
+                inputsFrom: ["cerebrum"],
+            },
         ],
-        outputsFrom: [
-            "defaultMind"
-        ]
+        outputsFrom: ["defaultMind"],
     } as CerebrumConfiguration;
 
     private configuration: CerebrumConfiguration;
@@ -33,7 +40,9 @@ class Cerebrum implements CerebrumInterface {
     }
 
     constructor(configuration?: CerebrumConfiguration) {
-        this.configuration = configuration ? configuration : this.defaultConfiguration;
+        this.configuration = configuration
+            ? configuration
+            : this.defaultConfiguration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Cerebrum Module Configuration";
@@ -50,14 +59,16 @@ class Cerebrum implements CerebrumInterface {
     buildMind(configuration: MindConfiguration) {
         this.minds.push({
             name: configuration.name,
-            network: configuration.network.generator(configuration.network.configuration)
+            network: configuration.network.generator(
+                configuration.network.configuration
+            ),
         });
     }
 
     trainMind(
         trainingPatterns: TrainingPatterns,
-        epochCallback?: Function,
-        iterationCallback?: Function,
+        epochCallback?: TrainingEpochCallback,
+        iterationCallback?: TrainingIterationCallback,
         mindName = "defaultMind"
     ) {
         const mind = this.minds.find((mind) => {
@@ -65,20 +76,16 @@ class Cerebrum implements CerebrumInterface {
         });
 
         if (mind === undefined) {
-            throw new Error("Mind not found during training")
+            throw new Error("Mind not found during training");
         }
 
-        mind.network.train(
-            trainingPatterns,
-            epochCallback,
-            iterationCallback
-        );
+        mind.network.train(trainingPatterns, epochCallback, iterationCallback);
     }
 
     queryMind(
         queryingPatterns: QueryingPatterns,
-        epochCallback?: Function,
-        iterationCallback?: Function,
+        epochCallback?: QueryingEpochCallback,
+        iterationCallback?: QueryingIterationCallback,
         mindName = "defaultMind"
     ) {
         const mind = this.minds.find((mind) => {
@@ -86,17 +93,11 @@ class Cerebrum implements CerebrumInterface {
         });
 
         if (mind === undefined) {
-            throw new Error("Mind not found during querying")
+            throw new Error("Mind not found during querying");
         }
 
-        mind.network.query(
-            queryingPatterns,
-            epochCallback,
-            iterationCallback
-        );
+        mind.network.query(queryingPatterns, epochCallback, iterationCallback);
     }
 }
 
-export {
-    Cerebrum
-}
+export { Cerebrum };

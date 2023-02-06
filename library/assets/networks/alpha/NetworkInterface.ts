@@ -1,11 +1,23 @@
-import { QueryingPatterns, TrainingPatterns } from "../../InputOutputInterface"
- 
+import { QueryingPatterns, TrainingPatterns } from "../../InputOutputInterface";
+import {
+    QueryingEpochCallback,
+    QueryingIterationCallback,
+    TrainingEpochCallback,
+    TrainingIterationCallback,
+} from "./NetworkAlphaInterface";
+
 interface NetworkInterface {
-    train: (trainingPatterns: TrainingPatterns, epochCallback?: Function, iterationCallback?: Function) => void;
-    
-    query: (queryingPatterns: QueryingPatterns, epochCallback?: Function, iterationCallback?: Function) => void;
+    train: (
+        trainingPatterns: TrainingPatterns,
+        epochCallback?: TrainingEpochCallback,
+        iterationCallback?: TrainingIterationCallback
+    ) => void;
+
+    query: (
+        queryingPatterns: QueryingPatterns,
+        epochCallback?: QueryingEpochCallback,
+        iterationCallback?: QueryingIterationCallback
+    ) => void;
 }
 
-export {
-    NetworkInterface
-}
+export { NetworkInterface };

@@ -1,5 +1,5 @@
-import {all, create} from "mathjs";
- 
+import { all, create } from "mathjs";
+
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
 
 const mathjs = create(all);
@@ -26,10 +26,7 @@ class Synapse implements SynapseInterface {
 
     private _weight = mathjs.subtract(
         1,
-        mathjs.multiply(
-            mathjs.random(0, 1),
-            2
-        )
+        mathjs.multiply(mathjs.random(0, 1), 2)
     );
 
     private _weightChange = 0;
@@ -41,15 +38,17 @@ class Synapse implements SynapseInterface {
     private transformConfiguration() {
         return this.configuration;
     }
-    
-    constructor(configuration?) {
-        this.configuration = configuration ? configuration : this.defaultConfiguration;
+
+    constructor(configuration?: SynapseConfiguration) {
+        this.configuration = configuration
+            ? configuration
+            : this.defaultConfiguration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Synapse Module Configuration";
         }
         this.configuration = this.transformConfiguration();
-    };
+    }
 
     set incomingConnection(value) {
         this._incomingConnection = value;
@@ -116,6 +115,4 @@ class Synapse implements SynapseInterface {
     }
 }
 
-export {
-    Synapse
-}
+export { Synapse };

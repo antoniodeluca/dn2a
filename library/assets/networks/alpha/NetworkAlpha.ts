@@ -1,8 +1,15 @@
 import { all, create, EvalFunction, MathExpression } from "mathjs";
- 
+
 import { NeuronFactory } from "./NeuronFactory";
 import { SynapseFactory } from "./SynapseFactory";
-import { DataRepository, NetworkAlphaConfiguration } from "./NetworkAlphaInterface";
+import {
+    DataRepository,
+    NetworkAlphaConfiguration,
+    QueryingEpochCallback,
+    QueryingIterationCallback,
+    TrainingEpochCallback,
+    TrainingIterationCallback,
+} from "./NetworkAlphaInterface";
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
 import { QueryingPatterns, TrainingPatterns } from "../../InputOutputInterface";
@@ -22,11 +29,11 @@ class NetworkAlpha {
         maximumEpoch: 1000,
         dataRepository: { neuronLayers: [] } as DataRepository,
         neuron: {
-            generator: NeuronFactory.getInstance
+            generator: NeuronFactory.getInstance,
         },
         synapse: {
-            generator: SynapseFactory.getInstance
-        }
+            generator: SynapseFactory.getInstance,
+        },
     } as NetworkAlphaConfiguration;
 
     private configuration: NetworkAlphaConfiguration;
@@ -35,9 +42,13 @@ class NetworkAlpha {
 
     private _dataRepository: DataRepository;
 
-    private neuronGenerator: (configuration?: NeuronConfiguration) => NeuronInterface;
+    private neuronGenerator: (
+        configuration?: NeuronConfiguration
+    ) => NeuronInterface;
 
-    private synapseGenerator: (configuration?: SynapseConfiguration) => SynapseInterface;
+    private synapseGenerator: (
+        configuration?: SynapseConfiguration
+    ) => SynapseInterface;
 
     private checkConfiguration() {
         return true;
@@ -50,17 +61,26 @@ class NetworkAlpha {
     private evaluate(expression: MathExpression, scope: unknown) {
         const compiledExpressionIndex = expression.toString();
         if (!this.compiledExpressions[compiledExpressionIndex]) {
-            this.compiledExpressions[compiledExpressionIndex] = mathjs.compile(expression);
+            this.compiledExpressions[compiledExpressionIndex] =
+                mathjs.compile(expression);
         }
 
-        return this.compiledExpressions[compiledExpressionIndex].evaluate(scope);
+        return this.compiledExpressions[compiledExpressionIndex].evaluate(
+            scope
+        );
     }
 
     private generateNeurons() {
         const neuronLayers = [] as NeuronInterface[][];
         this.configuration.layerDimensions.forEach((layerDimension) => {
             const layerNeurons = [] as NeuronInterface[];
-            const neuronScope = neuronLayers.length === 0 ? "input" : neuronLayers.length < (this.configuration.layerDimensions.length - 1) ? "hidden" : "output";
+            const neuronScope =
+                neuronLayers.length === 0
+                    ? "input"
+                    : neuronLayers.length <
+                      this.configuration.layerDimensions.length - 1
+                    ? "hidden"
+                    : "output";
             [...Array(layerDimension)].forEach(() => {
                 layerNeurons.push(this.generateNeuron(neuronScope));
             });
@@ -85,30 +105,30 @@ class NetworkAlpha {
 
     private generateSynapses() {
         let previousLayerNeurons = [] as NeuronInterface[];
-        this._dataRepository.neuronLayers.forEach((
-            neuronLayer: NeuronInterface[],
-            neuronLayerIndex: number
-        ) => {
-            const layerNeurons = neuronLayer;
-            if (neuronLayerIndex > 0) {
-                layerNeurons.forEach((
-                    layerNeuron
-                ) => {
-                    if (!layerNeuron.fixed) {
-                        previousLayerNeurons.forEach((
-                            previousLayerNeuron
-                        ) => {
-                            const synapse = this.generateSynapse();
-                            synapse.incomingConnection = previousLayerNeuron;
-                            synapse.outgoingConnection = layerNeuron;
-                            previousLayerNeuron.addOutgoingConnection(synapse);
-                            layerNeuron.addIncomingConnection(synapse);
-                        });
-                    }
-                });
+        this._dataRepository.neuronLayers.forEach(
+            (neuronLayer: NeuronInterface[], neuronLayerIndex: number) => {
+                const layerNeurons = neuronLayer;
+                if (neuronLayerIndex > 0) {
+                    layerNeurons.forEach((layerNeuron) => {
+                        if (!layerNeuron.fixed) {
+                            previousLayerNeurons.forEach(
+                                (previousLayerNeuron) => {
+                                    const synapse = this.generateSynapse();
+                                    synapse.incomingConnection =
+                                        previousLayerNeuron;
+                                    synapse.outgoingConnection = layerNeuron;
+                                    previousLayerNeuron.addOutgoingConnection(
+                                        synapse
+                                    );
+                                    layerNeuron.addIncomingConnection(synapse);
+                                }
+                            );
+                        }
+                    });
+                }
+                previousLayerNeurons = layerNeurons;
             }
-            previousLayerNeurons = layerNeurons;
-        });
+        );
     }
 
     private generateSynapse() {
@@ -117,69 +137,68 @@ class NetworkAlpha {
     }
 
     private setInputPattern(inputPattern: number[]) {
-        this._dataRepository.neuronLayers[0].forEach((
-            layerNeuron: NeuronInterface,
-            layerNeuronIndex: number
-        ) => {
-            if (!layerNeuron.fixed) {
-                layerNeuron.output = inputPattern[layerNeuronIndex];
+        this._dataRepository.neuronLayers[0].forEach(
+            (layerNeuron: NeuronInterface, layerNeuronIndex: number) => {
+                if (!layerNeuron.fixed) {
+                    layerNeuron.output = inputPattern[layerNeuronIndex];
+                }
             }
-        });
+        );
     }
 
     private getInputPattern() {
         const inputPattern = [] as number[];
-        this._dataRepository.neuronLayers[0].forEach((
-            layerNeuron: NeuronInterface,
-            layerNeuronIndex: number
-        ) => {
-            inputPattern[layerNeuronIndex] = layerNeuron.output;
-        });
+        this._dataRepository.neuronLayers[0].forEach(
+            (layerNeuron: NeuronInterface, layerNeuronIndex: number) => {
+                inputPattern[layerNeuronIndex] = layerNeuron.output;
+            }
+        );
         return inputPattern;
     }
 
     private setExpectedOutputPattern(expectedOutputPattern: number[]) {
-        this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1].forEach((
-            layerNeuron: NeuronInterface,
-            layerNeuronIndex: number
-        ) => {
-            layerNeuron.expectedOutput = expectedOutputPattern[layerNeuronIndex];
+        this._dataRepository.neuronLayers[
+            this._dataRepository.neuronLayers.length - 1
+        ].forEach((layerNeuron: NeuronInterface, layerNeuronIndex: number) => {
+            layerNeuron.expectedOutput =
+                expectedOutputPattern[layerNeuronIndex];
         });
     }
 
     private getExpectedOutputPattern() {
         const expectedOutputPattern = [] as number[];
-        this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1].forEach((
-            layerNeuron: NeuronInterface,
-            layerNeuronIndex: number
-        ) => {
-            expectedOutputPattern[layerNeuronIndex] = layerNeuron.expectedOutput;
+        this._dataRepository.neuronLayers[
+            this._dataRepository.neuronLayers.length - 1
+        ].forEach((layerNeuron: NeuronInterface, layerNeuronIndex: number) => {
+            expectedOutputPattern[layerNeuronIndex] =
+                layerNeuron.expectedOutput;
         });
         return expectedOutputPattern;
     }
 
     private setOutputPattern(outputPattern: number[]) {
-        this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1].forEach((
-            layerNeuron: NeuronInterface,
-            layerNeuronIndex: number
-        ) => {
+        this._dataRepository.neuronLayers[
+            this._dataRepository.neuronLayers.length - 1
+        ].forEach((layerNeuron: NeuronInterface, layerNeuronIndex: number) => {
             layerNeuron.output = outputPattern[layerNeuronIndex];
         });
     }
 
     private getOutputPattern() {
         const outputPattern = [] as number[];
-        this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1].forEach((
-            layerNeuron: NeuronInterface,
-            layerNeuronIndex: number
-        ) => {
+        this._dataRepository.neuronLayers[
+            this._dataRepository.neuronLayers.length - 1
+        ].forEach((layerNeuron: NeuronInterface, layerNeuronIndex: number) => {
             outputPattern[layerNeuronIndex] = layerNeuron.output;
         });
         return outputPattern;
     }
 
     private getOutputError() {
-        const layerNeurons = this._dataRepository.neuronLayers[this._dataRepository.neuronLayers.length - 1];
+        const layerNeurons =
+            this._dataRepository.neuronLayers[
+                this._dataRepository.neuronLayers.length - 1
+            ];
         const numberOfNeuronsInTheLayer = layerNeurons.length;
         const layerNeuronOutputErrors = layerNeurons.map(
             (layerNeuron: NeuronInterface) => layerNeuron.outputError
@@ -188,98 +207,97 @@ class NetworkAlpha {
             "sum(dotPow(layerNeuronOutputErrors, 2)) / numberOfNeuronsInTheLayer",
             { layerNeuronOutputErrors, numberOfNeuronsInTheLayer }
         );
-        
+
         return outputError;
     }
 
     private calculateActivations() {
-        this._dataRepository.neuronLayers.forEach((
-            neuronLayer: NeuronInterface[],
-            neuronLayerIndex: number
-        ) => {
-            const layerNeurons = neuronLayer;
-            if (neuronLayerIndex > 0) {
-                layerNeurons.forEach((
-                    layerNeuron
-                ) => {
-                    if (!layerNeuron.fixed) {
-                        const layerNeuronIncomingConnectionOutputs: number[] = [];
-                        const layerNeuronIncomingConnectionWeights: number[] = [];
-                        layerNeuron.incomingConnections.map(
-                            (synapse: SynapseInterface) => {
-                                layerNeuronIncomingConnectionOutputs.push(synapse.incomingConnection.output);
-                                layerNeuronIncomingConnectionWeights.push(synapse.weight);
-                            }
-                        );
-                        layerNeuron.inputSum = this.evaluate(
-                            "dot(layerNeuronIncomingConnectionOutputs, layerNeuronIncomingConnectionWeights)",
-                            { layerNeuronIncomingConnectionOutputs, layerNeuronIncomingConnectionWeights }
-                        )
-                        layerNeuron.output = layerNeuron.transferFunction(layerNeuron.inputSum);
-                        const { expectedOutput, output } = layerNeuron;
-                        layerNeuron.outputError = this.evaluate(
-                            "expectedOutput - output",
-                            { expectedOutput, output }
-                        );
-                    }
-                });
+        this._dataRepository.neuronLayers.forEach(
+            (neuronLayer: NeuronInterface[], neuronLayerIndex: number) => {
+                const layerNeurons = neuronLayer;
+                if (neuronLayerIndex > 0) {
+                    layerNeurons.forEach((layerNeuron) => {
+                        if (!layerNeuron.fixed) {
+                            const layerNeuronIncomingConnectionOutputs: number[] =
+                                [];
+                            const layerNeuronIncomingConnectionWeights: number[] =
+                                [];
+                            layerNeuron.incomingConnections.map(
+                                (synapse: SynapseInterface) => {
+                                    layerNeuronIncomingConnectionOutputs.push(
+                                        synapse.incomingConnection.output
+                                    );
+                                    layerNeuronIncomingConnectionWeights.push(
+                                        synapse.weight
+                                    );
+                                }
+                            );
+                            layerNeuron.inputSum = this.evaluate(
+                                "dot(layerNeuronIncomingConnectionOutputs, layerNeuronIncomingConnectionWeights)",
+                                {
+                                    layerNeuronIncomingConnectionOutputs,
+                                    layerNeuronIncomingConnectionWeights,
+                                }
+                            );
+                            layerNeuron.output = layerNeuron.transferFunction(
+                                layerNeuron.inputSum
+                            );
+                            const { expectedOutput, output } = layerNeuron;
+                            layerNeuron.outputError = this.evaluate(
+                                "expectedOutput - output",
+                                { expectedOutput, output }
+                            );
+                        }
+                    });
+                }
             }
-        });
+        );
     }
 
     private calculateDeltas() {
         for (
-            let neuronLayerIndex = this._dataRepository.neuronLayers.length - 1; 
+            let neuronLayerIndex = this._dataRepository.neuronLayers.length - 1;
             neuronLayerIndex >= 0;
             neuronLayerIndex--
         ) {
             if (neuronLayerIndex > 0) {
-                const layerNeurons = this._dataRepository.neuronLayers[neuronLayerIndex];
-                if (neuronLayerIndex === (this._dataRepository.neuronLayers.length - 1)) {
-                    layerNeurons.forEach((
-                        layerNeuron
-                    ) => {
-                        layerNeuron.delta = mathjs.chain(
-                            layerNeuron.outputError
-                        ).multiply(
-                            layerNeuron.output
-                        ).multiply(
-                            mathjs.subtract(
-                                1,
-                                layerNeuron.output
-                            )
-                        ).done();
+                const layerNeurons =
+                    this._dataRepository.neuronLayers[neuronLayerIndex];
+                if (
+                    neuronLayerIndex ===
+                    this._dataRepository.neuronLayers.length - 1
+                ) {
+                    layerNeurons.forEach((layerNeuron) => {
+                        layerNeuron.delta = mathjs
+                            .chain(layerNeuron.outputError)
+                            .multiply(layerNeuron.output)
+                            .multiply(mathjs.subtract(1, layerNeuron.output))
+                            .done();
                     });
                 } else {
-                    layerNeurons.forEach((
-                        layerNeuron
-                    ) => {
+                    layerNeurons.forEach((layerNeuron) => {
                         if (!layerNeuron.fixed) {
-                            layerNeuron.delta = mathjs.chain(
-                                layerNeuron.outgoingConnections.map(
-                                    (synapse) => {
-                                        return mathjs.multiply(
-                                            synapse.weight,
-                                            synapse.outgoingConnection.delta
-                                        );
-                                    }
-                                ).reduce(
-                                    (accumulator, value) => {
-                                        return mathjs.add(
-                                            accumulator,
-                                            value
-                                        );
-                                    },
-                                    0
+                            layerNeuron.delta = mathjs
+                                .chain(
+                                    layerNeuron.outgoingConnections
+                                        .map((synapse) => {
+                                            return mathjs.multiply(
+                                                synapse.weight,
+                                                synapse.outgoingConnection.delta
+                                            );
+                                        })
+                                        .reduce((accumulator, value) => {
+                                            return mathjs.add(
+                                                accumulator,
+                                                value
+                                            );
+                                        }, 0)
                                 )
-                            ).multiply(
-                                layerNeuron.output
-                            ).multiply(
-                                mathjs.subtract(
-                                    1,
-                                    layerNeuron.output
+                                .multiply(layerNeuron.output)
+                                .multiply(
+                                    mathjs.subtract(1, layerNeuron.output)
                                 )
-                            ).done();
+                                .done();
                         }
                     });
                 }
@@ -288,49 +306,48 @@ class NetworkAlpha {
     }
 
     private calculateWeights(learningRate: number, momentumRate: number) {
-        this._dataRepository.neuronLayers.forEach((
-            neuronLayer,
-            neuronLayerIndex
-        ) => {
-            if (neuronLayerIndex > 0) {
-                const layerNeurons = neuronLayer;
-                layerNeurons.forEach((
-                    layerNeuron
-                ) => {
-                    if (!layerNeuron.fixed) {
-                        layerNeuron.incomingConnections.forEach(
-                            (
-                                synapse
-                            ) => {
-                                synapse.previousWeightChange = synapse.weightChange;
-                                synapse.weightChange = mathjs.add(
-                                    mathjs.multiply(
-                                        learningRate,
+        this._dataRepository.neuronLayers.forEach(
+            (neuronLayer, neuronLayerIndex) => {
+                if (neuronLayerIndex > 0) {
+                    const layerNeurons = neuronLayer;
+                    layerNeurons.forEach((layerNeuron) => {
+                        if (!layerNeuron.fixed) {
+                            layerNeuron.incomingConnections.forEach(
+                                (synapse) => {
+                                    synapse.previousWeightChange =
+                                        synapse.weightChange;
+                                    synapse.weightChange = mathjs.add(
                                         mathjs.multiply(
-                                            layerNeuron.delta,
-                                            synapse.incomingConnection.output
+                                            learningRate,
+                                            mathjs.multiply(
+                                                layerNeuron.delta,
+                                                synapse.incomingConnection
+                                                    .output
+                                            )
+                                        ),
+                                        mathjs.multiply(
+                                            momentumRate,
+                                            synapse.previousWeightChange
                                         )
-                                    ),
-                                    mathjs.multiply(
-                                        momentumRate,
-                                        synapse.previousWeightChange
-                                    )
-                                );
-                                synapse.previousWeight = synapse.weight;
-                                synapse.weight = mathjs.add(
-                                    synapse.weight,
-                                    synapse.weightChange
-                                );
-                            }
-                        );
-                    }
-                });
+                                    );
+                                    synapse.previousWeight = synapse.weight;
+                                    synapse.weight = mathjs.add(
+                                        synapse.weight,
+                                        synapse.weightChange
+                                    );
+                                }
+                            );
+                        }
+                    });
+                }
             }
-        });
+        );
     }
 
     constructor(configuration?: NetworkAlphaConfiguration) {
-        this.configuration = configuration ? configuration : this.defaultConfiguration;
+        this.configuration = configuration
+            ? configuration
+            : this.defaultConfiguration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid NetworkAlpha Module Configuration";
@@ -345,7 +362,7 @@ class NetworkAlpha {
 
         this.generateNeurons();
         this.generateSynapses();
-    };
+    }
 
     set dataRepository(value) {
         this._dataRepository = value;
@@ -357,8 +374,8 @@ class NetworkAlpha {
 
     public train(
         trainingPatterns: TrainingPatterns,
-        epochCallback?: Function,
-        iterationCallback?: Function
+        epochCallback?: TrainingEpochCallback,
+        iterationCallback?: TrainingIterationCallback
     ) {
         let trainingStatus = {
             outputErrors: [] as number[],
@@ -369,18 +386,15 @@ class NetworkAlpha {
                 input: [] as number[],
                 target: [] as number[],
                 output: [] as number[],
-                error: 0
-            }
+                error: 0,
+            },
         };
         do {
             trainingStatus.outputErrors = [];
             trainingStatus.interruptionRequest = true;
             trainingStatus.elapsedIterationCounter = 0;
             trainingStatus = trainingPatterns.reduce(
-                (
-                    trainingStatus,
-                    trainingPattern
-                ) => {
+                (trainingStatus, trainingPattern) => {
                     this.setInputPattern(trainingPattern.input);
                     this.setExpectedOutputPattern(trainingPattern.output);
                     this.calculateActivations();
@@ -391,11 +405,20 @@ class NetworkAlpha {
                     );
                     const outputError = this.getOutputError();
                     trainingStatus.outputErrors.push(outputError);
-                    trainingStatus.interruptionRequest = Boolean(trainingStatus.interruptionRequest && mathjs.smallerEq(outputError, this.configuration.maximumError));
+                    trainingStatus.interruptionRequest = Boolean(
+                        trainingStatus.interruptionRequest &&
+                            mathjs.smallerEq(
+                                outputError,
+                                this.configuration.maximumError
+                            )
+                    );
                     trainingStatus.elapsedIterationCounter++;
-                    trainingStatus.elapsedIterationPattern.input = trainingPattern.input;
-                    trainingStatus.elapsedIterationPattern.target = this.getExpectedOutputPattern();
-                    trainingStatus.elapsedIterationPattern.output = this.getOutputPattern();
+                    trainingStatus.elapsedIterationPattern.input =
+                        trainingPattern.input;
+                    trainingStatus.elapsedIterationPattern.target =
+                        this.getExpectedOutputPattern();
+                    trainingStatus.elapsedIterationPattern.output =
+                        this.getOutputPattern();
                     trainingStatus.elapsedIterationPattern.error = outputError;
                     if (iterationCallback) {
                         iterationCallback(trainingStatus);
@@ -417,16 +440,16 @@ class NetworkAlpha {
 
     public query(
         inputPatterns: QueryingPatterns,
-        epochCallback?: Function,
-        iterationCallback?: Function
+        epochCallback?: QueryingEpochCallback,
+        iterationCallback?: QueryingIterationCallback
     ) {
         const queryingStatus = {
             outputPatterns: [] as number[][],
             elapsedIterationCounter: 0,
             elapsedIterationPattern: {
                 input: [] as number[],
-                output: [] as number[]
-            }
+                output: [] as number[],
+            },
         };
         inputPatterns.forEach((inputPattern) => {
             this.setInputPattern(inputPattern);
@@ -446,6 +469,4 @@ class NetworkAlpha {
     }
 }
 
-export { 
-    NetworkAlpha
-}
+export { NetworkAlpha };

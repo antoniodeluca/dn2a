@@ -1,5 +1,5 @@
 import { all, create, EvalFunction, MathExpression } from "mathjs";
- 
+
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
 import { SynapseInterface } from "./SynapseInterface";
 
@@ -50,10 +50,7 @@ class Neuron implements NeuronInterface {
     private _proxy = false;
 
     private _transferFunction = (value: number) => {
-        return this.evaluate(
-            "1 / (1 + e^-value)",
-            { value }
-        );
+        return this.evaluate("1 / (1 + e^-value)", { value });
     };
 
     private checkConfiguration() {
@@ -67,20 +64,25 @@ class Neuron implements NeuronInterface {
     private evaluate(expression: MathExpression, scope: unknown) {
         const compiledExpressionIndex = expression.toString();
         if (!this.compiledExpressions[compiledExpressionIndex]) {
-            this.compiledExpressions[compiledExpressionIndex] = mathjs.compile(expression);
+            this.compiledExpressions[compiledExpressionIndex] =
+                mathjs.compile(expression);
         }
 
-        return this.compiledExpressions[compiledExpressionIndex].evaluate(scope);
+        return this.compiledExpressions[compiledExpressionIndex].evaluate(
+            scope
+        );
     }
 
     constructor(configuration?: NeuronConfiguration) {
-        this.configuration = configuration ? configuration : this.defaultConfiguration
+        this.configuration = configuration
+            ? configuration
+            : this.defaultConfiguration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Neuron Module Configuration";
         }
         this.configuration = this.transformConfiguration();
-    };
+    }
 
     addIncomingConnection(value: SynapseInterface) {
         this._incomingConnections.push(value);
@@ -243,6 +245,4 @@ class Neuron implements NeuronInterface {
     }
 }
 
-export { 
-    Neuron
-}
+export { Neuron };
