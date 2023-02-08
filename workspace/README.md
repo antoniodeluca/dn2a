@@ -6,4 +6,4 @@
 
 ## About ##
 
-A web application about visually configuring and controlling neural networks architectures through the library.
+A web application about easily configuring and controlling neural networks architectures through the DN2A library.

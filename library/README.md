@@ -4,11 +4,11 @@
 
 ## About ##
 
-A set of JavaScript modules around neural network architectures.
+A set of JavaScript modules around neural networks.
 
-The main goal is about easily design, train and query a single neural network as well as a graph of many.
+The main goal is about easily design, train and query a graph of neural networks.
 
-The side goals are to simplify integration, to speed up training/querying, to allow clustering and to support genetics optimization techniques.
+The side goals are to simplify integration, to speed up execution, to allow clustering and to support genetic techniques.
 
 ## Installation ##
 
@@ -20,7 +20,7 @@ To install the library through NPM:
 
 ### Network ###
 
-Module, available in different variations, able to use neurons and synapses to implement configurable and autonomous Neural Networks.
+Module, available in different variations, able to use neurons and synapses to implement configurable and autonomous neural networks.
 
 #### Available Network Types ####
 
@@ -28,11 +28,11 @@ Module, available in different variations, able to use neurons and synapses to i
 
 ### Cerebrum ###
 
-Module for the management of multiple Neural Networks in terms of configuration/coordination, training/querying chaining and parallel computing.
+Module for the management of multiple neural networks in terms of configuration, coordination, training, querying and parallelization.
 
 ### Brain ###
 
-Module for the management of data normalization, integration/intercommunication with other external software and monitoring of the whole session.
+Module for the management of data normalization, intercommunication with other instances or external software as well as monitoring of the whole session.
 
 ## Examples ##
 
