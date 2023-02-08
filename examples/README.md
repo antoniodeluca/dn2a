@@ -4,4 +4,4 @@
 
 ## About ##
 
-Some examples about how to use the library.
+Some examples about how to use the DN2A library.
