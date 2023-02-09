@@ -1,4 +1,7 @@
-import { QueryingPatterns, TrainingPatterns } from "../../InputOutputInterface";
+import {
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "../../InputOutputInterface";
 import {
     QueryingEpochCallback,
     QueryingIterationCallback,
@@ -14,7 +17,7 @@ interface NetworkInterface {
     ) => void;
 
     query: (
-        queryingPatterns: QueryingPatterns,
+        queryingPatterns: QueryingInputPatterns,
         epochCallback?: QueryingEpochCallback,
         iterationCallback?: QueryingIterationCallback
     ) => void;
