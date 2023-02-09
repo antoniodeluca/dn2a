@@ -1,4 +1,7 @@
-import { QueryingPatterns, TrainingPatterns } from "./InputOutputInterface";
+import {
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "./InputOutputInterface";
 import {
     NetworkAlphaConfiguration,
     NetworkAlphaInterface,
@@ -20,7 +23,7 @@ interface CerebrumInterface {
     ) => void;
 
     queryMind: (
-        queryingPatterns: QueryingPatterns,
+        queryingPatterns: QueryingInputPatterns,
         epochCallback?: QueryingEpochCallback,
         iterationCallback?: QueryingIterationCallback,
         mindName?: string
