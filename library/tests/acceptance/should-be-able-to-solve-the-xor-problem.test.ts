@@ -1,22 +1,28 @@
-import { Brain } from "../../assets"
-import { CerebrumFactory } from "../../assets/CerebrumFactory";
-import { CerebrumConfiguration } from "../../assets/CerebrumInterface";
-import { QueryingInputPattern, QueryingOutputPattern, QueryingStatus } from "../../assets/InputOutputInterface";
-import { NetworkAlphaFactory } from "../../assets/networks/alpha/NetworkAlphaFactory";
-import { NeuronFactory } from "../../assets/networks/alpha/NeuronFactory";
-import { SynapseFactory } from "../../assets/networks/alpha/SynapseFactory";
+import { DefaultBrain } from "../../assets"
+import { CerebrumFactory } from "../../assets";
+import { NetworkAlphaFactory } from "../../assets";
+import { NetworkAlphaNeuronFactory } from "../../assets";
+import { NetworkAlphaSynapseFactory } from "../../assets";
+import { MathJSCalculator } from "../../assets";
+import { CerebrumConfiguration } from "../../assets/core/CerebrumInterface";
+import { QueryingInputPattern, QueryingOutputPattern, QueryingStatus } from "../../assets/core/InputOutputInterface";
  
 describe("When trained with training examples about the XOR problem", () => {
     it("Should be able to train up to a satisfying accuracy", () => {
-        const brain = new Brain({
+        const mathJSCalculator = new MathJSCalculator();
+        const cerebrumFactory = new CerebrumFactory(mathJSCalculator);
+        const networkAlphaFactory = new NetworkAlphaFactory(mathJSCalculator);
+        const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(mathJSCalculator);
+        const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(mathJSCalculator);
+        const brain = DefaultBrain.getInstance({
             cerebrum: {
-                generator: CerebrumFactory.getInstance,
+                generator: cerebrumFactory,
                 configuration: {
                     minds: [
                         {
                             name: "defaultMind",
                             network: {
-                                generator: NetworkAlphaFactory.getInstance,
+                                generator: networkAlphaFactory,
                                 configuration: {
                                     layerDimensions: [2, 4, 1],
                                     learningMode: "continuous",
@@ -26,10 +32,10 @@ describe("When trained with training examples about the XOR problem", () => {
                                     maximumEpoch: 1000000,
                                     dataRepository: { neuronLayers: [] },
                                     neuron: {
-                                        generator: NeuronFactory.getInstance
+                                        generator: networkAlphaNeuronFactory
                                     },
                                     synapse: {
-                                        generator: SynapseFactory.getInstance
+                                        generator: networkAlphaSynapseFactory
                                     }
                                 }
                             },

@@ -1,14 +1,7 @@
-import { CerebrumFactory } from "./CerebrumFactory";
 import { BrainConfiguration, BrainInterface } from "./BrainInterface";
 import { CerebrumInterface } from "./CerebrumInterface";
 
 class Brain implements BrainInterface {
-    private defaultConfiguration = {
-        cerebrum: {
-            generator: CerebrumFactory.getInstance,
-        },
-    } as BrainConfiguration;
-
     private configuration: BrainConfiguration;
 
     private _cerebrum: CerebrumInterface;
@@ -21,17 +14,15 @@ class Brain implements BrainInterface {
         return this.configuration;
     }
 
-    constructor(configuration?: BrainConfiguration) {
-        this.configuration = configuration
-            ? configuration
-            : this.defaultConfiguration;
+    constructor(configuration: BrainConfiguration) {
+        this.configuration = configuration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Brain Module Configuration";
         }
         this.configuration = this.transformConfiguration();
 
-        this._cerebrum = this.configuration.cerebrum.generator(
+        this._cerebrum = this.configuration.cerebrum.generator.getInstance(
             this.configuration.cerebrum.configuration
         );
     }

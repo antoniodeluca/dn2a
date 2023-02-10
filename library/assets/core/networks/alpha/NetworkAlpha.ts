@@ -1,4 +1,4 @@
-import { all, create, EvalFunction, MathExpression } from "mathjs";
+import { all, create } from "mathjs";
 
 import { NeuronFactory } from "./NeuronFactory";
 import { SynapseFactory } from "./SynapseFactory";
@@ -10,12 +10,13 @@ import {
     TrainingEpochCallback,
     TrainingIterationCallback,
 } from "./NetworkAlphaInterface";
-import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
-import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
+import { NeuronInterface } from "./NeuronInterface";
+import { SynapseInterface } from "./SynapseInterface";
 import {
     QueryingInputPatterns,
     TrainingPatterns,
 } from "../../InputOutputInterface";
+import { Calculator } from "../CalculatorInterface";
 
 const mathjs = create(all);
 mathjs.config({
@@ -23,35 +24,15 @@ mathjs.config({
 });
 
 class NetworkAlpha {
-    private defaultConfiguration = {
-        layerDimensions: [2, 4, 1],
-        learningMode: "continuous",
-        learningRate: 0.3,
-        momentumRate: 0.7,
-        maximumError: 0.005,
-        maximumEpoch: 1000,
-        dataRepository: { neuronLayers: [] } as DataRepository,
-        neuron: {
-            generator: NeuronFactory.getInstance,
-        },
-        synapse: {
-            generator: SynapseFactory.getInstance,
-        },
-    } as NetworkAlphaConfiguration;
-
     private configuration: NetworkAlphaConfiguration;
 
-    private compiledExpressions: { [key: string]: EvalFunction } = {};
+    private calculator: Calculator;
 
     private _dataRepository: DataRepository;
 
-    private neuronGenerator: (
-        configuration?: NeuronConfiguration
-    ) => NeuronInterface;
+    private neuronGenerator: NeuronFactory;
 
-    private synapseGenerator: (
-        configuration?: SynapseConfiguration
-    ) => SynapseInterface;
+    private synapseGenerator: SynapseFactory;
 
     private checkConfiguration() {
         return true;
@@ -59,18 +40,6 @@ class NetworkAlpha {
 
     private transformConfiguration() {
         return this.configuration;
-    }
-
-    private evaluate(expression: MathExpression, scope: unknown) {
-        const compiledExpressionIndex = expression.toString();
-        if (!this.compiledExpressions[compiledExpressionIndex]) {
-            this.compiledExpressions[compiledExpressionIndex] =
-                mathjs.compile(expression);
-        }
-
-        return this.compiledExpressions[compiledExpressionIndex].evaluate(
-            scope
-        );
     }
 
     private generateNeurons() {
@@ -96,7 +65,7 @@ class NetworkAlpha {
     }
 
     private generateNeuron(scope: string) {
-        const neuron = this.neuronGenerator();
+        const neuron = this.neuronGenerator.getInstance();
         const proxy = scope === "input" ? true : false;
         const fixed = scope === "bias" ? true : false;
         const output = fixed ? 1 : 0;
@@ -135,7 +104,7 @@ class NetworkAlpha {
     }
 
     private generateSynapse() {
-        const synapse = this.synapseGenerator();
+        const synapse = this.synapseGenerator.getInstance();
         return synapse;
     }
 
@@ -206,7 +175,7 @@ class NetworkAlpha {
         const layerNeuronOutputErrors = layerNeurons.map(
             (layerNeuron: NeuronInterface) => layerNeuron.outputError
         );
-        const outputError = this.evaluate(
+        const outputError = this.calculator.evaluate(
             "sum(dotPow(layerNeuronOutputErrors, 2)) / numberOfNeuronsInTheLayer",
             { layerNeuronOutputErrors, numberOfNeuronsInTheLayer }
         );
@@ -235,7 +204,7 @@ class NetworkAlpha {
                                     );
                                 }
                             );
-                            layerNeuron.inputSum = this.evaluate(
+                            layerNeuron.inputSum = this.calculator.evaluate(
                                 "dot(layerNeuronIncomingConnectionOutputs, layerNeuronIncomingConnectionWeights)",
                                 {
                                     layerNeuronIncomingConnectionOutputs,
@@ -246,7 +215,7 @@ class NetworkAlpha {
                                 layerNeuron.inputSum
                             );
                             const { expectedOutput, output } = layerNeuron;
-                            layerNeuron.outputError = this.evaluate(
+                            layerNeuron.outputError = this.calculator.evaluate(
                                 "expectedOutput - output",
                                 { expectedOutput, output }
                             );
@@ -347,10 +316,13 @@ class NetworkAlpha {
         );
     }
 
-    constructor(configuration?: NetworkAlphaConfiguration) {
-        this.configuration = configuration
-            ? configuration
-            : this.defaultConfiguration;
+    constructor(
+        calculator: Calculator,
+        configuration: NetworkAlphaConfiguration
+    ) {
+        this.calculator = calculator;
+
+        this.configuration = configuration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid NetworkAlpha Module Configuration";

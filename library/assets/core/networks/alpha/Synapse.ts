@@ -1,5 +1,6 @@
 import { all, create } from "mathjs";
 
+import { Calculator } from "../CalculatorInterface";
 import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
 
 const mathjs = create(all);
@@ -11,6 +12,8 @@ class Synapse implements SynapseInterface {
     private defaultConfiguration = {} as SynapseConfiguration;
 
     private configuration: SynapseConfiguration;
+
+    private calculator: Calculator;
 
     private _incomingConnection;
 
@@ -39,10 +42,10 @@ class Synapse implements SynapseInterface {
         return this.configuration;
     }
 
-    constructor(configuration?: SynapseConfiguration) {
-        this.configuration = configuration
-            ? configuration
-            : this.defaultConfiguration;
+    constructor(calculator: Calculator, configuration: SynapseConfiguration) {
+        this.calculator = calculator;
+
+        this.configuration = configuration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Synapse Module Configuration";
