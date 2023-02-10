@@ -2,15 +2,15 @@ import {
     QueryingInputPatterns,
     TrainingPatterns,
 } from "./InputOutputInterface";
+import { NetworkAlphaFactory } from "./networks/alpha/NetworkAlphaFactory";
 import {
     NetworkAlphaConfiguration,
-    NetworkAlphaInterface,
     QueryingEpochCallback,
     QueryingIterationCallback,
     TrainingEpochCallback,
     TrainingIterationCallback,
 } from "./networks/alpha/NetworkAlphaInterface";
-import { NetworkInterface } from "./networks/alpha/NetworkInterface";
+import { NetworkInterface } from "./networks/NetworkInterface";
 
 interface CerebrumInterface {
     buildMind: (configuration: MindConfiguration) => void;
@@ -33,9 +33,7 @@ interface CerebrumInterface {
 interface MindConfiguration {
     name: string;
     network: {
-        generator: (
-            configuration?: NetworkAlphaConfiguration
-        ) => NetworkAlphaInterface;
+        generator: NetworkAlphaFactory;
         configuration?: NetworkAlphaConfiguration;
     };
     inputsFrom: string[];

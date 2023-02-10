@@ -1,7 +1,9 @@
 import { QueryingStatus, TrainingStatus } from "../../InputOutputInterface";
-import { NetworkInterface } from "./NetworkInterface";
+import { NetworkInterface } from "../NetworkInterface";
+import { NeuronFactory } from "./NeuronFactory";
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
-import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
+import { SynapseFactory } from "./SynapseFactory";
+import { SynapseConfiguration } from "./SynapseInterface";
 
 interface DataRepository {
     neuronLayers: NeuronInterface[][];
@@ -20,11 +22,11 @@ interface NetworkAlphaConfiguration {
     maximumEpoch: number;
     dataRepository: DataRepository;
     neuron: {
-        generator: (configuration?: NeuronConfiguration) => NeuronInterface;
+        generator: NeuronFactory;
         configuration?: NeuronConfiguration;
     };
     synapse: {
-        generator: (configuration?: SynapseConfiguration) => SynapseInterface;
+        generator: SynapseFactory;
         configuration?: SynapseConfiguration;
     };
 }

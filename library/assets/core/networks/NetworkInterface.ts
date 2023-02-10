@@ -1,13 +1,13 @@
 import {
     QueryingInputPatterns,
     TrainingPatterns,
-} from "../../InputOutputInterface";
+} from "../InputOutputInterface";
 import {
     QueryingEpochCallback,
     QueryingIterationCallback,
     TrainingEpochCallback,
     TrainingIterationCallback,
-} from "./NetworkAlphaInterface";
+} from "./alpha/NetworkAlphaInterface";
 
 interface NetworkInterface {
     train: (

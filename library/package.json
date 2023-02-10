@@ -39,8 +39,8 @@
   },
   "scripts": {
     "build": "npx parcel build --no-source-maps",
-    "format": "prettier ./assets/**/*.ts --write",
-    "lint": "eslint ./assets/**/*.ts",
+    "format": "prettier './assets/**/*.ts' --write",
+    "lint": "eslint './assets/**/*.ts'",
     "test": "npx jest --verbose ./tests/*"
   },
   "source": "assets/index.ts",

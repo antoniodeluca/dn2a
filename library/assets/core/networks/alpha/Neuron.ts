@@ -1,5 +1,6 @@
-import { all, create, EvalFunction, MathExpression } from "mathjs";
+import { all, create } from "mathjs";
 
+import { Calculator } from "../CalculatorInterface";
 import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
 import { SynapseInterface } from "./SynapseInterface";
 
@@ -9,11 +10,9 @@ mathjs.config({
 });
 
 class Neuron implements NeuronInterface {
-    private defaultConfiguration = {} as NeuronConfiguration;
-
     private configuration: NeuronConfiguration;
 
-    private compiledExpressions: { [key: string]: EvalFunction } = {};
+    private calculator: Calculator;
 
     private _delta = 0;
 
@@ -50,7 +49,7 @@ class Neuron implements NeuronInterface {
     private _proxy = false;
 
     private _transferFunction = (value: number) => {
-        return this.evaluate("1 / (1 + e^-value)", { value });
+        return this.calculator.evaluate("1 / (1 + e^-value)", { value });
     };
 
     private checkConfiguration() {
@@ -61,22 +60,10 @@ class Neuron implements NeuronInterface {
         return this.configuration;
     }
 
-    private evaluate(expression: MathExpression, scope: unknown) {
-        const compiledExpressionIndex = expression.toString();
-        if (!this.compiledExpressions[compiledExpressionIndex]) {
-            this.compiledExpressions[compiledExpressionIndex] =
-                mathjs.compile(expression);
-        }
+    constructor(calculator: Calculator, configuration: NeuronConfiguration) {
+        this.calculator = calculator;
 
-        return this.compiledExpressions[compiledExpressionIndex].evaluate(
-            scope
-        );
-    }
-
-    constructor(configuration?: NeuronConfiguration) {
-        this.configuration = configuration
-            ? configuration
-            : this.defaultConfiguration;
+        this.configuration = configuration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Neuron Module Configuration";

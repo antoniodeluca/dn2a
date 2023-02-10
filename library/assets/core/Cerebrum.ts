@@ -1,4 +1,3 @@
-import { NetworkAlphaFactory } from "./networks/alpha/NetworkAlphaFactory";
 import {
     CerebrumConfiguration,
     CerebrumInterface,
@@ -17,19 +16,6 @@ import {
 } from "./networks/alpha/NetworkAlphaInterface";
 
 class Cerebrum implements CerebrumInterface {
-    private defaultConfiguration = {
-        minds: [
-            {
-                name: "defaultMind",
-                network: {
-                    generator: NetworkAlphaFactory.getInstance,
-                },
-                inputsFrom: ["cerebrum"],
-            },
-        ],
-        outputsFrom: ["defaultMind"],
-    } as CerebrumConfiguration;
-
     private configuration: CerebrumConfiguration;
 
     private minds: Mind[];
@@ -42,10 +28,8 @@ class Cerebrum implements CerebrumInterface {
         return this.configuration;
     }
 
-    constructor(configuration?: CerebrumConfiguration) {
-        this.configuration = configuration
-            ? configuration
-            : this.defaultConfiguration;
+    constructor(configuration: CerebrumConfiguration) {
+        this.configuration = configuration;
 
         if (!this.checkConfiguration()) {
             throw "Invalid Cerebrum Module Configuration";
@@ -62,7 +46,7 @@ class Cerebrum implements CerebrumInterface {
     buildMind(configuration: MindConfiguration) {
         this.minds.push({
             name: configuration.name,
-            network: configuration.network.generator(
+            network: configuration.network.generator.getInstance(
                 configuration.network.configuration
             ),
         });

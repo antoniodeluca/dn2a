@@ -1,6 +1,10 @@
-import { NetworkAlpha } from "dn2a";
+import {
+    DefaultNetworkAlpha,
+    QueryingInputPattern,
+    QueryingStatus,
+} from "dn2a";
 
-const neuralNetwork = new NetworkAlpha();
+const neuralNetwork = DefaultNetworkAlpha.getInstance();
 
 const trainingPatterns = [
     {
@@ -36,9 +40,12 @@ const queryingPatterns = [
 // The object passed to the callback function contains information about the querying process.
 neuralNetwork.query(
     queryingPatterns,
-    (queryingStatus: any) => {
+    (queryingStatus: QueryingStatus) => {
         queryingPatterns.forEach(
-            (queryingPattern: any, queryingPatternIndex: any) => {
+            (
+                queryingPattern: QueryingInputPattern,
+                queryingPatternIndex: number
+            ) => {
                 /* eslint-disable no-console */
                 console.log(
                     `[${queryingPatterns[queryingPatternIndex].join(

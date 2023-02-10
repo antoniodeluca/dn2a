@@ -1,21 +1,34 @@
 import {
-    Brain,
+    DefaultBrain,
     BrainConfiguration,
     CerebrumFactory,
+    MathJSCalculator,
     NetworkAlphaFactory,
     NetworkAlphaNeuronFactory,
     NetworkAlphaSynapseFactory,
+    QueryingOutputPattern,
+    QueryingStatus,
+    TrainingStatus,
 } from "dn2a";
 
-const brain = new Brain({
+const mathJSCalculator = new MathJSCalculator();
+const cerebrumFactory = new CerebrumFactory(mathJSCalculator);
+const networkAlphaFactory = new NetworkAlphaFactory(mathJSCalculator);
+const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(
+    mathJSCalculator
+);
+const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(
+    mathJSCalculator
+);
+const brain = DefaultBrain.getInstance({
     cerebrum: {
-        generator: CerebrumFactory.getInstance,
+        generator: cerebrumFactory,
         configuration: {
             minds: [
                 {
                     name: "defaultMind",
                     network: {
-                        generator: NetworkAlphaFactory.getInstance,
+                        generator: networkAlphaFactory,
                         configuration: {
                             layerDimensions: [2, 4, 1],
                             learningMode: "continuous",
@@ -25,12 +38,10 @@ const brain = new Brain({
                             maximumEpoch: 1000,
                             dataRepository: { neuronLayers: [] },
                             neuron: {
-                                generator:
-                                    NetworkAlphaNeuronFactory.getInstance,
+                                generator: networkAlphaNeuronFactory,
                             },
                             synapse: {
-                                generator:
-                                    NetworkAlphaSynapseFactory.getInstance,
+                                generator: networkAlphaSynapseFactory,
                             },
                         },
                     },
@@ -64,11 +75,16 @@ const trainingPatterns = [
 // Training
 //
 // The object passed to the callback function contains information about the training process.
+interface ErrorStatus {
+    minimumError: number;
+    averageError: number;
+    maximumError: number;
+}
 brain.cerebrum.trainMind(
     trainingPatterns,
-    (trainingStatus: any) => {
+    (trainingStatus: TrainingStatus) => {
         const errorStatus = trainingStatus.outputErrors.reduce(
-            (errorStatus: any, outputError: any) => {
+            (errorStatus: ErrorStatus, outputError: number) => {
                 const error = parseFloat(outputError.toString());
                 return {
                     minimumError:
@@ -112,9 +128,12 @@ const queryingPatterns = [
 // The object passed to the callback function contains information about the querying process.
 brain.cerebrum.queryMind(
     queryingPatterns,
-    (queryingStatus: any) => {
+    (queryingStatus: QueryingStatus) => {
         queryingStatus.outputPatterns.forEach(
-            (outputPattern: any, outputPatternIndex: any) => {
+            (
+                outputPattern: QueryingOutputPattern,
+                outputPatternIndex: number
+            ) => {
                 /* eslint-disable no-console */
                 console.log(
                     `[${queryingPatterns[outputPatternIndex].join(
