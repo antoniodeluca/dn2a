@@ -1,10 +1,21 @@
 import {
-    NetworkAlpha,
+    DefaultNetworkAlpha,
+    MathJSCalculator,
     NetworkAlphaNeuronFactory,
     NetworkAlphaSynapseFactory,
+    QueryingInputPattern,
+    QueryingStatus,
+    TrainingStatus,
 } from "dn2a";
 
-const neuralNetwork = new NetworkAlpha({
+const mathJSCalculator = new MathJSCalculator();
+const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(
+    mathJSCalculator
+);
+const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(
+    mathJSCalculator
+);
+const neuralNetwork = DefaultNetworkAlpha.getInstance({
     layerDimensions: [2, 4, 4, 1],
     learningMode: "continuous",
     learningRate: 0.3,
@@ -13,10 +24,10 @@ const neuralNetwork = new NetworkAlpha({
     maximumEpoch: 20000,
     dataRepository: { neuronLayers: [] },
     neuron: {
-        generator: NetworkAlphaNeuronFactory.getInstance,
+        generator: networkAlphaNeuronFactory,
     },
     synapse: {
-        generator: NetworkAlphaSynapseFactory.getInstance,
+        generator: networkAlphaSynapseFactory,
     },
 });
 
@@ -44,7 +55,7 @@ const trainingPatterns = [
 // The object passed to the callback function contains information about the training process.
 neuralNetwork.train(
     trainingPatterns,
-    (trainingStatus: any) => {
+    (trainingStatus: TrainingStatus) => {
         /* eslint-disable-next-line no-console */
         console.log("Epoch: " + trainingStatus.elapsedEpochCounter);
     },
@@ -66,9 +77,12 @@ const queryingPatterns = [
 // The object passed to the callback function contains information about the querying process.
 neuralNetwork.query(
     queryingPatterns,
-    (queryingStatus: any) => {
+    (queryingStatus: QueryingStatus) => {
         queryingPatterns.forEach(
-            (queryingPattern: any, queryingPatternIndex: any) => {
+            (
+                queryingPattern: QueryingInputPattern,
+                queryingPatternIndex: number
+            ) => {
                 /* eslint-disable no-console */
                 console.log(
                     `[${queryingPatterns[queryingPatternIndex].join(

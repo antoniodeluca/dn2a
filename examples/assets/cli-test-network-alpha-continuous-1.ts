@@ -1,13 +1,23 @@
 import {
-    NetworkAlpha,
+    MathJSCalculator,
+    DefaultNetworkAlpha,
     NetworkAlphaNeuronFactory,
     NetworkAlphaSynapseFactory,
+    QueryingStatus,
+    QueryingInputPattern,
 } from "dn2a";
 
 // The object passed to the constructor function contains properties describing the neural network.
 // In case one or more properties are not present they are substituted with defaults.
 // Same thing happens if the object is not passed at all.
-const neuralNetwork = new NetworkAlpha({
+const mathJSCalculator = new MathJSCalculator();
+const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(
+    mathJSCalculator
+);
+const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(
+    mathJSCalculator
+);
+const neuralNetwork = DefaultNetworkAlpha.getInstance({
     layerDimensions: [2, 4, 4, 1], // the default would be [2, 4, 1]
     learningMode: "continuous",
     learningRate: 0.3,
@@ -16,10 +26,10 @@ const neuralNetwork = new NetworkAlpha({
     maximumEpoch: 20000, // the default would be 1000
     dataRepository: { neuronLayers: [] },
     neuron: {
-        generator: NetworkAlphaNeuronFactory.getInstance,
+        generator: networkAlphaNeuronFactory,
     },
     synapse: {
-        generator: NetworkAlphaSynapseFactory.getInstance,
+        generator: networkAlphaSynapseFactory,
     },
 });
 
@@ -57,9 +67,12 @@ const queryingPatterns = [
 // The object passed to the callback function contains information about the querying process.
 neuralNetwork.query(
     queryingPatterns,
-    (queryingStatus: any) => {
+    (queryingStatus: QueryingStatus) => {
         queryingPatterns.forEach(
-            (queryingPattern: any, queryingPatternIndex: any) => {
+            (
+                queryingPattern: QueryingInputPattern,
+                queryingPatternIndex: number
+            ) => {
                 /* eslint-disable no-console */
                 console.log(
                     `[${queryingPatterns[queryingPatternIndex].join(

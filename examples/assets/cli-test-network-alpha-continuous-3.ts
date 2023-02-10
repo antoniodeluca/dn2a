@@ -1,17 +1,29 @@
 import {
-    Cerebrum,
+    DefaultCerebrum,
     CerebrumConfiguration,
     NetworkAlphaFactory,
     NetworkAlphaNeuronFactory,
     NetworkAlphaSynapseFactory,
+    MathJSCalculator,
+    TrainingStatus,
+    QueryingStatus,
+    QueryingInputPattern,
 } from "dn2a";
 
-const cerebrum = new Cerebrum({
+const mathJSCalculator = new MathJSCalculator();
+const networkAlphaFactory = new NetworkAlphaFactory(mathJSCalculator);
+const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(
+    mathJSCalculator
+);
+const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(
+    mathJSCalculator
+);
+const cerebrum = DefaultCerebrum.getInstance({
     minds: [
         {
             name: "firstNeuralNetwork",
             network: {
-                generator: NetworkAlphaFactory.getInstance,
+                generator: networkAlphaFactory,
                 configuration: {
                     layerDimensions: [2, 4, 1],
                     learningMode: "continuous",
@@ -21,10 +33,10 @@ const cerebrum = new Cerebrum({
                     maximumEpoch: 1000,
                     dataRepository: { neuronLayers: [] },
                     neuron: {
-                        generator: NetworkAlphaNeuronFactory.getInstance,
+                        generator: networkAlphaNeuronFactory,
                     },
                     synapse: {
-                        generator: NetworkAlphaSynapseFactory.getInstance,
+                        generator: networkAlphaSynapseFactory,
                     },
                 },
             },
@@ -59,7 +71,7 @@ const trainingPatterns = [
 // The name passed to the trainMind method specifies which specific mind to train
 cerebrum.trainMind(
     trainingPatterns,
-    (trainingStatus: any) => {
+    (trainingStatus: TrainingStatus) => {
         /* eslint-disable-next-line no-console */
         console.log(`Epoch: ${trainingStatus.elapsedEpochCounter}`);
     },
@@ -83,9 +95,12 @@ const queryingPatterns = [
 // The name passed to the queryMind method specifies which specific mind to query
 cerebrum.queryMind(
     queryingPatterns,
-    (queryingStatus: any) => {
+    (queryingStatus: QueryingStatus) => {
         queryingPatterns.forEach(
-            (queryingPattern: any, queryingPatternIndex: any) => {
+            (
+                queryingPattern: QueryingInputPattern,
+                queryingPatternIndex: number
+            ) => {
                 /* eslint-disable no-console */
                 console.log(
                     `[${queryingPatterns[queryingPatternIndex].join(
