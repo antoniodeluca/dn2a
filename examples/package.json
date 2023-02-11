@@ -2,6 +2,7 @@
   "author": "Antonio De Luca <contact@antoniodeluca.info>",
   "description": "DN2A - Dynamic Neural Networks Architecture - Examples",
   "devDependencies": {
+    "@parcel/plugin": "^2.8.3",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint": "^8.30.0",
@@ -10,6 +11,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "npm-run-all2": "^6.0.4",
     "parcel": "^2.8.2",
+    "parcel-resolver-ts-base-url": "^1.3.1",
     "prettier": "^2.8.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
