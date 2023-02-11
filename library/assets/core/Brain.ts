@@ -1,5 +1,5 @@
-import { BrainConfiguration, BrainInterface } from "./BrainInterface";
-import { CerebrumInterface } from "./CerebrumInterface";
+import { BrainConfiguration, BrainInterface } from "./BrainTypes";
+import { CerebrumInterface } from "./CerebrumTypes";
 
 class Brain implements BrainInterface {
     private configuration: BrainConfiguration;

@@ -1,0 +1,11 @@
+{
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+        "^@assets/(.*)$": "<rootDir>/assets/$1",
+        "^@core/(.*)$": "<rootDir>/assets/core/$1",
+        "^@networks/(.*)$": "<rootDir>/assets/core/networks/$1",
+        "^@infrastructure/(.*)$": "<rootDir>/assets/infrastructure/$1",
+        "^@tests/(.*)$": "<rootDir>/tests/$1"
+    }
+}

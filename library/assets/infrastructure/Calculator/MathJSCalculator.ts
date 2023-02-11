@@ -1,6 +1,6 @@
-import { all, create, EvalFunction, MathExpression } from "mathjs";
+import { EvalFunction, MathExpression, all, create } from "mathjs";
 
-import { Calculator } from "../../core/networks/CalculatorInterface";
+import { Calculator } from "@networks/types";
 
 const mathjs = create(all);
 mathjs.config({

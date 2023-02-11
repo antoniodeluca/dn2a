@@ -1,7 +1,8 @@
+import { Calculator } from "@networks/types";
+
 import { Brain } from "./Brain";
-import { BrainConfiguration } from "./BrainInterface";
+import { BrainConfiguration } from "./BrainTypes";
 import { CerebrumFactory } from "./CerebrumFactory";
-import { Calculator } from "./networks/CalculatorInterface";
 
 class BrainFactory {
     private calculator: Calculator;

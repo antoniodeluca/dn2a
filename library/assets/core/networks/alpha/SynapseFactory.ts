@@ -1,6 +1,7 @@
-import { Calculator } from "../CalculatorInterface";
+import { Calculator } from "@networks/types";
+
 import { Synapse } from "./Synapse";
-import { SynapseConfiguration } from "./SynapseInterface";
+import { SynapseConfiguration } from "./types";
 
 class SynapseFactory {
     private calculator: Calculator;

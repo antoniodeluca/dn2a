@@ -1,5 +1,5 @@
 import { CerebrumFactory } from "./CerebrumFactory";
-import { CerebrumConfiguration, CerebrumInterface } from "./CerebrumInterface";
+import { CerebrumConfiguration, CerebrumInterface } from "./CerebrumTypes";
 
 interface BrainInterface {
     cerebrum: CerebrumInterface;

@@ -1,16 +1,17 @@
+import { NetworkFactory as NetworkAlphaFactory } from "@networks/alpha/NetworkFactory";
+import { NetworkConfiguration as NetworkAlphaConfiguration } from "@networks/alpha/types";
 import {
-    QueryingInputPatterns,
-    TrainingPatterns,
-} from "./InputOutputInterface";
-import { NetworkAlphaFactory } from "./networks/alpha/NetworkAlphaFactory";
-import {
-    NetworkAlphaConfiguration,
     QueryingEpochCallback,
     QueryingIterationCallback,
     TrainingEpochCallback,
     TrainingIterationCallback,
-} from "./networks/alpha/NetworkAlphaInterface";
-import { NetworkInterface } from "./networks/NetworkInterface";
+} from "@networks/types";
+import { NetworkInterface } from "@networks/types";
+
+import {
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "./InputOutputInterface";
 
 interface CerebrumInterface {
     buildMind: (configuration: MindConfiguration) => void;

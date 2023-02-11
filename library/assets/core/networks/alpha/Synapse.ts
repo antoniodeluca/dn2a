@@ -1,7 +1,8 @@
 import { all, create } from "mathjs";
 
-import { Calculator } from "../CalculatorInterface";
-import { SynapseConfiguration, SynapseInterface } from "./SynapseInterface";
+import { Calculator } from "@networks/types";
+
+import { SynapseConfiguration, SynapseInterface } from "./types";
 
 const mathjs = create(all);
 mathjs.config({

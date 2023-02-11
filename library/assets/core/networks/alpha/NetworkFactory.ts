@@ -1,16 +1,14 @@
-import { Calculator } from "../CalculatorInterface";
-import { NetworkAlpha } from "./NetworkAlpha";
-import {
-    DataRepository,
-    NetworkAlphaConfiguration,
-} from "./NetworkAlphaInterface";
+import { Calculator } from "@networks/types";
+
+import { Network } from "./Network";
 import { NeuronFactory } from "./NeuronFactory";
 import { SynapseFactory } from "./SynapseFactory";
+import { DataRepository, NetworkConfiguration } from "./types";
 
-class NetworkAlphaFactory {
+class NetworkFactory {
     private calculator: Calculator;
 
-    private configuration: NetworkAlphaConfiguration;
+    private configuration: NetworkConfiguration;
 
     private getDefaultConfiguration() {
         const neuronFactory = new NeuronFactory(this.calculator);
@@ -30,13 +28,10 @@ class NetworkAlphaFactory {
             synapse: {
                 generator: synapseFactory,
             },
-        } as NetworkAlphaConfiguration;
+        } as NetworkConfiguration;
     }
 
-    constructor(
-        calculator: Calculator,
-        configuration?: NetworkAlphaConfiguration
-    ) {
+    constructor(calculator: Calculator, configuration?: NetworkConfiguration) {
         this.calculator = calculator;
 
         this.configuration = configuration
@@ -44,13 +39,13 @@ class NetworkAlphaFactory {
             : this.getDefaultConfiguration();
     }
 
-    getInstance(configuration?: NetworkAlphaConfiguration) {
+    getInstance(configuration?: NetworkConfiguration) {
         if (configuration) {
             this.configuration = configuration;
         }
 
-        return new NetworkAlpha(this.calculator, this.configuration);
+        return new Network(this.calculator, this.configuration);
     }
 }
 
-export { NetworkAlphaFactory };
+export { NetworkFactory };

@@ -2,7 +2,6 @@
 .parcel-cache
 assets
 bower_components
-distributed
 node_modules
 tests
 

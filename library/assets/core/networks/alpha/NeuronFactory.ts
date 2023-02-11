@@ -1,6 +1,7 @@
-import { Calculator } from "../CalculatorInterface";
+import { Calculator } from "@networks/types";
+
 import { Neuron } from "./Neuron";
-import { NeuronConfiguration } from "./NeuronInterface";
+import { NeuronConfiguration } from "./types";
 
 class NeuronFactory {
     private calculator: Calculator;
