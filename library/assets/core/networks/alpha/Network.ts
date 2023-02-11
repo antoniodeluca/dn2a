@@ -1,30 +1,30 @@
 import { all, create } from "mathjs";
 
-import { NeuronFactory } from "./NeuronFactory";
-import { SynapseFactory } from "./SynapseFactory";
 import {
-    DataRepository,
-    NetworkAlphaConfiguration,
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "@core/InputOutputInterface";
+
+import {
+    Calculator,
     QueryingEpochCallback,
     QueryingIterationCallback,
     TrainingEpochCallback,
     TrainingIterationCallback,
-} from "./NetworkAlphaInterface";
-import { NeuronInterface } from "./NeuronInterface";
-import { SynapseInterface } from "./SynapseInterface";
-import {
-    QueryingInputPatterns,
-    TrainingPatterns,
-} from "../../InputOutputInterface";
-import { Calculator } from "../CalculatorInterface";
+} from "@networks/types";
+
+import { NeuronFactory } from "./NeuronFactory";
+import { SynapseFactory } from "./SynapseFactory";
+import { DataRepository, NetworkConfiguration } from "./types";
+import { NeuronInterface, SynapseInterface } from "./types";
 
 const mathjs = create(all);
 mathjs.config({
     number: "number",
 });
 
-class NetworkAlpha {
-    private configuration: NetworkAlphaConfiguration;
+class Network {
+    private configuration: NetworkConfiguration;
 
     private calculator: Calculator;
 
@@ -316,16 +316,13 @@ class NetworkAlpha {
         );
     }
 
-    constructor(
-        calculator: Calculator,
-        configuration: NetworkAlphaConfiguration
-    ) {
+    constructor(calculator: Calculator, configuration: NetworkConfiguration) {
         this.calculator = calculator;
 
         this.configuration = configuration;
 
         if (!this.checkConfiguration()) {
-            throw "Invalid NetworkAlpha Module Configuration";
+            throw "Invalid Alpha Network Module Configuration";
         }
         this.configuration = this.transformConfiguration();
 
@@ -444,4 +441,4 @@ class NetworkAlpha {
     }
 }
 
-export { NetworkAlpha };
+export { Network };

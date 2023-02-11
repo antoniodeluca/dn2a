@@ -1,19 +1,20 @@
 import {
-    CerebrumConfiguration,
-    CerebrumInterface,
-    Mind,
-    MindConfiguration,
-} from "./CerebrumInterface";
-import {
-    QueryingInputPatterns,
-    TrainingPatterns,
-} from "./InputOutputInterface";
-import {
     QueryingEpochCallback,
     QueryingIterationCallback,
     TrainingEpochCallback,
     TrainingIterationCallback,
-} from "./networks/alpha/NetworkAlphaInterface";
+} from "@networks/types";
+
+import {
+    CerebrumConfiguration,
+    CerebrumInterface,
+    Mind,
+    MindConfiguration,
+} from "./CerebrumTypes";
+import {
+    QueryingInputPatterns,
+    TrainingPatterns,
+} from "./InputOutputInterface";
 
 class Cerebrum implements CerebrumInterface {
     private configuration: CerebrumConfiguration;

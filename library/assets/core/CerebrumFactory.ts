@@ -1,7 +1,8 @@
+import { NetworkFactory as NetworkAlphaFactory } from "@networks/alpha/NetworkFactory";
+import { Calculator } from "@networks/types";
+
 import { Cerebrum } from "./Cerebrum";
-import { CerebrumConfiguration } from "./CerebrumInterface";
-import { NetworkAlphaFactory } from "./networks/alpha/NetworkAlphaFactory";
-import { Calculator } from "./networks/CalculatorInterface";
+import { CerebrumConfiguration } from "./CerebrumTypes";
 
 class CerebrumFactory {
     private calculator: Calculator;

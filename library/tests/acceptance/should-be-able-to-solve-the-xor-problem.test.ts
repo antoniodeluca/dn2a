@@ -1,19 +1,30 @@
-import { DefaultBrain } from "../../assets"
-import { CerebrumFactory } from "../../assets";
-import { NetworkAlphaFactory } from "../../assets";
-import { NetworkAlphaNeuronFactory } from "../../assets";
-import { NetworkAlphaSynapseFactory } from "../../assets";
-import { MathJSCalculator } from "../../assets";
-import { CerebrumConfiguration } from "../../assets/core/CerebrumInterface";
-import { QueryingInputPattern, QueryingOutputPattern, QueryingStatus } from "../../assets/core/InputOutputInterface";
- 
+import {
+    CerebrumFactory,
+    DefaultBrain,
+    MathJSCalculator,
+    NetworkAlphaFactory,
+    NetworkAlphaNeuronFactory,
+    NetworkAlphaSynapseFactory,
+} from "@assets/index";
+
+import { CerebrumConfiguration } from "@core/CerebrumTypes";
+import {
+    QueryingInputPattern,
+    QueryingOutputPattern,
+    QueryingStatus,
+} from "@core/InputOutputInterface";
+
 describe("When trained with training examples about the XOR problem", () => {
     it("Should be able to train up to a satisfying accuracy", () => {
         const mathJSCalculator = new MathJSCalculator();
         const cerebrumFactory = new CerebrumFactory(mathJSCalculator);
         const networkAlphaFactory = new NetworkAlphaFactory(mathJSCalculator);
-        const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(mathJSCalculator);
-        const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(mathJSCalculator);
+        const networkAlphaNeuronFactory = new NetworkAlphaNeuronFactory(
+            mathJSCalculator
+        );
+        const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(
+            mathJSCalculator
+        );
         const brain = DefaultBrain.getInstance({
             cerebrum: {
                 generator: cerebrumFactory,
@@ -32,80 +43,81 @@ describe("When trained with training examples about the XOR problem", () => {
                                     maximumEpoch: 1000000,
                                     dataRepository: { neuronLayers: [] },
                                     neuron: {
-                                        generator: networkAlphaNeuronFactory
+                                        generator: networkAlphaNeuronFactory,
                                     },
                                     synapse: {
-                                        generator: networkAlphaSynapseFactory
-                                    }
-                                }
+                                        generator: networkAlphaSynapseFactory,
+                                    },
+                                },
                             },
-                            inputsFrom: [
-                                "cerebrum"
-                            ]
-                        }
+                            inputsFrom: ["cerebrum"],
+                        },
                     ],
-                    outputsFrom: [
-                        "defaultMind"
-                    ]
-                } as CerebrumConfiguration
-            }
+                    outputsFrom: ["defaultMind"],
+                } as CerebrumConfiguration,
+            },
         });
         const trainingPatterns = [
             {
                 input: [0, 0],
-                output: [0]
+                output: [0],
             },
             {
                 input: [0, 1],
-                output: [1]
+                output: [1],
             },
             {
                 input: [1, 0],
-                output: [1]
+                output: [1],
             },
             {
                 input: [1, 1],
-                output: [0]
-            }
+                output: [0],
+            },
         ];
         const queryingPatterns = [
             [0, 0],
             [0, 1],
             [1, 0],
-            [1, 1]
+            [1, 1],
         ];
         const expectedQueryingResults = [
             {
                 input: [0, 0],
-                output: [expect.closeTo(0.05, 1)]
+                output: [expect.closeTo(0.05, 1)],
             },
             {
                 input: [0, 1],
-                output: [expect.closeTo(0.95, 1)]
+                output: [expect.closeTo(0.95, 1)],
             },
             {
                 input: [1, 0],
-                output: [expect.closeTo(0.95, 1)]
+                output: [expect.closeTo(0.95, 1)],
             },
             {
                 input: [1, 1],
-                output: [expect.closeTo(0.05, 1)]
-            }
+                output: [expect.closeTo(0.05, 1)],
+            },
         ];
 
         brain.cerebrum.trainMind(trainingPatterns);
         const queryingResults = [] as {
-            input: QueryingInputPattern,
-            output: QueryingOutputPattern
+            input: QueryingInputPattern;
+            output: QueryingOutputPattern;
         }[];
         brain.cerebrum.queryMind(
             queryingPatterns,
             (queryingStatus: QueryingStatus) => {
                 queryingPatterns.forEach(
-                    (queryingPattern: QueryingInputPattern, queryingPatternIndex: number) => {
+                    (
+                        queryingPattern: QueryingInputPattern,
+                        queryingPatternIndex: number
+                    ) => {
                         queryingResults.push({
                             input: queryingPattern,
-                            output: queryingStatus.outputPatterns[queryingPatternIndex]
+                            output: queryingStatus.outputPatterns[
+                                queryingPatternIndex
+                            ],
                         });
                     }
                 );
@@ -114,6 +126,6 @@ describe("When trained with training examples about the XOR problem", () => {
             "defaultMind"
         );
 
-        expect(queryingResults).toEqual(expectedQueryingResults)
-    })
-})
+        expect(queryingResults).toEqual(expectedQueryingResults);
+    });
+});

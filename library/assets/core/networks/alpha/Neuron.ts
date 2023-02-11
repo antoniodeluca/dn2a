@@ -1,8 +1,12 @@
 import { all, create } from "mathjs";
 
-import { Calculator } from "../CalculatorInterface";
-import { NeuronConfiguration, NeuronInterface } from "./NeuronInterface";
-import { SynapseInterface } from "./SynapseInterface";
+import { Calculator } from "@networks/types";
+
+import {
+    NeuronConfiguration,
+    NeuronInterface,
+    SynapseInterface,
+} from "./types";
 
 const mathjs = create(all);
 mathjs.config({

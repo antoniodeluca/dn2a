@@ -1,17 +1,26 @@
-import { BrainFactory } from "./core/BrainFactory";
-import { CerebrumFactory } from "./core/CerebrumFactory";
-import { NetworkAlphaFactory } from "./core/networks/alpha/NetworkAlphaFactory";
-import { NeuronFactory as NetworkAlphaNeuronFactory } from "./core/networks/alpha/NeuronFactory";
-import { SynapseFactory as NetworkAlphaSynapseFactory } from "./core/networks/alpha/SynapseFactory";
-import { MathJSCalculator } from "./infrastructure/Calculator/MathJSCalculator";
-import { BrainConfiguration } from "./core/BrainInterface";
-import { CerebrumConfiguration } from "./core/CerebrumInterface";
-import { NetworkAlphaConfiguration } from "./core/networks/alpha/NetworkAlphaInterface";
-import { NeuronConfiguration as NetworkAlphaNeuronConfiguration } from "./core/networks/alpha/NeuronInterface";
-import { SynapseConfiguration as NetworkAlphaSynapseConfiguration } from "./core/networks/alpha/SynapseInterface";
+import { BrainFactory } from "@core/BrainFactory";
+import { BrainConfiguration, BrainInterface } from "@core/BrainTypes";
+import { CerebrumFactory } from "@core/CerebrumFactory";
+import { CerebrumConfiguration, CerebrumInterface } from "@core/CerebrumTypes";
+
+import { NetworkFactory as NetworkAlphaFactory } from "@networks/alpha/NetworkFactory";
+import { NeuronFactory as NetworkAlphaNeuronFactory } from "@networks/alpha/NeuronFactory";
+import { SynapseFactory as NetworkAlphaSynapseFactory } from "@networks/alpha/SynapseFactory";
+import {
+    NetworkConfiguration as NetworkAlphaConfiguration,
+    NetworkInterface as NetworkAlphaInterface,
+    NeuronInterface as NeuronAlphaInterface,
+    SynapseInterface as SynapseAlphaInterface,
+} from "@networks/alpha/types";
+import {
+    NeuronConfiguration as NetworkAlphaNeuronConfiguration,
+    SynapseConfiguration as NetworkAlphaSynapseConfiguration,
+} from "@networks/alpha/types";
+
+import { MathJSCalculator } from "@infrastructure/Calculator/MathJSCalculator";
 
 class DefaultBrain {
-    static getInstance(configuration?: BrainConfiguration) {
+    static getInstance(configuration?: BrainConfiguration): BrainInterface {
         const brainFactory = new BrainFactory(
             new MathJSCalculator(),
             configuration
@@ -23,7 +32,9 @@ class DefaultBrain {
 }
 
 class DefaultCerebrum {
-    static getInstance(configuration?: CerebrumConfiguration) {
+    static getInstance(
+        configuration?: CerebrumConfiguration
+    ): CerebrumInterface {
         const cerebrumFactory = new CerebrumFactory(
             new MathJSCalculator(),
             configuration
@@ -35,7 +46,9 @@ class DefaultCerebrum {
 }
 
 class DefaultNetworkAlpha {
-    static getInstance(configuration?: NetworkAlphaConfiguration) {
+    static getInstance(
+        configuration?: NetworkAlphaConfiguration
+    ): NetworkAlphaInterface {
         const networkAlphaFactory = new NetworkAlphaFactory(
             new MathJSCalculator(),
             configuration
@@ -47,7 +60,9 @@ class DefaultNetworkAlpha {
 }
 
 class DefaultNetworkAlphaNeuron {
-    static getInstance(configuration?: NetworkAlphaNeuronConfiguration) {
+    static getInstance(
+        configuration?: NetworkAlphaNeuronConfiguration
+    ): NeuronAlphaInterface {
         const neuronFactory = new NetworkAlphaNeuronFactory(
             new MathJSCalculator(),
             configuration
@@ -59,7 +74,9 @@ class DefaultNetworkAlphaNeuron {
 }
 
 class DefaultNetworkAlphaSynapse {
-    static getInstance(configuration?: NetworkAlphaSynapseConfiguration) {
+    static getInstance(
+        configuration?: NetworkAlphaSynapseConfiguration
+    ): SynapseAlphaInterface {
         const synapseFactory = new NetworkAlphaSynapseFactory(
             new MathJSCalculator(),
             configuration
