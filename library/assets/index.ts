@@ -2,6 +2,18 @@ import { Brain } from "@core/Brain";
 import { BrainFactory } from "@core/BrainFactory";
 import { Cerebrum } from "@core/Cerebrum";
 import { CerebrumFactory } from "@core/CerebrumFactory";
+import type {
+    QueryingInputPattern,
+    QueryingInputPatterns,
+    QueryingIterationPattern,
+    QueryingOutputPattern,
+    QueryingOutputPatterns,
+    QueryingStatus,
+    TrainingIterationPattern,
+    TrainingPattern,
+    TrainingPatterns,
+    TrainingStatus,
+} from "@core/types";
 
 import { Network as NetworkAlpha } from "@networks/alpha/Network";
 import { NetworkFactory as NetworkAlphaFactory } from "@networks/alpha/NetworkFactory";
@@ -37,4 +49,15 @@ export {
     MathJSCalculator,
 };
 
-export * from "./core/InputOutputInterface";
+export type {
+    TrainingPattern,
+    TrainingPatterns,
+    TrainingIterationPattern,
+    TrainingStatus,
+    QueryingInputPattern,
+    QueryingInputPatterns,
+    QueryingOutputPattern,
+    QueryingOutputPatterns,
+    QueryingIterationPattern,
+    QueryingStatus,
+};

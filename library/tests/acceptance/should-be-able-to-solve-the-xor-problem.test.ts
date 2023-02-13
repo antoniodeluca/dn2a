@@ -7,12 +7,12 @@ import {
     NetworkAlphaSynapseFactory,
 } from "@assets/index";
 
-import { CerebrumConfiguration } from "@core/CerebrumTypes";
+import { CerebrumConfiguration } from "@core/types";
 import {
     QueryingInputPattern,
     QueryingOutputPattern,
     QueryingStatus,
-} from "@core/InputOutputInterface";
+} from "@core/types";
 
 describe("When trained with training examples about the XOR problem", () => {
     it("Should be able to train up to a satisfying accuracy", () => {

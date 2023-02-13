@@ -3,7 +3,7 @@ import {
     QueryingStatus,
     TrainingPatterns,
     TrainingStatus,
-} from "@core/InputOutputInterface";
+} from "@core/types";
 
 interface NetworkInterface {
     train: (
