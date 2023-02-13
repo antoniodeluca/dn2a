@@ -10,11 +10,8 @@ import {
     CerebrumInterface,
     Mind,
     MindConfiguration,
-} from "./CerebrumTypes";
-import {
-    QueryingInputPatterns,
-    TrainingPatterns,
-} from "./InputOutputInterface";
+} from "./types";
+import { QueryingInputPatterns, TrainingPatterns } from "./types";
 
 class Cerebrum implements CerebrumInterface {
     private configuration: CerebrumConfiguration;

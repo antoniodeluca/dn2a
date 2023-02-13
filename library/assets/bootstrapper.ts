@@ -1,7 +1,11 @@
 import { BrainFactory } from "@core/BrainFactory";
-import { BrainConfiguration, BrainInterface } from "@core/BrainTypes";
 import { CerebrumFactory } from "@core/CerebrumFactory";
-import { CerebrumConfiguration, CerebrumInterface } from "@core/CerebrumTypes";
+import {
+    BrainConfiguration,
+    BrainInterface,
+    CerebrumConfiguration,
+    CerebrumInterface,
+} from "@core/types";
 
 import { NetworkFactory as NetworkAlphaFactory } from "@networks/alpha/NetworkFactory";
 import { NeuronFactory as NetworkAlphaNeuronFactory } from "@networks/alpha/NeuronFactory";

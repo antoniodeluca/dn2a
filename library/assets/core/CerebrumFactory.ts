@@ -2,7 +2,7 @@ import { NetworkFactory as NetworkAlphaFactory } from "@networks/alpha/NetworkFa
 import { Calculator } from "@networks/types";
 
 import { Cerebrum } from "./Cerebrum";
-import { CerebrumConfiguration } from "./CerebrumTypes";
+import { CerebrumConfiguration } from "./types";
 
 class CerebrumFactory {
     private calculator: Calculator;

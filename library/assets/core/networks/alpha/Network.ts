@@ -1,9 +1,6 @@
 import { all, create } from "mathjs";
 
-import {
-    QueryingInputPatterns,
-    TrainingPatterns,
-} from "@core/InputOutputInterface";
+import { QueryingInputPatterns, TrainingPatterns } from "@core/types";
 
 import {
     Calculator,
