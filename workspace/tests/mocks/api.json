@@ -1,0 +1,13 @@
+{
+    "networks": [
+        {
+            "name": "firstNetwork"
+        },
+        {
+            "name": "secondNetwork"
+        },
+        {
+            "name": "thirdNetwork"
+        }
+    ]
+}
