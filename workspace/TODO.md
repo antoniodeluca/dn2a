@@ -13,8 +13,8 @@
 
 ## In Progress
 
-- [x] Allow to define a project with multiple networks connected as a graph
-      [@antoniodeluca](https://github.com/antoniodeluca) with PR [#146](https://github.com/antoniodeluca/dn2a/pull/146)
+- [x] Allow to define a project with multiple networks connected as a graph  
+      [@antoniodeluca](https://github.com/antoniodeluca) with PR [#146](https://github.com/antoniodeluca/dn2a/pull/146)  
       [@antoniodeluca](https://github.com/antoniodeluca) with PR [#147](https://github.com/antoniodeluca/dn2a/pull/147)
 
 ## Done
