@@ -2,6 +2,14 @@
   "preset": "ts-jest",
   "testEnvironment": "jsdom",
   "moduleNameMapper": {
-    "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
-  }
+    "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules",
+    "^@assets/(.*)$": "<rootDir>/assets/$1",
+    "^@client/(.*)$": "<rootDir>/assets/client/$1",
+    "^@server/(.*)$": "<rootDir>/assets/server/$1",
+    "^@client-core/(.*)$": "<rootDir>/assets/client/core/$1",
+    "^@client-infrastructure/(.*)$": "<rootDir>/assets/client/infrastructure/$1",
+    "^@server-core/(.*)$": "<rootDir>/assets/server/core/$1",
+    "^@server-infrastructure/(.*)$": "<rootDir>/assets/server/infrastructure/$1",
+    "^@tests/(.*)$": "<rootDir>/tests/$1"
+}
 }

@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom/extend-expect";
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 
-import { components } from "../../../assets/client/bootstrapper";
+import { components } from "@client/bootstrapper";
 
 const { Application } = components;
 
