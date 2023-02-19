@@ -2,7 +2,9 @@ import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import { Application } from "../../../assets/client/Application";
+import { components } from "../../../assets/client/bootstrapper";
+
+const { Application } = components;
 
 describe("# User should be able to create a project with multiple networks connected as a graph", () => {
     describe("Given user is on the network list page", () => {
