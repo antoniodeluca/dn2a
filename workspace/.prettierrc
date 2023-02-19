@@ -1,3 +1,16 @@
 {
-    "tabWidth": 4
+    "tabWidth": 4,
+    "importOrder": [
+        "^@assets/(.*)$",
+        "^@client/(.*)$",
+        "^@server/(.*)$",
+        "^@client-core/(.*)$",
+        "^@client-infrastructure/(.*)$",
+        "^@server-core/(.*)$",
+        "^@server-infrastructure/(.*)$",
+        "^@tests/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true, 
+    "importOrderSortSpecifiers": true
 }

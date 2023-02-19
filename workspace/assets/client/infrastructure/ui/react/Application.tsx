@@ -1,7 +1,8 @@
-import React from "react";
 import { DataView } from "primereact/dataview";
-import { useNetworks } from "./hooks/useNetworks";
+import React from "react";
+
 import { Network, NetworksRetrieverPort } from "../../../core/types";
+import { useNetworks } from "./hooks/useNetworks";
 
 interface Props {
     retrieveNetworks: NetworksRetrieverPort;
