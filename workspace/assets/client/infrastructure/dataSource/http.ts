@@ -10,7 +10,7 @@ interface SourceNetwork {
 const retrieveNetworks: NetworksRetrieverPort = async () => {
     const response = await fetch(networkListEndpoint);
     const sourceNetworks = (await response.json()) as SourceNetwork[];
-    const images = sourceNetworks.map((sourceNetwork) => {
+    const networks = sourceNetworks.map((sourceNetwork) => {
         const { name } = sourceNetwork;
 
         return {
@@ -18,7 +18,7 @@ const retrieveNetworks: NetworksRetrieverPort = async () => {
         };
     }) as Network[];
 
-    return images;
+    return networks;
 };
 
 export { retrieveNetworks };
