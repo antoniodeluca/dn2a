@@ -29,10 +29,10 @@ describe("When trained with training examples about the XOR problem", () => {
             cerebrum: {
                 generator: cerebrumFactory,
                 configuration: {
-                    minds: [
+                    networks: [
                         {
-                            name: "defaultMind",
-                            network: {
+                            name: "defaultNetwork",
+                            code: {
                                 generator: networkAlphaFactory,
                                 configuration: {
                                     layerDimensions: [2, 4, 1],
@@ -53,7 +53,7 @@ describe("When trained with training examples about the XOR problem", () => {
                             inputsFrom: ["cerebrum"],
                         },
                     ],
-                    outputsFrom: ["defaultMind"],
+                    outputsFrom: ["defaultNetwork"],
                 } as CerebrumConfiguration,
             },
         });
@@ -100,12 +100,12 @@ describe("When trained with training examples about the XOR problem", () => {
             },
         ];
 
-        brain.cerebrum.trainMind(trainingPatterns);
+        brain.cerebrum.trainNetwork(trainingPatterns);
         const queryingResults = [] as {
             input: QueryingInputPattern;
             output: QueryingOutputPattern;
         }[];
-        brain.cerebrum.queryMind(
+        brain.cerebrum.queryNetwork(
             queryingPatterns,
             (queryingStatus: QueryingStatus) => {
                 queryingPatterns.forEach(
@@ -123,7 +123,7 @@ describe("When trained with training examples about the XOR problem", () => {
                 );
             },
             undefined,
-            "defaultMind"
+            "defaultNetwork"
         );
 
         expect(queryingResults).toEqual(expectedQueryingResults);
