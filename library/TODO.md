@@ -6,7 +6,6 @@
   - [ ] Hardcoded usage of Alpha network should happen if using a specific bootstrapping factory built around it
 - [ ] Add new networks as wrappers around third party open source neural networks libraries
   - [ ] Add specific bootstraping factories around the new networks as wrappers
-- [ ] Rename "mind" into "network" around the code
 - [ ] Implement reactive communication bus into the Cerebrum so that networks can interact with each other using messages each one reference with the name of the network that generated it
 - [ ] Enable storing/loading of data and configurations for a single network
   - [ ] Enable storing/loading of data and configurations for all networks in a Cerebrum
@@ -47,4 +46,4 @@
 
 ## Done
 
-- [ ] / 
+- [x] Rename "mind" into "network" around the code
