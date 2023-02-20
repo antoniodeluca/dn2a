@@ -52,26 +52,26 @@ interface QueryingStatus {
 }
 
 interface CerebrumInterface {
-    buildMind: (configuration: MindConfiguration) => void;
+    buildNetwork: (configuration: NetworkConfiguration) => void;
 
-    trainMind: (
+    trainNetwork: (
         trainingPatterns: TrainingPatterns,
         epochCallback?: TrainingEpochCallback,
         iterationCallback?: TrainingIterationCallback,
-        mindName?: string
+        networkName?: string
     ) => void;
 
-    queryMind: (
+    queryNetwork: (
         queryingPatterns: QueryingInputPatterns,
         epochCallback?: QueryingEpochCallback,
         iterationCallback?: QueryingIterationCallback,
-        mindName?: string
+        networkName?: string
     ) => void;
 }
 
-interface MindConfiguration {
+interface NetworkConfiguration {
     name: string;
-    network: {
+    code: {
         generator: NetworkAlphaFactory;
         configuration?: NetworkAlphaConfiguration;
     };
@@ -79,13 +79,13 @@ interface MindConfiguration {
 }
 
 interface CerebrumConfiguration {
-    minds: MindConfiguration[];
+    networks: NetworkConfiguration[];
     outputsFrom: string[];
 }
 
-interface Mind {
+interface Network {
     name: string;
-    network: NetworkInterface;
+    code: NetworkInterface;
 }
 
 interface BrainInterface {
@@ -102,8 +102,8 @@ interface BrainConfiguration {
 export {
     CerebrumConfiguration,
     CerebrumInterface,
-    Mind,
-    MindConfiguration,
+    Network,
+    NetworkConfiguration,
     BrainConfiguration,
     BrainInterface,
     TrainingPattern,

@@ -8,15 +8,15 @@ import {
 import {
     CerebrumConfiguration,
     CerebrumInterface,
-    Mind,
-    MindConfiguration,
+    Network,
+    NetworkConfiguration,
 } from "./types";
 import { QueryingInputPatterns, TrainingPatterns } from "./types";
 
 class Cerebrum implements CerebrumInterface {
     private configuration: CerebrumConfiguration;
 
-    private minds: Mind[];
+    private networks: Network[];
 
     private checkConfiguration() {
         return true;
@@ -34,54 +34,54 @@ class Cerebrum implements CerebrumInterface {
         }
         this.configuration = this.transformConfiguration();
 
-        this.minds = [];
+        this.networks = [];
 
-        this.configuration.minds.forEach((configuration) => {
-            this.buildMind(configuration);
+        this.configuration.networks.forEach((configuration) => {
+            this.buildNetwork(configuration);
         });
     }
 
-    buildMind(configuration: MindConfiguration) {
-        this.minds.push({
+    buildNetwork(configuration: NetworkConfiguration) {
+        this.networks.push({
             name: configuration.name,
-            network: configuration.network.generator.getInstance(
-                configuration.network.configuration
+            code: configuration.code.generator.getInstance(
+                configuration.code.configuration
             ),
         });
     }
 
-    trainMind(
+    trainNetwork(
         trainingPatterns: TrainingPatterns,
         epochCallback?: TrainingEpochCallback,
         iterationCallback?: TrainingIterationCallback,
-        mindName = "defaultMind"
+        networkName = "defaultNetwork"
     ) {
-        const mind = this.minds.find((mind) => {
-            return mind.name === mindName;
+        const network = this.networks.find((network) => {
+            return network.name === networkName;
         });
 
-        if (mind === undefined) {
-            throw new Error("Mind not found during training");
+        if (network === undefined) {
+            throw new Error("Network not found during training");
         }
 
-        mind.network.train(trainingPatterns, epochCallback, iterationCallback);
+        network.code.train(trainingPatterns, epochCallback, iterationCallback);
     }
 
-    queryMind(
+    queryNetwork(
         queryingPatterns: QueryingInputPatterns,
         epochCallback?: QueryingEpochCallback,
         iterationCallback?: QueryingIterationCallback,
-        mindName = "defaultMind"
+        networkName = "defaultNetwork"
     ) {
-        const mind = this.minds.find((mind) => {
-            return mind.name === mindName;
+        const network = this.networks.find((network) => {
+            return network.name === networkName;
         });
 
-        if (mind === undefined) {
-            throw new Error("Mind not found during querying");
+        if (network === undefined) {
+            throw new Error("Network not found during querying");
         }
 
-        mind.network.query(queryingPatterns, epochCallback, iterationCallback);
+        network.code.query(queryingPatterns, epochCallback, iterationCallback);
     }
 }
 

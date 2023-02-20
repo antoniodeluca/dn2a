@@ -13,16 +13,16 @@ class CerebrumFactory {
         const networkAlphaFactory = new NetworkAlphaFactory(this.calculator);
 
         return {
-            minds: [
+            networks: [
                 {
-                    name: "defaultMind",
-                    network: {
+                    name: "defaultNetwork",
+                    code: {
                         generator: networkAlphaFactory,
                     },
                     inputsFrom: ["cerebrum"],
                 },
             ],
-            outputsFrom: ["defaultMind"],
+            outputsFrom: ["defaultNetwork"],
         } as CerebrumConfiguration;
     }
 
