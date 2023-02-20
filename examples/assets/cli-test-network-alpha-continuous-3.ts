@@ -19,10 +19,10 @@ const networkAlphaSynapseFactory = new NetworkAlphaSynapseFactory(
     mathJSCalculator
 );
 const cerebrum = DefaultCerebrum.getInstance({
-    minds: [
+    networks: [
         {
             name: "firstNeuralNetwork",
-            network: {
+            code: {
                 generator: networkAlphaFactory,
                 configuration: {
                     layerDimensions: [2, 4, 1],
@@ -68,8 +68,8 @@ const trainingPatterns = [
 // Training
 //
 // The object passed to the callback function contains information about the training process.
-// The name passed to the trainMind method specifies which specific mind to train
-cerebrum.trainMind(
+// The name passed to the trainNetwork method specifies which specific network to train
+cerebrum.trainNetwork(
     trainingPatterns,
     (trainingStatus: TrainingStatus) => {
         /* eslint-disable-next-line no-console */
@@ -92,8 +92,8 @@ const queryingPatterns = [
 // Querying
 //
 // The object passed to the callback function contains information about the querying process.
-// The name passed to the queryMind method specifies which specific mind to query
-cerebrum.queryMind(
+// The name passed to the queryNetwork method specifies which specific network to query
+cerebrum.queryNetwork(
     queryingPatterns,
     (queryingStatus: QueryingStatus) => {
         queryingPatterns.forEach(
