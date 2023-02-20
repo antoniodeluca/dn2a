@@ -25,10 +25,10 @@ const run = () => {
         cerebrum: {
             generator: cerebrumFactory,
             configuration: {
-                minds: [
+                networks: [
                     {
-                        name: "defaultMind",
-                        network: {
+                        name: "defaultNetwork",
+                        code: {
                             generator: networkAlphaFactory,
                             configuration: {
                                 layerDimensions: [2, 4, 1],
@@ -49,7 +49,7 @@ const run = () => {
                         inputsFrom: ["cerebrum"],
                     },
                 ],
-                outputsFrom: ["defaultMind"],
+                outputsFrom: ["defaultNetwork"],
             },
         },
     } as BrainConfiguration);
@@ -79,7 +79,7 @@ const run = () => {
         averageError: number;
         maximumError: number;
     }
-    brain.cerebrum.trainMind(
+    brain.cerebrum.trainNetwork(
         trainingPatterns,
         (trainingStatus: TrainingStatus) => {
             const errorStatus = trainingStatus.outputErrors.reduce(
@@ -123,7 +123,7 @@ const run = () => {
     // Querying
     //
     // The object passed to the callback function contains information about the querying process.
-    brain.cerebrum.queryMind(
+    brain.cerebrum.queryNetwork(
         queryingPatterns,
         (queryingStatus: QueryingStatus) => {
             queryingStatus.outputPatterns.forEach(
