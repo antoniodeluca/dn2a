@@ -10,6 +10,7 @@
 - [ ] Add storing/loading of projects
 - [ ] Allow visualization of the state of each single neuron/synapse or network
 - [ ] Add CI/CD pipeline for PRs verification and NPM module publishing
+- [ ] Add example Docker configuration
 
 ## In Progress
 
