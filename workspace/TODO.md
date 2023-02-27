@@ -15,9 +15,10 @@
 ## In Progress
 
 - [x] Allow to define a project with multiple networks connected as a graph  
-      [@antoniodeluca](https://github.com/antoniodeluca) with PR [#146](https://github.com/antoniodeluca/dn2a/pull/146)  
-      [@antoniodeluca](https://github.com/antoniodeluca) with PR [#147](https://github.com/antoniodeluca/dn2a/pull/147)
+      *Application is able to show a list of networks* - [@antoniodeluca](https://github.com/antoniodeluca) with PR [#146](https://github.com/antoniodeluca/dn2a/pull/146)  
+- [x] Create a prototype of the full user interface together relative APIs and activable via feature flag
 
 ## Done
 
-- [ ] / 
+- [x] Refactoring client application toward clean architecture
+      [@antoniodeluca](https://github.com/antoniodeluca) with PR [#147](https://github.com/antoniodeluca/dn2a/pull/147)
