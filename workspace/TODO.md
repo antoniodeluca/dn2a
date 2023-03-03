@@ -17,6 +17,7 @@
 - [x] Allow to define a project with multiple networks connected as a graph  
       *Application is able to show a list of networks* - [@antoniodeluca](https://github.com/antoniodeluca) with PR [#146](https://github.com/antoniodeluca/dn2a/pull/146)  
 - [x] Create a prototype of the full user interface together relative APIs and activable via feature flag
+      [@antoniodeluca](https://github.com/antoniodeluca) with PR [#159](https://github.com/antoniodeluca/dn2a/pull/159)
 
 ## Done
 
