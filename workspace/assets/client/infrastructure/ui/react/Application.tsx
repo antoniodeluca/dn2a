@@ -1,6 +1,8 @@
-import { NetworksRetrieverPort } from "@assets/client/core/types";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+
+import { NetworksRetrieverPort } from "@assets/client/core/types";
+
 import { Frame } from "./Frame";
 import { Frame as PrototypeFrame } from "./prototype/Frame";
 
@@ -11,9 +13,12 @@ interface Props {
 const Application = (props: Props) => {
     const { retrieveNetworks } = props;
 
-    return(
+    return (
         <Routes>
-            <Route path="/*" element={<Frame retrieveNetworks={retrieveNetworks} />} />
+            <Route
+                path="/*"
+                element={<Frame retrieveNetworks={retrieveNetworks} />}
+            />
             <Route path="/prototype/*" element={<PrototypeFrame />} />
         </Routes>
     );
