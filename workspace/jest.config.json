@@ -11,5 +11,5 @@
     "^@server-core/(.*)$": "<rootDir>/assets/server/core/$1",
     "^@server-infrastructure/(.*)$": "<rootDir>/assets/server/infrastructure/$1",
     "^@tests/(.*)$": "<rootDir>/tests/$1"
-}
+  }
 }

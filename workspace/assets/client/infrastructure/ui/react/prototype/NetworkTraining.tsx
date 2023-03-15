@@ -1,9 +1,7 @@
 import React from "react";
 
 const NetworkTraining = () => {
-    return(<div>Network Training</div>);
+    return <div>Network Training</div>;
 };
 
-export {
-    NetworkTraining
-}
+export { NetworkTraining };

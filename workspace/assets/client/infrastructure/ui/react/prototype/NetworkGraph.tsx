@@ -1,9 +1,7 @@
 import React from "react";
 
 const NetworkGraph = () => {
-    return(<div>Network Graph</div>);
+    return <div>Network Graph</div>;
 };
 
-export {
-    NetworkGraph
-}
+export { NetworkGraph };

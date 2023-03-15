@@ -2,8 +2,8 @@ import { Menubar } from "primereact/menubar";
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { EventList } from "./EventList";
 
+import { EventList } from "./EventList";
 import { Network } from "./Network";
 import { NetworkCreation } from "./NetworkCreation";
 import { NetworkGraph } from "./NetworkGraph";
@@ -27,24 +27,24 @@ const Frame = () => {
                     items: [
                         {
                             label: "Project",
-                            url: "/prototype/project-creation"
+                            url: "/prototype/project-creation",
                         },
                         {
                             label: "Network",
-                            url: "/prototype/network-creation"
+                            url: "/prototype/network-creation",
                         },
                     ],
                 },
                 {
                     label: "Open Project",
-                    url: "/prototype/project-selection"
+                    url: "/prototype/project-selection",
                 },
                 {
                     separator: true,
                 },
                 {
                     label: "Export Project",
-                    url: "/prototype/project-exportation"
+                    url: "/prototype/project-exportation",
                 },
             ],
         },
@@ -53,44 +53,44 @@ const Frame = () => {
             items: [
                 {
                     label: "List",
-                    url: "/prototype"
+                    url: "/prototype",
                 },
                 {
                     label: "Pipeline",
-                    url: "/prototype/network-pipeline"
+                    url: "/prototype/network-pipeline",
                 },
                 {
                     label: "Graph",
-                    url: "/prototype/network-graph"
+                    url: "/prototype/network-graph",
                 },
             ],
         },
         {
             label: "Training",
-            url: "/prototype/network-training"
+            url: "/prototype/network-training",
         },
         {
             label: "Querying",
-            url: "/prototype/network-querying"
+            url: "/prototype/network-querying",
         },
         {
             label: "Events",
             items: [
                 {
                     label: "List",
-                    url: "/prototype/event-list"
-                }
+                    url: "/prototype/event-list",
+                },
             ],
         },
         {
             label: "Run",
             icon: "pi pi-fw pi-play",
-            url: "/prototype/project-execution"
+            url: "/prototype/project-execution",
         },
         {
             label: "Deploy",
             icon: "pi pi-fw pi-cloud-upload",
-            url: "/prototype/project-deployment"
+            url: "/prototype/project-deployment",
         },
     ];
 
@@ -108,13 +108,21 @@ const Frame = () => {
                 model={menuVoices}
                 end={"UI Prototype"}
                 style={{ marginBottom: "20px" }}
-                onClick={(event) => { console.log(event) }}
+                onClick={(event) => {
+                    console.log(event);
+                }}
             />
             <Routes>
                 <Route path="/project-creation" element={<ProjectCreation />} />
                 <Route path="/network-creation" element={<NetworkCreation />} />
-                <Route path="/project-selection" element={<ProjectSelection />} />
-                <Route path="/project-exportation" element={<ProjectExportation />} />
+                <Route
+                    path="/project-selection"
+                    element={<ProjectSelection />}
+                />
+                <Route
+                    path="/project-exportation"
+                    element={<ProjectExportation />}
+                />
                 <Route
                     path="/"
                     element={
@@ -131,8 +139,14 @@ const Frame = () => {
                 <Route path="/network-training" element={<NetworkTraining />} />
                 <Route path="/network-querying" element={<NetworkQuerying />} />
                 <Route path="/event-list" element={<EventList />} />
-                <Route path="/project-execution" element={<ProjectExecution />} />
-                <Route path="/project-deployment" element={<ProjectDeployment />} />
+                <Route
+                    path="/project-execution"
+                    element={<ProjectExecution />}
+                />
+                <Route
+                    path="/project-deployment"
+                    element={<ProjectDeployment />}
+                />
                 <Route path="/network/*" element={<Network />} />
             </Routes>
             <div className="flex justify-content-center">
