@@ -1,6 +1,4 @@
-# DN2A #
-
-## Dynamic Neural Networks Architecture ##
+# Dynamic Neural Networks Architect (DN2A) #
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/antoniodeluca/dn2a/main/LICENSE)
 

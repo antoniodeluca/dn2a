@@ -1,6 +1,6 @@
 {
   "author": "Antonio De Luca <contact@antoniodeluca.info>",
-  "description": "DN2A - Dynamic Neural Networks Architecture - Examples",
+  "description": "DN2A - Dynamic Neural Networks Architect - Examples",
   "devDependencies": {
     "@parcel/plugin": "^2.8.3",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
