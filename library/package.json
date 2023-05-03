@@ -21,8 +21,14 @@
     "parcel-resolver-ts-base-url": "^1.3.1",
     "prettier": "^2.8.4",
     "ts-jest": "^29.0.3",
+    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "tsconfig-paths": "^4.2.0",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "typescript": "^4.9.4",
+    "typings-bundler-plugin": "^1.0.0",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.2"
   },
   "keywords": [
     "neural networks",
@@ -38,7 +44,8 @@
     "url": "https://github.com/antoniodeluca/dn2a.git"
   },
   "scripts": {
-    "build": "npx parcel build --no-source-maps",
+    "build:parcel": "npx parcel build --no-source-maps",
+    "build:webpack": "npx webpack --config webpack.config.js",
     "format": "prettier './assets/**/*.ts' './tests/**/*.ts' --write",
     "lint": "eslint './assets/**/*.ts' './tests/**/*.ts'",
     "test": "npx jest --verbose ./tests/*"
