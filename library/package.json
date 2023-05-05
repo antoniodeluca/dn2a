@@ -1,6 +1,5 @@
 {
   "author": "Antonio De Luca <contact@antoniodeluca.info>",
-  "browser": "distributed/browser.js",
   "dependencies": {
     "mathjs": "^11.5.0"
   },
