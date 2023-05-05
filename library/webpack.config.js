@@ -33,19 +33,7 @@ const commonConfiguration = {
   }
 };
 
-const configurationForBrowser = {
-  ...commonConfiguration,
-  output: {
-    ...commonConfiguration.output,
-    filename: "browser.js",
-    library: {
-      name: "DN2A",
-      type: "window"
-    }
-  }
-}
-
-const configurationForCommonJS = {
+const configurationForCJS = {
   ...commonConfiguration,
   output: {
     ...commonConfiguration.output,
@@ -54,7 +42,7 @@ const configurationForCommonJS = {
   }
 }
 
-const configurationForES = {
+const configurationForESM = {
   ...commonConfiguration,
   output: {
     ...commonConfiguration.output,
@@ -63,4 +51,4 @@ const configurationForES = {
   }
 }
 
-module.exports = [configurationForBrowser, configurationForCommonJS, configurationForES];
+module.exports = [configurationForCJS, configurationForESM];
